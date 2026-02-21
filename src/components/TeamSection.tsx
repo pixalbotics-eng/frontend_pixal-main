@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { GithubIcon, LinkedinIcon, TwitterIcon, MailIcon } from './ui/Icons';
+import { LinkedinIcon, InstagramIcon, MailIcon } from './ui/Icons';
 import { teamApi, type TeamMember } from '@/api';
 import { getDisplayImageUrl } from '@/api/config';
 import EmptyState from './ui/EmptyState';
@@ -155,20 +155,24 @@ export default function TeamSection() {
                           {member.role || member.position}
                         </div>
                       )}
-                      <p className="text-gray-600 leading-relaxed text-sm sm:text-base">{member.bio || '—'}</p>
+                      {member.bio ? (
+                        <div
+                          className="rich-content text-gray-600 text-sm sm:text-base text-left"
+                          dangerouslySetInnerHTML={{ __html: member.bio }}
+                        />
+                      ) : (
+                        <p className="text-gray-600 leading-relaxed">—</p>
+                      )}
                     </div>
                     <div className="flex items-center justify-center gap-3 pt-5 border-t border-gray-100">
-                      <motion.a href="#" target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.1, y: -2 }} whileTap={{ scale: 0.95 }} className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 hover:bg-blue-100 transition-colors shadow-sm" aria-label="LinkedIn">
-                        <LinkedinIcon size={18} />
-                      </motion.a>
-                      <motion.a href="#" target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.1, y: -2 }} whileTap={{ scale: 0.95 }} className="w-9 h-9 rounded-lg bg-gray-50 flex items-center justify-center text-gray-700 hover:bg-gray-100 transition-colors shadow-sm" aria-label="GitHub">
-                        <GithubIcon size={18} />
-                      </motion.a>
-                      <motion.a href="#" target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.1, y: -2 }} whileTap={{ scale: 0.95 }} className="w-9 h-9 rounded-lg bg-cyan-50 flex items-center justify-center text-cyan-600 hover:bg-cyan-100 transition-colors shadow-sm" aria-label="Twitter">
-                        <TwitterIcon size={18} />
-                      </motion.a>
-                      <motion.a href="/contact" whileHover={{ scale: 1.1, y: -2 }} whileTap={{ scale: 0.95 }} className="w-9 h-9 rounded-lg bg-purple-50 flex items-center justify-center text-purple-600 hover:bg-purple-100 transition-colors shadow-sm" aria-label="Email">
+                      <motion.a href="mailto:pixalbotics@gmail.com" whileHover={{ scale: 1.1, y: -2 }} whileTap={{ scale: 0.95 }} className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 hover:bg-blue-100 transition-colors shadow-sm" aria-label="Email">
                         <MailIcon size={18} />
+                      </motion.a>
+                      <motion.a href="https://www.instagram.com/Pixal_Botics" target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.1, y: -2 }} whileTap={{ scale: 0.95 }} className="w-9 h-9 rounded-lg bg-pink-50 flex items-center justify-center text-pink-600 hover:bg-pink-100 transition-colors shadow-sm" aria-label="Instagram">
+                        <InstagramIcon size={18} />
+                      </motion.a>
+                      <motion.a href="https://www.linkedin.com/company/pixalbotics" target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.1, y: -2 }} whileTap={{ scale: 0.95 }} className="w-9 h-9 rounded-lg bg-sky-50 flex items-center justify-center text-sky-600 hover:bg-sky-100 transition-colors shadow-sm" aria-label="LinkedIn">
+                        <LinkedinIcon size={18} />
                       </motion.a>
                     </div>
                     <div className={`absolute bottom-0 right-0 w-16 h-16 bg-gradient-to-br ${gradient} opacity-3 rounded-tl-2xl`}></div>

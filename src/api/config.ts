@@ -33,6 +33,9 @@ export const API_ENDPOINTS = {
   // Contact
   CONTACT: '/api/contact',
   CONTACT_BY_ID: (id: string) => `/api/contact/${id}`,
+
+  // Keep Render (or similar) server awake
+  PING: '/ping',
 };
 
 /**

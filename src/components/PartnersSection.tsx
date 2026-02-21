@@ -493,7 +493,7 @@ export default function PartnersSection() {
                 ease: "easeInOut",
               }}
             />
-            Auto-rotating every 5 seconds
+            
           </p>
         </motion.div>
       </div>

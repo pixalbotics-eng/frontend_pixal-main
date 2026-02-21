@@ -265,8 +265,8 @@ export default function PdfFlipbook({ pdfUrl, className = '' }: PdfFlipbookProps
         if (cancelled) return;
         pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${PDF_WORKER_VERSION}/build/pdf.worker.min.mjs`;
 
-        const proxyUrl = `/api/proxy-pdf?url=${encodeURIComponent(pdfUrl)}`;
-        const res = await fetch(proxyUrl);
+        // Load PDF directly from backend URL (no proxy / no extra API hit)
+        const res = await fetch(pdfUrl);
         if (!res.ok) throw new Error('Failed to fetch');
         const arrayBuffer = await res.arrayBuffer();
         if (cancelled) return;
@@ -292,7 +292,7 @@ export default function PdfFlipbook({ pdfUrl, className = '' }: PdfFlipbookProps
           canvas.height = vp.height;
           const ctx = canvas.getContext('2d');
           if (!ctx) continue;
-          await page.render({ canvasContext: ctx, viewport: vp }).promise;
+          await page.render({ canvas, canvasContext: ctx, viewport: vp }).promise;
           urls.push(canvas.toDataURL('image/jpeg', 0.9));
         }
 

@@ -1,9 +1,9 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import AdminSidebar from '@/components/admin/AdminSidebar';
+import AdminPageLayout from '@/components/admin/AdminPageLayout';
 import { useAuth, useToast, useRefetchOnWindowFocus } from '@/hooks';
-import { ConfirmModal, RichTextEditor } from '@/components/ui';
+import { ConfirmModal, RichTextEditor, ImageCropModal } from '@/components/ui';
 import { blogsApi, Blog } from '@/api';
 import { getErrorMessage } from '@/api/client';
 import { getDisplayImageUrl, getPdfUrl } from '@/api/config';
@@ -25,6 +25,9 @@ export default function BlogsPage() {
     pdf: null as File | null,
   });
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [cropModalOpen, setCropModalOpen] = useState(false);
+  const [cropImageSrc, setCropImageSrc] = useState<string | null>(null);
+  const [pendingCropFileName, setPendingCropFileName] = useState<string>('cropped.jpg');
 
   const fetchBlogs = useCallback(async () => {
     setLoading(true);
@@ -62,6 +65,8 @@ export default function BlogsPage() {
       setEditingBlog(null);
       setFormData({ name: '', content: '', image: null, pdf: null });
       setImagePreviewUrl(null);
+      setCropModalOpen(false);
+      setCropImageSrc(null);
       fetchBlogs();
     } catch (err) {
       toast.error(getErrorMessage(err));
@@ -105,7 +110,35 @@ export default function BlogsPage() {
     setEditingBlog(null);
     setFormData({ name: '', content: '', image: null, pdf: null });
     setImagePreviewUrl(null);
+    setCropModalOpen(false);
+    setCropImageSrc(null);
     setShowModal(true);
+  };
+
+  const onImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    setCropImageSrc(url);
+    setPendingCropFileName(file.name.replace(/\.[^.]+$/, '-cropped.jpg') || 'cropped.jpg');
+    setCropModalOpen(true);
+  };
+
+  const onImageCropComplete = useCallback((file: File) => {
+    setFormData((prev) => ({ ...prev, image: file }));
+    setCropImageSrc((url) => {
+      if (url) URL.revokeObjectURL(url);
+      return null;
+    });
+    setCropModalOpen(false);
+  }, []);
+
+  const closeCropModal = () => {
+    setCropModalOpen(false);
+    setCropImageSrc((url) => {
+      if (url) URL.revokeObjectURL(url);
+      return null;
+    });
   };
 
   useEffect(() => {
@@ -122,11 +155,8 @@ export default function BlogsPage() {
   const displayImageUrl = imagePreviewUrl ?? (existingImageUrl || null);
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <AdminSidebar />
-      
-      <div className="flex-1 p-8">
-        <div className="mb-8 flex justify-between items-center">
+    <AdminPageLayout>
+      <div className="mb-6 lg:mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Blogs Management</h1>
             <p className="text-gray-600 mt-2">Manage blog posts</p>
@@ -137,9 +167,9 @@ export default function BlogsPage() {
           >
             + Add Blog
           </button>
-        </div>
+      </div>
 
-        {loading ? (
+      {loading ? (
           <div className="flex items-center justify-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
           </div>
@@ -213,16 +243,17 @@ export default function BlogsPage() {
                   <RichTextEditor
                     value={formData.content}
                     onChange={(content) => setFormData((prev) => ({ ...prev, content }))}
-                    placeholder="Write blog content (rich text)..."
+                    placeholder="Write blog content (rich text, add images with crop)..."
                     minHeight="240px"
+                    enableImageWithCrop
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Image</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Cover image (crop before upload)</label>
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => setFormData({ ...formData, image: e.target.files?.[0] || null })}
+                    onChange={onImageSelect}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
                   />
                   {displayImageUrl && (
@@ -281,19 +312,27 @@ export default function BlogsPage() {
           </div>
         )}
 
-        <ConfirmModal
-          open={!!deleteTarget}
-          title="Delete blog"
-          message={deleteTarget ? `Are you sure you want to delete "${deleteTarget.name}"? This action cannot be undone.` : ''}
-          confirmLabel="Delete"
-          cancelLabel="Cancel"
-          variant="danger"
-          loading={deletingId === deleteTarget?._id}
-          onConfirm={handleDeleteConfirm}
-          onCancel={() => !deletingId && setDeleteTarget(null)}
-        />
-      </div>
-    </div>
+      <ImageCropModal
+        open={cropModalOpen}
+        imageSrc={cropImageSrc}
+        onClose={closeCropModal}
+        onCropComplete={onImageCropComplete}
+        aspect={16 / 9}
+        fileName={pendingCropFileName}
+      />
+
+      <ConfirmModal
+        open={!!deleteTarget}
+        title="Delete blog"
+        message={deleteTarget ? `Are you sure you want to delete "${deleteTarget.name}"? This action cannot be undone.` : ''}
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        variant="danger"
+        loading={deletingId === deleteTarget?._id}
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => !deletingId && setDeleteTarget(null)}
+      />
+    </AdminPageLayout>
   );
 }
 

@@ -17,7 +17,7 @@ export default function Button({
   showArrow = false,
   children,
   className = '',
-  ...props
+  ...rest
 }: ButtonProps) {
   const baseStyles = 'font-medium rounded-lg transition-colors inline-flex items-center justify-center gap-2 font-sans relative overflow-hidden';
   
@@ -34,30 +34,34 @@ export default function Button({
   };
 
   return (
-    <motion.button
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+    <motion.div
+      style={{ display: 'inline-block' }}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      {...props}
     >
-      <motion.span
-        className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"
-        initial={{ x: '-100%' }}
-        whileHover={{ x: '100%' }}
-        transition={{ duration: 0.6 }}
-      />
-      <span className="relative z-10 flex items-center gap-2">
-        {children}
-      </span>
-      {showArrow && (
+      <button
+        className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+        {...rest}
+      >
         <motion.span
-          className="relative z-10 flex items-center"
-          animate={{ x: [0, 4, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-        >
-          <ArrowRightIcon className="w-4 h-4 ml-1" />
-        </motion.span>
-      )}
-    </motion.button>
+          className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"
+          initial={{ x: '-100%' }}
+          whileHover={{ x: '100%' }}
+          transition={{ duration: 0.6 }}
+        />
+        <span className="relative z-10 flex items-center gap-2">
+          {children}
+        </span>
+        {showArrow && (
+          <motion.span
+            className="relative z-10 flex items-center"
+            animate={{ x: [0, 4, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          >
+            <ArrowRightIcon className="w-4 h-4 ml-1" />
+          </motion.span>
+        )}
+      </button>
+    </motion.div>
   );
 }

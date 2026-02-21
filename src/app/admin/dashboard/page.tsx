@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import AdminSidebar from '@/components/admin/AdminSidebar';
+import AdminPageLayout from '@/components/admin/AdminPageLayout';
 import { useAuth, useToast } from '@/hooks';
 import { blogsApi, projectsApi, teamApi, testimonialsApi, usersApi } from '@/api';
 import { getErrorMessage } from '@/api/client';
@@ -59,11 +59,8 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <AdminSidebar />
-      
-      <div className="flex-1 p-8">
-        <div className="mb-8">
+    <AdminPageLayout>
+      <div className="mb-6 lg:mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
           <p className="text-gray-600 mt-2">Overview of your content management system</p>
         </div>
@@ -117,8 +114,7 @@ export default function AdminDashboard() {
             </a>
           </div>
         </div>
-      </div>
-    </div>
+    </AdminPageLayout>
   );
 }
 

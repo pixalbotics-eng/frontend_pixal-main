@@ -1,9 +1,9 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import AdminSidebar from '@/components/admin/AdminSidebar';
+import AdminPageLayout from '@/components/admin/AdminPageLayout';
 import { useAuth, useToast, useRefetchOnWindowFocus } from '@/hooks';
-import { ConfirmModal } from '@/components/ui';
+import { ConfirmModal, RichTextEditor, ImageCropModal } from '@/components/ui';
 import { projectsApi, Project } from '@/api';
 import { getErrorMessage } from '@/api/client';
 import { getDisplayImageUrl } from '@/api/config';
@@ -50,10 +50,18 @@ export default function ProjectsPage() {
     setSubmitLoading(true);
     try {
       if (editingProject) {
-        const res = await projectsApi.update(editingProject._id, formData, token);
+        const res = await projectsApi.update(editingProject._id, {
+          name: formData.name,
+          description: formData.description,
+          image: formData.image ?? undefined,
+        }, token);
         toast.success(res.message || 'Project updated successfully.');
       } else {
-        const res = await projectsApi.create(formData, token);
+        const res = await projectsApi.create({
+          name: formData.name,
+          description: formData.description,
+          image: formData.image ?? undefined,
+        }, token);
         toast.success(res.message || 'Project created successfully.');
       }
       setShowModal(false);
@@ -102,6 +110,30 @@ export default function ProjectsPage() {
     setShowModal(true);
   };
 
+  const [cropModalOpen, setCropModalOpen] = useState(false);
+  const [cropImageSrc, setCropImageSrc] = useState<string | null>(null);
+  const onImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setCropImageSrc(URL.createObjectURL(file));
+    setCropModalOpen(true);
+  };
+  const onImageCropComplete = useCallback((file: File) => {
+    setFormData((prev) => ({ ...prev, image: file }));
+    setCropImageSrc((url) => {
+      if (url) URL.revokeObjectURL(url);
+      return null;
+    });
+    setCropModalOpen(false);
+  }, []);
+  const closeCropModal = () => {
+    setCropModalOpen(false);
+    setCropImageSrc((url) => {
+      if (url) URL.revokeObjectURL(url);
+      return null;
+    });
+  };
+
   const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null);
   useEffect(() => {
     if (formData.image && formData.image instanceof File) {
@@ -116,24 +148,21 @@ export default function ProjectsPage() {
   const displayImageUrl = filePreviewUrl ?? (existingImageUrl || null);
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <AdminSidebar />
-      
-      <div className="flex-1 p-8">
-        <div className="mb-8 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Projects Management</h1>
-            <p className="text-gray-600 mt-2">Manage projects</p>
-          </div>
-          <button
-            onClick={openNewModal}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            + Add Project
-          </button>
+    <AdminPageLayout>
+      <div className="mb-6 lg:mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Projects Management</h1>
+          <p className="text-gray-600 mt-2">Manage projects</p>
         </div>
+        <button
+          onClick={openNewModal}
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors shrink-0"
+        >
+          + Add Project
+        </button>
+      </div>
 
-        {loading ? (
+      {loading ? (
           <div className="flex items-center justify-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
           </div>
@@ -149,7 +178,14 @@ export default function ProjectsPage() {
                 })()}
                 <div className="p-6">
                   <h3 className="text-lg font-bold text-gray-900 mb-2">{project.name}</h3>
-                  <p className="text-sm text-gray-600 mb-4 line-clamp-3">{project.description ?? '—'}</p>
+                  <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                  {project.description
+                    ? (() => {
+                        const p = project.description!.replace(/<[^>]*>/g, '').trim();
+                        return p ? p.slice(0, 150) + (p.length > 150 ? '...' : '') : '—';
+                      })()
+                    : '—'}
+                </p>
                   <div className="flex space-x-2">
                     <button
                       onClick={() => handleEdit(project)}
@@ -195,19 +231,20 @@ export default function ProjectsPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                  <textarea
-                    rows={6}
+                  <RichTextEditor
                     value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
+                    onChange={(description) => setFormData((prev) => ({ ...prev, description }))}
+                    placeholder="Project description (rich text, add images with crop)..."
+                    minHeight="200px"
+                    enableImageWithCrop
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Image</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Cover image (crop before upload)</label>
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => setFormData({ ...formData, image: e.target.files?.[0] || null })}
+                    onChange={onImageSelect}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
                   />
                   {displayImageUrl && (
@@ -248,19 +285,27 @@ export default function ProjectsPage() {
           </div>
         )}
 
-        <ConfirmModal
-          open={!!deleteTarget}
-          title="Delete project"
-          message={deleteTarget ? `Are you sure you want to delete "${deleteTarget.name}"? This action cannot be undone.` : ''}
-          confirmLabel="Delete"
-          cancelLabel="Cancel"
-          variant="danger"
-          loading={deletingId === deleteTarget?._id}
-          onConfirm={handleDeleteConfirm}
-          onCancel={() => !deletingId && setDeleteTarget(null)}
-        />
-      </div>
-    </div>
+      <ImageCropModal
+        open={cropModalOpen}
+        imageSrc={cropImageSrc}
+        onClose={closeCropModal}
+        onCropComplete={onImageCropComplete}
+        aspect={16 / 9}
+        fileName="project-cover.jpg"
+      />
+
+      <ConfirmModal
+        open={!!deleteTarget}
+        title="Delete project"
+        message={deleteTarget ? `Are you sure you want to delete "${deleteTarget.name}"? This action cannot be undone.` : ''}
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        variant="danger"
+        loading={deletingId === deleteTarget?._id}
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => !deletingId && setDeleteTarget(null)}
+      />
+    </AdminPageLayout>
   );
 }
 

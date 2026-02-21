@@ -24,6 +24,12 @@ function getProjectImage(project: Project, index: number) {
   return fallbacks[index % fallbacks.length];
 }
 
+function projectDescriptionPreview(description: string | undefined): string {
+  if (!description) return 'No description.';
+  const plain = description.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+  return plain.slice(0, 120) + (plain.length > 120 ? '...' : '') || 'No description.';
+}
+
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
@@ -125,9 +131,9 @@ export default function Projects() {
                       <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 leading-tight group-hover:text-blue-600 transition-colors">
                         {project.name}
                       </h3>
-                      <p className="text-gray-600 leading-relaxed mb-4 flex-grow text-sm sm:text-base">
-                        {project.description || 'No description.'}
-                      </p>
+<p className="text-gray-600 leading-relaxed mb-4 flex-grow text-sm sm:text-base line-clamp-3">
+                          {projectDescriptionPreview(project.description)}
+                        </p>
                       <Link href={`/projects/${project._id}`} className="mt-auto">
                         <Button size="sm" variant="outline" className="w-full group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:text-white group-hover:border-transparent transition-all">
                           <span>View Project</span>

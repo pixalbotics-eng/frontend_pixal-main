@@ -114,8 +114,13 @@ export default function ProjectsPage() {
                         <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 leading-tight group-hover:text-blue-600 transition-colors">
                           {project.name}
                         </h3>
-                        <p className="text-gray-600 leading-relaxed mb-4 flex-grow text-sm sm:text-base">
-                          {project.description || 'No description.'}
+                        <p className="text-gray-600 leading-relaxed mb-4 flex-grow text-sm sm:text-base line-clamp-3">
+                          {project.description
+                            ? (() => {
+                                const p = project.description!.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+                                return p ? p.slice(0, 140) + (p.length > 140 ? '...' : '') : 'No description.';
+                              })()
+                            : 'No description.'}
                         </p>
                         <Link href={`/projects/${project._id}`} className="mt-auto">
                           <Button size="sm" variant="outline" className="w-full group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:text-white group-hover:border-transparent transition-all">

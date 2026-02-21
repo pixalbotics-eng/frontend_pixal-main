@@ -27,6 +27,7 @@ import {
 } from 'react-icons/fi';
 import {
   FaWhatsapp,
+  FaFacebookF,
 } from 'react-icons/fa';
 import {
   HiOutlineSparkles,
@@ -137,6 +138,10 @@ export const InstagramIcon = ({ className = '', size = 24 }: IconProps) => (
   <FiInstagram className={className} size={size} />
 );
 
+export const FacebookIcon = ({ className = '', size = 24 }: IconProps) => (
+  <FaFacebookF className={className} size={size} />
+);
+
 // Other Icons
 export const CheckIcon = ({ className = '', size = 24 }: IconProps) => (
   <FiCheck className={className} size={size} />
@@ -169,6 +174,7 @@ export const iconMap = {
   twitter: TwitterIcon,
   linkedin: LinkedinIcon,
   instagram: InstagramIcon,
+  facebook: FacebookIcon,
   check: CheckIcon,
   star: StarIcon,
 };

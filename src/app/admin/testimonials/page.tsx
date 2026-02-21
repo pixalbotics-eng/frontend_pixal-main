@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import AdminSidebar from '@/components/admin/AdminSidebar';
+import AdminPageLayout from '@/components/admin/AdminPageLayout';
 import { useAuth, useToast, useRefetchOnWindowFocus } from '@/hooks';
 import { ConfirmModal } from '@/components/ui';
 import { testimonialsApi, Testimonial } from '@/api';
@@ -104,11 +104,8 @@ export default function TestimonialsPage() {
   const displayName = (t: Testimonial) => t.clientName || t.name || 'Testimonial';
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <AdminSidebar />
-
-      <div className="flex-1 p-8">
-        <div className="mb-8 flex justify-between items-center">
+    <AdminPageLayout>
+      <div className="mb-6 lg:mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Testimonials Management</h1>
             <p className="text-gray-600 mt-2">Manage client testimonials (clientName, reviewText, stars)</p>
@@ -243,7 +240,6 @@ export default function TestimonialsPage() {
           onConfirm={handleDeleteConfirm}
           onCancel={() => !deletingId && setDeleteTarget(null)}
         />
-      </div>
-    </div>
+    </AdminPageLayout>
   );
 }

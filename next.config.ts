@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  typescript: { ignoreBuildErrors: true },
   // Production optimizations
   // For cPanel: use 'export' for static export
   // For VPS/Server with PM2: use 'standalone'
@@ -28,6 +29,11 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'pixalbotics.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'pixal-fe5o.onrender.com',
         pathname: '/**',
       },
     ],

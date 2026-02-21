@@ -1,12 +1,14 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import AdminSidebar from '@/components/admin/AdminSidebar';
+import AdminPageLayout from '@/components/admin/AdminPageLayout';
 import { useAuth, useToast, useRefetchOnWindowFocus } from '@/hooks';
-import { ConfirmModal } from '@/components/ui';
+import { ConfirmModal, RichTextEditor, ImageCropModal } from '@/components/ui';
 import { teamApi, TeamMember } from '@/api';
 import { getErrorMessage } from '@/api/client';
 import { getDisplayImageUrl } from '@/api/config';
+
+const ROLE_OPTIONS = ['Developer', 'Designer', 'Manager', 'Lead', 'Engineer', 'Consultant', 'Analyst', 'Other'];
 
 export default function TeamPage() {
   const { token } = useAuth();
@@ -20,10 +22,14 @@ export default function TeamPage() {
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
   const [formData, setFormData] = useState({
     name: '',
-    role: '',
+    roles: [] as string[],
     bio: '',
     photo: null as File | null,
   });
+  const [cropModalOpen, setCropModalOpen] = useState(false);
+  const [cropImageSrc, setCropImageSrc] = useState<string | null>(null);
+  const [pendingCropFile, setPendingCropFile] = useState<File | null>(null);
+  const [customRoleInput, setCustomRoleInput] = useState('');
 
   const fetchTeam = useCallback(async () => {
     setLoading(true);
@@ -50,16 +56,17 @@ export default function TeamPage() {
     if (!token) return;
     setSubmitLoading(true);
     try {
+      const roleStr = formData.roles.length ? formData.roles.join(', ') : undefined;
       if (editingMember) {
-        const res = await teamApi.update(editingMember._id, { name: formData.name, role: formData.role || undefined, bio: formData.bio || undefined, photo: formData.photo || undefined }, token);
+        const res = await teamApi.update(editingMember._id, { name: formData.name, role: roleStr, bio: formData.bio || undefined, photo: formData.photo || undefined }, token);
         toast.success(res.message || 'Team member updated successfully.');
       } else {
-        const res = await teamApi.create({ name: formData.name, role: formData.role || undefined, bio: formData.bio || undefined, photo: formData.photo || undefined }, token);
+        const res = await teamApi.create({ name: formData.name, role: roleStr, bio: formData.bio || undefined, photo: formData.photo || undefined }, token);
         toast.success(res.message || 'Team member created successfully.');
       }
       setShowModal(false);
       setEditingMember(null);
-      setFormData({ name: '', role: '', bio: '', photo: null });
+      setFormData({ name: '', roles: [], bio: '', photo: null });
       fetchTeam();
     } catch (err) {
       toast.error(getErrorMessage(err));
@@ -69,10 +76,12 @@ export default function TeamPage() {
   };
 
   const handleEdit = (member: TeamMember) => {
+    const roleStr = member.role || member.position || '';
+    const roles = roleStr ? roleStr.split(',').map((r) => r.trim()).filter(Boolean) : [];
     setEditingMember(member);
     setFormData({
       name: member.name,
-      role: member.role || member.position || '',
+      roles,
       bio: member.bio || '',
       photo: null,
     });
@@ -100,8 +109,55 @@ export default function TeamPage() {
 
   const openNewModal = () => {
     setEditingMember(null);
-    setFormData({ name: '', role: '', bio: '', photo: null });
+    setFormData({ name: '', roles: [], bio: '', photo: null });
     setShowModal(true);
+  };
+
+  const toggleRole = (role: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      roles: prev.roles.includes(role) ? prev.roles.filter((r) => r !== role) : [...prev.roles, role],
+    }));
+  };
+
+  const addCustomRole = () => {
+    const trimmed = customRoleInput.trim();
+    if (!trimmed) return;
+    if (formData.roles.includes(trimmed)) {
+      setCustomRoleInput('');
+      return;
+    }
+    setFormData((prev) => ({ ...prev, roles: [...prev.roles, trimmed] }));
+    setCustomRoleInput('');
+  };
+
+  const removeRole = (role: string) => {
+    setFormData((prev) => ({ ...prev, roles: prev.roles.filter((r) => r !== role) }));
+  };
+
+  const onPhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    setCropImageSrc(url);
+    setPendingCropFile(file);
+    setCropModalOpen(true);
+  };
+
+  const onCropComplete = useCallback((file: File) => {
+    setFormData((prev) => ({ ...prev, photo: file }));
+    setCropImageSrc(null);
+    setPendingCropFile(null);
+    setCropModalOpen(false);
+  }, []);
+
+  const closeCropModal = () => {
+    setCropModalOpen(false);
+    setCropImageSrc((url) => {
+      if (url) URL.revokeObjectURL(url);
+      return null;
+    });
+    setPendingCropFile(null);
   };
 
   const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null);
@@ -118,11 +174,8 @@ export default function TeamPage() {
   const displayPhotoUrl = filePreviewUrl ?? (existingPhotoUrl || null);
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <AdminSidebar />
-      
-      <div className="flex-1 p-8">
-        <div className="mb-8 flex justify-between items-center">
+    <AdminPageLayout>
+      <div className="mb-6 lg:mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Team Management</h1>
             <p className="text-gray-600 mt-2">Manage team members</p>
@@ -133,9 +186,9 @@ export default function TeamPage() {
           >
             + Add Member
           </button>
-        </div>
+      </div>
 
-        {loading ? (
+      {loading ? (
           <div className="flex items-center justify-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
           </div>
@@ -200,30 +253,79 @@ export default function TeamPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
-                  <input
-                    type="text"
-                    value={formData.role}
-                    onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
-                    placeholder="e.g. Developer, Designer"
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Roles (select multiple or type custom)</label>
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {ROLE_OPTIONS.map((role) => (
+                      <button
+                        key={role}
+                        type="button"
+                        onClick={() => toggleRole(role)}
+                        className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
+                          formData.roles.includes(role)
+                            ? 'bg-blue-600 text-white border-blue-600'
+                            : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                        }`}
+                      >
+                        {role}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex flex-wrap gap-2 items-center">
+                    <input
+                      type="text"
+                      value={customRoleInput}
+                      onChange={(e) => setCustomRoleInput(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomRole())}
+                      placeholder="Type custom role and press Enter or Add"
+                      className="flex-1 min-w-[180px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white text-sm"
+                    />
+                    <button
+                      type="button"
+                      onClick={addCustomRole}
+                      className="px-3 py-2 rounded-lg text-sm border border-gray-300 bg-gray-50 text-gray-700 hover:bg-gray-100"
+                    >
+                      Add
+                    </button>
+                  </div>
+                  {formData.roles.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {formData.roles.map((role) => (
+                        <span
+                          key={role}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-sm bg-blue-100 text-blue-800"
+                        >
+                          {role}
+                          <button
+                            type="button"
+                            onClick={() => removeRole(role)}
+                            className="p-0.5 rounded hover:bg-blue-200"
+                            aria-label={`Remove ${role}`}
+                          >
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
-                  <textarea
-                    rows={6}
+                  <RichTextEditor
                     value={formData.bio}
-                    onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
+                    onChange={(bio) => setFormData((prev) => ({ ...prev, bio }))}
+                    placeholder="Write bio (rich text, images supported)..."
+                    minHeight="200px"
+                    enableImageWithCrop
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Photo</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Photo (crop before upload)</label>
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => setFormData({ ...formData, photo: e.target.files?.[0] || null })}
+                    onChange={onPhotoSelect}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
                   />
                   {displayPhotoUrl && (
@@ -264,19 +366,27 @@ export default function TeamPage() {
           </div>
         )}
 
-        <ConfirmModal
-          open={!!deleteTarget}
-          title="Delete team member"
-          message={deleteTarget ? `Are you sure you want to delete "${deleteTarget.name}"? This action cannot be undone.` : ''}
-          confirmLabel="Delete"
-          cancelLabel="Cancel"
-          variant="danger"
-          loading={deletingId === deleteTarget?._id}
-          onConfirm={handleDeleteConfirm}
-          onCancel={() => !deletingId && setDeleteTarget(null)}
-        />
-      </div>
-    </div>
+      <ImageCropModal
+        open={cropModalOpen}
+        imageSrc={cropImageSrc}
+        onClose={closeCropModal}
+        onCropComplete={onCropComplete}
+        aspect={1}
+        fileName={pendingCropFile?.name?.replace(/\.[^.]+$/, '-cropped.jpg') || 'cropped.jpg'}
+      />
+
+      <ConfirmModal
+        open={!!deleteTarget}
+        title="Delete team member"
+        message={deleteTarget ? `Are you sure you want to delete "${deleteTarget.name}"? This action cannot be undone.` : ''}
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        variant="danger"
+        loading={deletingId === deleteTarget?._id}
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => !deletingId && setDeleteTarget(null)}
+      />
+    </AdminPageLayout>
   );
 }
 

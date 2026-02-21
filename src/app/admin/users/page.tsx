@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import AdminSidebar from '@/components/admin/AdminSidebar';
+import AdminPageLayout from '@/components/admin/AdminPageLayout';
 import { useAuth, useToast, useRefetchOnWindowFocus, useUsers } from '@/hooks';
 import { UsersProvider } from '@/contexts/UsersContext';
 import { ConfirmModal } from '@/components/ui';
@@ -87,11 +87,8 @@ function UsersPageContent() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <AdminSidebar />
-
-      <div className="flex-1 p-8">
-        <div className="mb-8 flex justify-between items-center">
+    <AdminPageLayout>
+      <div className="mb-6 lg:mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">User Management</h1>
             <p className="text-gray-600 mt-2">Manage system users (excluding yourself)</p>
@@ -259,8 +256,7 @@ function UsersPageContent() {
           onConfirm={handleDeleteConfirm}
           onCancel={() => !deleteLoading && setDeleteTarget(null)}
         />
-      </div>
-    </div>
+    </AdminPageLayout>
   );
 }
 

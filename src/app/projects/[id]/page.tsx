@@ -20,6 +20,11 @@ function formatDate(s: string) {
   }
 }
 
+function stripHtml(html: string): string {
+  if (!html || typeof html !== 'string') return '';
+  return html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim().slice(0, 160);
+}
+
 function getProjectImage(project: Project) {
   const url = getDisplayImageUrl(project);
   if (url) return url;
@@ -86,7 +91,7 @@ export default function ProjectDetailPage({ params }: PageProps) {
 
   return (
     <>
-      <PageHero title={project.name} description={project.description || 'Project details'} badge="Project" topic="backend" />
+      <PageHero title={project.name} description={project.description ? stripHtml(project.description) : 'Project details'} badge="Project" topic="backend" />
       <section className="w-full bg-white py-16 sm:py-20 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
           <Link href="/projects" className="inline-flex items-center text-gray-600 hover:text-blue-600 mb-8 transition-colors">
@@ -113,11 +118,16 @@ export default function ProjectDetailPage({ params }: PageProps) {
             </div>
           )}
 
-          <div className="prose prose-lg max-w-none">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">{project.name}</h1>
-            <p className="text-gray-700 leading-relaxed space-y-6 text-base sm:text-lg">
-              {project.description || 'No description available.'}
-            </p>
+          <div className="max-w-none">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">{project.name}</h1>
+            {project.description ? (
+              <div
+                className="rich-content text-base sm:text-lg"
+                dangerouslySetInnerHTML={{ __html: project.description }}
+              />
+            ) : (
+              <p className="text-gray-600">No description available.</p>
+            )}
           </div>
         </div>
       </section>

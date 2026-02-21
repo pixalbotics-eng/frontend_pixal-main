@@ -6,10 +6,9 @@ import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import Logo from './Logo';
 import { 
-  GithubIcon, 
-  TwitterIcon, 
   LinkedinIcon, 
   InstagramIcon, 
+  FacebookIcon,
   MailIcon, 
   PhoneIcon,
   WhatsAppIcon,
@@ -36,10 +35,10 @@ export default function Footer() {
   ];
 
   const socialLinks = [
-    { name: 'Github', Icon: GithubIcon, href: '#', color: 'hover:text-gray-300' },
-    { name: 'Twitter', Icon: TwitterIcon, href: '#', color: 'hover:text-blue-400' },
-    { name: 'LinkedIn', Icon: LinkedinIcon, href: '#', color: 'hover:text-blue-400' },
-    { name: 'Instagram', Icon: InstagramIcon, href: '#', color: 'hover:text-pink-400' },
+    { name: 'Email', Icon: MailIcon, href: 'mailto:pixalbotics@gmail.com', color: 'hover:text-blue-400' },
+    { name: 'LinkedIn', Icon: LinkedinIcon, href: 'https://www.linkedin.com/company/pixalbotics', color: 'hover:text-blue-400' },
+    { name: 'Instagram', Icon: InstagramIcon, href: 'https://www.instagram.com/Pixal_Botics', color: 'hover:text-pink-400' },
+    { name: 'Facebook', Icon: FacebookIcon, href: 'https://www.facebook.com/share/1CaExqPQG4', color: 'hover:text-blue-400' },
   ];
 
   return (
@@ -97,6 +96,8 @@ export default function Footer() {
                   <motion.a
                     key={social.name}
                     href={social.href}
+                    target={social.href.startsWith('http') ? '_blank' : undefined}
+                    rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                     initial={{ opacity: 0, scale: 0 }}
                     animate={isInView ? { opacity: 1, scale: 1 } : {}}
                     transition={{ delay: index * 0.1, duration: 0.3 }}
@@ -183,8 +184,8 @@ export default function Footer() {
                   className="flex items-start gap-3 group hover:text-white transition-colors"
                 >
                   <MailIcon className="w-5 h-5 mt-0.5 text-blue-400 group-hover:scale-110 transition-transform" />
-                  <a href="mailto:info@pixalbotics.com" className="hover:underline">
-                    info@pixalbotics.com
+                  <a href="mailto:pixalbotics@gmail.com" className="hover:underline">
+                    pixalbotics@gmail.com
                   </a>
                 </motion.li>
                 <motion.li
