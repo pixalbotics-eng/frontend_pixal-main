@@ -19,6 +19,10 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -62,6 +66,20 @@ select {
 }
 @keyframes top-loading-bar-done {
   to { transform: scaleX(1); opacity: 0; }
+}
+
+/* Hero headline gradient shimmer */
+@keyframes hero-gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+.animate-gradient {
+  animation: hero-gradient-shift 5s ease-in-out infinite;
 }
 
 /* Rendered rich content (Summernote/Quill HTML) – project detail, blog body, etc. */

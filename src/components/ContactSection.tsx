@@ -6,7 +6,7 @@ import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import Card from './ui/Card';
 import Button from './ui/Button';
-import { MailIcon, PhoneIcon, ClockIcon, WhatsAppIcon, StarIcon } from './ui/Icons';
+import { MailIcon, PhoneIcon, ClockIcon, StarIcon } from './ui/Icons';
 import { contactApi, testimonialsApi } from '@/api';
 import { ApiError } from '@/api/client';
 
@@ -298,7 +298,7 @@ export default function ContactSection() {
             </Card>
           </motion.div>
 
-          {/* Contact Info & WhatsApp */}
+          {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -349,33 +349,6 @@ export default function ContactSection() {
                 </div>
               </div>
             </Card>
-
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Card variant="default" className="bg-gradient-to-br from-green-500 to-green-600 text-white border-0">
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <WhatsAppIcon className="text-white" size={32} />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold mb-2">Chat on WhatsApp</h3>
-                    <p className="text-green-50 mb-4">
-                      Message us directly on WhatsApp for instant responses
-                    </p>
-                    <a
-                      href="https://wa.me/923431743916"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block px-6 py-3 bg-white text-green-600 font-semibold rounded-lg hover:bg-green-50 transition-colors shadow-lg"
-                    >
-                      Start WhatsApp Chat
-                    </a>
-                  </div>
-                </div>
-              </Card>
-            </motion.div>
           </motion.div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 // API Configuration
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://pixal-fe5o.onrender.com';
 
 export const API_ENDPOINTS = {
   // Auth
@@ -33,9 +33,6 @@ export const API_ENDPOINTS = {
   // Contact
   CONTACT: '/api/contact',
   CONTACT_BY_ID: (id: string) => `/api/contact/${id}`,
-
-  // Keep Render (or similar) server awake
-  PING: '/ping',
 };
 
 /**

@@ -8,4 +8,5 @@ export * from './projects';
 export * from './team';
 export * from './testimonials';
 export * from './contact';
+export * from './ping';
 

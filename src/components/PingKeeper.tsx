@@ -1,23 +1,22 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { API_BASE_URL, API_ENDPOINTS } from '@/api/config';
-import { api } from '@/api/client';
-
-const PING_INTERVAL_MS = 10 * 1000; // 10 seconds – keep server awake while site is open
+import { sendKeepalivePing, getPingUrl, PING_INTERVAL_MS } from '@/api/ping';
 
 export default function PingKeeper() {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    const isRenderOrRemote = typeof window !== 'undefined' &&
-      API_BASE_URL &&
-      (API_BASE_URL.includes('render.com') || API_BASE_URL.includes('onrender.com') || !API_BASE_URL.includes('localhost'));
+    const url = getPingUrl();
+    const isLocal =
+      !url ||
+      url.includes('localhost') ||
+      url.includes('127.0.0.1');
 
-    if (!isRenderOrRemote) return;
+    if (isLocal) return;
 
     const ping = () => {
-      api.get(API_ENDPOINTS.PING).catch(() => {});
+      void sendKeepalivePing();
     };
 
     ping();

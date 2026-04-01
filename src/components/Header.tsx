@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import Logo from './Logo';
 import Button from './ui/Button';
@@ -40,7 +41,7 @@ export default function Header() {
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
+        <div className="flex items-center justify-between h-16 lg:h-20 lg:gap-6">
           {/* Logo - Left */}
           <motion.div
             whileHover={{ scale: 1.05 }}
@@ -52,17 +53,19 @@ export default function Header() {
           </motion.div>
 
           {/* Desktop Navigation - Center */}
-          <nav className="hidden lg:flex items-center gap-2 xl:gap-4 absolute left-1/2 -translate-x-1/2">
+          <nav className="hidden lg:flex items-center justify-center gap-2 xl:gap-3 flex-1 min-w-0">
             {navLinks.map((link, index) => {
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
               return (
-                <motion.a
+                <motion.div
                   key={link.label}
-                  href={link.href}
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                   whileHover={{ scale: 1.1, color: '#3B82F6' }}
+                >
+                <Link
+                  href={link.href}
                   className={`text-sm font-semibold transition-colors relative px-3 py-2 rounded-lg ${
                     isActive
                       ? 'text-blue-600 bg-blue-50'
@@ -77,7 +80,8 @@ export default function Header() {
                     animate={{ width: isActive ? '80%' : '0%' }}
                     transition={{ duration: 0.3 }}
                   />
-                </motion.a>
+                </Link>
+                </motion.div>
               );
             })}
           </nav>
@@ -91,11 +95,11 @@ export default function Header() {
                     whileTap={{ scale: 0.95 }}
                     className="hidden lg:block flex-shrink-0"
                   >
-                    <a href="/booking">
+                    <Link href="/booking">
                       <Button>
                         Get Started
                       </Button>
-                    </a>
+                    </Link>
                   </motion.div>
 
           {/* Mobile Menu Button */}
@@ -138,7 +142,7 @@ export default function Header() {
                       transition={{ delay: index * 0.1 }}
                       className="relative"
                     >
-                      <motion.a
+                      <Link
                         href={link.href}
                         onClick={() => setIsMenuOpen(false)}
                         className={`relative block text-sm font-semibold transition-colors py-3 px-4 rounded-lg ${
@@ -156,7 +160,7 @@ export default function Header() {
                             transition={{ duration: 0.3 }}
                           />
                         )}
-                      </motion.a>
+                      </Link>
                     </motion.div>
                   );
                 })}
@@ -166,11 +170,11 @@ export default function Header() {
                           transition={{ delay: 0.3 }}
                           className="pt-2"
                         >
-                          <a href="/booking" className="block w-full">
+                          <Link href="/booking" className="block w-full" onClick={() => setIsMenuOpen(false)}>
                             <Button className="w-full">
                               Get Started
                             </Button>
-                          </a>
+                          </Link>
                         </motion.div>
               </nav>
             </motion.div>

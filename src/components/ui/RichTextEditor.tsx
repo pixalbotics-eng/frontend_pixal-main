@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import 'react-quill/dist/quill.snow.css';
+import 'quill/dist/quill.snow.css';
 import ImageCropModal from './ImageCropModal';
 
 type QuillInstance = {
