@@ -9,8 +9,9 @@ import {
   UK_PHONE_DISPLAY,
   UK_PHONE_E164,
   UK_PHONE_WA_DIGITS,
-  UK_WHATSAPP_PACKAGING_DIGITS,
-  formatUkWaDigits,
+  PK_SALES_PHONE_DISPLAY,
+  PK_SALES_PHONE_E164,
+  PK_SALES_WHATSAPP_DIGITS,
 } from '@/config/contact';
 import { 
   LinkedinIcon, 
@@ -201,10 +202,16 @@ export default function Footer() {
                   transition={{ delay: 0.5 }}
                   className="flex items-start gap-3 group hover:text-white transition-colors"
                 >
-                  <PhoneIcon className="w-5 h-5 mt-0.5 text-purple-400 group-hover:scale-110 transition-transform" />
-                  <a href={`tel:${UK_PHONE_E164.replace(/\s/g, '')}`} className="hover:underline">
-                    {UK_PHONE_DISPLAY}
-                  </a>
+                  <PhoneIcon className="w-5 h-5 mt-0.5 text-purple-400 group-hover:scale-110 transition-transform shrink-0" />
+                  <div className="space-y-2">
+                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide block">Phone</span>
+                    <a href={`tel:${UK_PHONE_E164.replace(/\s/g, '')}`} className="hover:underline block">
+                      UK: {UK_PHONE_DISPLAY}
+                    </a>
+                    <a href={`tel:${PK_SALES_PHONE_E164.replace(/\s/g, '')}`} className="hover:underline block">
+                      Pakistan: {PK_SALES_PHONE_DISPLAY}
+                    </a>
+                  </div>
                 </motion.li>
                 <motion.li
                   initial={{ opacity: 0, x: -20 }}
@@ -212,34 +219,27 @@ export default function Footer() {
                   transition={{ delay: 0.52 }}
                   className="flex items-start gap-3 group hover:text-white transition-colors"
                 >
-                  <WhatsAppIcon className="w-5 h-5 mt-0.5 text-green-400 group-hover:scale-110 transition-transform" />
-                  <a
-                    href={`https://wa.me/${UK_PHONE_WA_DIGITS}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline"
-                  >
-                    WhatsApp: {UK_PHONE_DISPLAY}
-                  </a>
-                </motion.li>
-                <motion.li
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ delay: 0.55 }}
-                  className="flex items-start gap-3 group hover:text-white transition-colors"
-                >
-                  <WhatsAppIcon className="w-5 h-5 mt-0.5 text-green-400 group-hover:scale-110 transition-transform" />
-                  <div>
+                  <WhatsAppIcon className="w-5 h-5 mt-0.5 text-green-400 group-hover:scale-110 transition-transform shrink-0" />
+                  <div className="space-y-2">
+                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide block">WhatsApp</span>
                     <a
-                      href={`https://wa.me/${UK_WHATSAPP_PACKAGING_DIGITS}`}
+                      href={`https://wa.me/${UK_PHONE_WA_DIGITS}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="hover:underline block"
                     >
-                      WhatsApp: {formatUkWaDigits(UK_WHATSAPP_PACKAGING_DIGITS)}
+                      UK: {UK_PHONE_DISPLAY}
                     </a>
-                    <span className="text-xs text-gray-500 block mt-1">
-                      For packaging estimate with our experts
+                    <a
+                      href={`https://wa.me/${PK_SALES_WHATSAPP_DIGITS}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:underline block"
+                    >
+                      Pakistan: {PK_SALES_PHONE_DISPLAY}
+                    </a>
+                    <span className="text-xs text-gray-500 block">
+                      Pakistan — urgent &amp; estimates
                     </span>
                   </div>
                 </motion.li>
