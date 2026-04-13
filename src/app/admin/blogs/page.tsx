@@ -118,9 +118,14 @@ export default function BlogsPage() {
   const onImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const url = URL.createObjectURL(file);
-    setCropImageSrc(url);
     setPendingCropFileName(file.name.replace(/\.[^.]+$/, '-cropped.jpg') || 'cropped.jpg');
+    setFormData((prev) => ({ ...prev, image: file }));
+  };
+
+  const openCoverCropModal = () => {
+    const file = formData.image;
+    if (!file) return;
+    setCropImageSrc(URL.createObjectURL(file));
     setCropModalOpen(true);
   };
 
@@ -243,13 +248,14 @@ export default function BlogsPage() {
                   <RichTextEditor
                     value={formData.content}
                     onChange={(content) => setFormData((prev) => ({ ...prev, content }))}
-                    placeholder="Write blog content (rich text, add images with crop)..."
+                    placeholder="Write blog content…"
                     minHeight="240px"
                     enableImageWithCrop
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Cover image (crop before upload)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Cover image</label>
+                  <p className="text-xs text-gray-500 mb-1">Image shows in full after you choose a file. Use Crop only if you want to zoom or reframe before upload.</p>
                   <input
                     type="file"
                     accept="image/*"
@@ -257,9 +263,22 @@ export default function BlogsPage() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
                   />
                   {displayImageUrl && (
-                    <div className="mt-2 rounded-lg overflow-hidden border border-gray-200 bg-gray-50 w-full max-h-48">
-                      <img src={displayImageUrl} alt="Preview" className="w-full h-40 object-cover" />
-                      <p className="text-xs text-gray-500 px-2 py-1">{formData.image?.name ?? 'Current image'}</p>
+                    <div className="mt-2 rounded-lg overflow-hidden border border-gray-200 bg-gray-100 w-full">
+                      <div className="flex items-center justify-center min-h-[10rem] max-h-64 p-2">
+                        <img src={displayImageUrl} alt="Preview" className="max-h-60 w-full object-contain" />
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2 px-2 py-2 border-t border-gray-200 bg-white">
+                        <p className="text-xs text-gray-500 flex-1 min-w-0 truncate">{formData.image?.name ?? 'Current image'}</p>
+                        {formData.image && (
+                          <button
+                            type="button"
+                            onClick={openCoverCropModal}
+                            className="shrink-0 text-sm px-3 py-1.5 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50"
+                          >
+                            Crop
+                          </button>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>

@@ -4,13 +4,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { images } from '@/images';
+import ProjectFlipCard, { projectDescriptionPreview } from './ProjectFlipCard';
 import Button from './ui/Button';
 import { ArrowRightIcon, RocketIcon, SparklesIcon, ZapIcon } from './ui/Icons';
-import { projectsApi, type Project } from '@/api';
-import { getDisplayImageUrl } from '@/api/config';
+import { projectsApi, type Project, getProjectDisplayImage } from '@/api';
 import EmptyState from './ui/EmptyState';
 import { useRefetchOnWindowFocus } from '@/hooks';
 
@@ -18,16 +17,10 @@ const GRADIENTS = ['from-blue-500 to-cyan-500', 'from-purple-500 to-pink-500', '
 const ICONS = [RocketIcon, SparklesIcon, ZapIcon];
 
 function getProjectImage(project: Project, index: number) {
-  const url = getDisplayImageUrl(project);
+  const url = getProjectDisplayImage(project);
   if (url) return url;
   const fallbacks = [images.robots.solution1, images.robots.solution2, images.robots.solution3, images.robots.solution4, images.robots.unlockPotential, images.robots.smartRetail];
   return fallbacks[index % fallbacks.length];
-}
-
-function projectDescriptionPreview(description: string | undefined): string {
-  if (!description) return 'No description.';
-  const plain = description.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
-  return plain.slice(0, 120) + (plain.length > 120 ? '...' : '') || 'No description.';
 }
 
 export default function Projects() {
@@ -94,56 +87,17 @@ export default function Projects() {
               const Icon = ICONS[index % ICONS.length];
               const imageSrc = getProjectImage(project, index);
               return (
-                <motion.div
+                <ProjectFlipCard
                   key={project._id}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  whileHover={{ y: -12, scale: 1.02 }}
-                  className="group relative"
-                >
-                  <motion.div className={`absolute -inset-0.5 bg-gradient-to-r ${gradient} rounded-3xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-300 -z-10`} />
-                  <div className="relative bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-transparent transition-all shadow-lg hover:shadow-2xl h-full flex flex-col backdrop-blur-sm">
-                    <div className="relative w-full h-64 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
-                      <motion.div className="relative w-full h-full" style={{ perspective: '1000px' }}>
-                        <motion.div className="relative w-full h-full" whileHover={{ scale: 1.1 }} transition={{ duration: 0.5 }}>
-                          <Image
-                            src={imageSrc}
-                            alt={project.name}
-                            fill
-                            className="object-contain p-6"
-                            priority={index < 3}
-                            unoptimized={typeof imageSrc === 'string' && imageSrc.startsWith('http')}
-                          />
-                        </motion.div>
-                      </motion.div>
-                      <motion.div className={`absolute inset-0 bg-gradient-to-t ${gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
-                      <div className="absolute top-4 left-4 z-10">
-                        <div className={`px-3 py-1.5 bg-gradient-to-r ${gradient} rounded-full text-white text-xs font-semibold shadow-lg backdrop-blur-sm`}>
-                          Project
-                        </div>
-                      </div>
-                      <motion.div className={`absolute top-4 right-4 w-10 h-10 bg-gradient-to-br ${gradient} rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300`}>
-                        <Icon className="text-white" size={20} />
-                      </motion.div>
-                    </div>
-                    <div className="p-6 flex flex-col flex-grow">
-                      <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 leading-tight group-hover:text-blue-600 transition-colors">
-                        {project.name}
-                      </h3>
-<p className="text-gray-600 leading-relaxed mb-4 flex-grow text-sm sm:text-base line-clamp-3">
-                          {projectDescriptionPreview(project.description)}
-                        </p>
-                      <Link href={`/projects/${project._id}`} className="mt-auto">
-                        <Button size="sm" variant="outline" className="w-full group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:text-white group-hover:border-transparent transition-all">
-                          <span>View Project</span>
-                          <ArrowRightIcon className="ml-2" size={16} />
-                        </Button>
-                      </Link>
-                    </div>
-                    <div className={`absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-br ${gradient} opacity-5 rounded-tl-full`}></div>
-                  </div>
-                </motion.div>
+                  project={project}
+                  imageSrc={imageSrc}
+                  index={index}
+                  isInView={isInView}
+                  gradient={gradient}
+                  Icon={Icon}
+                  descriptionPreview={projectDescriptionPreview(project.description)}
+                  imagePriority={index < 3}
+                />
               );
             })
           )}

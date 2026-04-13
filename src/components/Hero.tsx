@@ -2,257 +2,383 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import Button from './ui/Button';
-import { SparklesIcon, ZapIcon, RocketIcon } from './ui/Icons';
-import Image from 'next/image';
+import { motion, type Variants } from 'framer-motion';
+import Image, { type StaticImageData } from 'next/image';
+import { FiCheck, FiCode, FiCpu, FiLayers, FiPackage, FiPrinter, FiZap } from 'react-icons/fi';
 import { images } from '@/images';
+import Button from './ui/Button';
 
-const glassPanel =
-  'rounded-2xl sm:rounded-3xl border border-white/15 bg-white/[0.06] backdrop-blur-xl shadow-[0_8px_40px_rgba(0,0,0,0.35)] ring-1 ring-white/[0.06]';
+/* ─── data ────────────────────────────────────────────────────────── */
 
-const glassPill =
-  'rounded-full border border-white/20 bg-white/[0.08] backdrop-blur-md shadow-lg shadow-black/20';
+const services = [
+  { id: 'saas', label: 'SaaS Solutions', icon: FiCode },
+  { id: 'ai', label: 'AI Software Development', icon: FiZap },
+  { id: 'api', label: 'API & Cloud Integration', icon: FiCpu },
+  { id: 'pack', label: 'Packaging Design', icon: FiPackage },
+  { id: 'struct', label: 'Structural Packaging', icon: FiLayers },
+  { id: 'print', label: 'Printing & Labels', icon: FiPrinter },
+];
+
+const stats = [
+  { value: '200+', label: 'AI Software Projects' },
+  { value: '150+', label: 'Packaging Designs Delivered' },
+  { value: '50+', label: 'Business Clients' },
+  { value: '99%', label: 'Client Satisfaction' },
+];
+
+/* ─── animations ──────────────────────────────────────────────────── */
+
+const stagger: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.07, delayChildren: 0.06 } },
+};
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+};
+const float = (dur: number, px = 6) => ({
+  animate: { y: [0, -px, 0] },
+  transition: { duration: dur, repeat: Infinity, ease: 'easeInOut' as const },
+});
+
+const popIn = {
+  initial: { opacity: 0, y: 22, scale: 0.94 },
+  animate: { opacity: 1, y: 0, scale: 1 },
+  transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
+};
+
+/* ─── FloatingAsset ───────────────────────────────────────────────── */
+
+function FloatingAsset({
+  src, alt, className, sizes, priority, dur, glow,
+}: {
+  src: StaticImageData; alt: string; className?: string; sizes: string;
+  priority?: boolean; dur: number;
+  /** Pass `null` for no filter (sharp PNG). Omitted = light default glow. */
+  glow?: string | null;
+}) {
+  const filter =
+    glow === null ? undefined : glow ?? 'drop-shadow(0 0 18px rgba(56,189,248,0.16)) drop-shadow(0 0 40px rgba(139,92,246,0.12))';
+  return (
+    <motion.div className={`pointer-events-none select-none ${className ?? ''}`} {...float(dur)}>
+      <div className="relative h-full w-full" style={filter ? { filter } : undefined}>
+        <Image src={src} alt={alt} fill sizes={sizes} className="object-contain" priority={priority} />
+      </div>
+    </motion.div>
+  );
+}
+
+/* ─── Hero ────────────────────────────────────────────────────────── */
 
 export default function Hero() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.25, 0.46, 0.45, 0.94] as const,
-      },
-    },
-  };
+  const h = images.heroSection;
 
   return (
-    <section className="relative w-full min-h-[calc(100vh-5rem)] flex items-center overflow-hidden py-8 sm:py-12 lg:py-16">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,rgba(99,102,241,0.35),transparent_50%),radial-gradient(ellipse_80%_50%_at_100%_50%,rgba(59,130,246,0.2),transparent_45%),radial-gradient(ellipse_60%_40%_at_0%_80%,rgba(168,85,247,0.22),transparent_45%),linear-gradient(165deg,#0f172a_0%,#1e1b4b_45%,#0c1222_100%)]" />
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute top-16 right-8 sm:right-16 w-56 h-56 sm:w-72 sm:h-72 rounded-full bg-blue-400/20 blur-3xl"
-          animate={{ scale: [1, 1.12, 1], x: [0, 28, 0], y: [0, -24, 0] }}
-          transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <motion.div
-          className="absolute -bottom-6 left-6 sm:bottom-10 sm:left-14 w-52 h-52 sm:w-64 sm:h-64 rounded-full bg-violet-400/15 blur-3xl"
-          animate={{ scale: [1, 1.1, 1], x: [0, -24, 0], y: [0, 28, 0] }}
-          transition={{ duration: 13, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <motion.div
-          className="absolute top-1/2 left-1/2 hidden sm:block w-72 h-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/10 blur-3xl"
-          animate={{ scale: [1, 1.16, 1], rotate: [0, 120, 240] }}
-          transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-        />
-        <div
-          className="absolute inset-0 opacity-[0.12]"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.35) 1px, transparent 0)',
-            backgroundSize: '48px 48px',
-          }}
-        />
-      </div>
+    <section className="relative w-full overflow-hidden" aria-labelledby="hero-heading">
+      {/* BG: deep space gradient */}
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,#030014_0%,#0d0a2a_30%,#110728_60%,#030014_100%)]" aria-hidden />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_110%,rgba(139,92,246,0.3),transparent_50%),radial-gradient(ellipse_50%_40%_at_80%_20%,rgba(56,189,248,0.12),transparent_50%),radial-gradient(ellipse_45%_35%_at_15%_30%,rgba(236,72,153,0.14),transparent_50%)]" aria-hidden />
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.15]"
+        style={{
+          backgroundImage:
+            'radial-gradient(1.2px 1.2px at 18% 28%, rgba(255,255,255,0.8) 50%, transparent 50%), radial-gradient(1px 1px at 73% 65%, rgba(255,255,255,0.55) 50%, transparent 50%), radial-gradient(0.8px 0.8px at 52% 42%, rgba(255,255,255,0.4) 50%, transparent 50%)',
+          backgroundSize: '140px 140px, 100px 100px, 80px 80px',
+        }}
+        aria-hidden
+      />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className={`max-w-7xl mx-auto relative ${glassPanel} p-6 sm:p-8 lg:p-10`}
-        >
-          <div
-            className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-90"
-            style={{
-              background:
-                'linear-gradient(135deg, rgba(255,255,255,0.14) 0%, transparent 42%, transparent 100%)',
-            }}
-          />
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent rounded-t-[inherit]" />
+      {/* Ambient orbs */}
+      <motion.div
+        className="pointer-events-none absolute -left-40 top-[15%] h-[500px] w-[500px] rounded-full bg-violet-600/20 blur-[140px]"
+        animate={{ opacity: [0.3, 0.5, 0.3], scale: [1, 1.06, 1] }}
+        transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
+        aria-hidden
+      />
+      <motion.div
+        className="pointer-events-none absolute -right-32 bottom-[10%] h-[400px] w-[400px] rounded-full bg-sky-500/12 blur-[120px]"
+        animate={{ opacity: [0.25, 0.42, 0.25] }}
+        transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut' }}
+        aria-hidden
+      />
+      <motion.div
+        className="pointer-events-none absolute left-1/2 top-[45%] h-[300px] w-[600px] -translate-x-1/2 rounded-full bg-fuchsia-500/10 blur-[100px]"
+        animate={{ opacity: [0.15, 0.3, 0.15] }}
+        transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+        aria-hidden
+      />
 
-          <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center">
-            <div className="text-center lg:text-left space-y-6">
-              <motion.div
-                variants={itemVariants}
-                className={`inline-flex items-center gap-2 px-4 py-2 ${glassPill} mb-1`}
-              >
-                <motion.div
-                  animate={{ scale: [1, 1.15, 1], rotate: [0, 360] }}
-                  transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
-                >
-                  <SparklesIcon className="text-sky-300" size={16} />
-                </motion.div>
-                <span className="text-sm font-semibold text-sky-100/95">AI Software House</span>
-                <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.7)] animate-pulse" />
+      {/* ─── Content ─── */}
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-10 pt-10 sm:pb-14 sm:pt-12 lg:pb-16 lg:pt-14">
+        <motion.div variants={stagger} initial="hidden" animate="visible">
+
+          {/* ── ROW 1: text left · composite right ── */}
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-8">
+
+            {/* Left: copy */}
+            <div className="order-2 text-center lg:order-1 lg:col-span-5 lg:text-left">
+              {/* Badge */}
+              <motion.div variants={fadeUp} className="mb-5 inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 backdrop-blur-md">
+                <div className="relative h-7 w-7 shrink-0 overflow-hidden rounded-lg">
+                  <Image src={h.logoMark} alt="" fill className="object-contain" sizes="28px" />
+                </div>
+                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-300">
+                  Pixalbotics · Software House
+                </span>
               </motion.div>
 
               <motion.h1
-                variants={itemVariants}
-                className="text-4xl sm:text-5xl lg:text-6xl xl:text-[4.4rem] font-extrabold text-white mb-3 leading-[1.05] tracking-tight drop-shadow-sm"
+                id="hero-heading"
+                variants={fadeUp}
+                className="text-[2rem] font-extrabold leading-[1.1] tracking-tight text-white sm:text-[2.5rem] lg:text-[2.6rem] xl:text-[3rem]"
               >
-                <span className="block mb-1 text-white/95">We Build What</span>
-                <span className="relative inline-block">
-                  <span className="bg-gradient-to-r from-sky-300 via-violet-300 to-fuchsia-300 bg-clip-text text-transparent bg-[length:200%_100%] animate-gradient">
-                    Others Imagine
-                  </span>
-                  <motion.span
-                    className="absolute -bottom-1 left-0 right-0 h-2 rounded-full bg-gradient-to-r from-sky-500/40 via-violet-500/40 to-fuchsia-500/40 blur-md"
-                    animate={{ opacity: [0.35, 0.65, 0.35] }}
-                    transition={{ duration: 2.2, repeat: Infinity }}
-                  />
+                We Build Intelligent{' '}
+                <span className="bg-gradient-to-r from-sky-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
+                  Software
+                </span>{' '}
+                &amp; Smart{' '}
+                <span className="bg-gradient-to-r from-fuchsia-400 to-pink-400 bg-clip-text text-transparent">
+                  Packaging
                 </span>
               </motion.h1>
 
-              <motion.div variants={itemVariants} className="space-y-3">
-                <p className="text-xl sm:text-2xl lg:text-3xl font-semibold leading-relaxed">
-                  <span className="bg-gradient-to-r from-sky-300 to-violet-300 bg-clip-text text-transparent">
-                    1000+ Successful Projects
-                  </span>
-                </p>
-                <p className="text-lg sm:text-xl text-slate-300/90 leading-relaxed">
-                  Full-Stack Excellence by{' '}
-                  <span className="font-bold text-violet-300">Pixalbotics</span>
-                </p>
-              </motion.div>
+              <motion.p variants={fadeUp} className="mx-auto mt-5 max-w-lg text-[15px] leading-relaxed text-slate-300/90 sm:text-base lg:mx-0">
+                From custom SaaS platforms and AI-powered products to structural packaging design and commercial print—we are your
+                full-service technology partner. One team, every deliverable.
+              </motion.p>
 
-              <motion.div
-                variants={itemVariants}
-                className={`flex items-start gap-3 justify-center lg:justify-start pt-4 border-t border-white/10`}
-              >
-                <div
-                  className={`mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/15 bg-white/[0.06] backdrop-blur-md`}
-                >
-                  <motion.div
-                    animate={{ rotate: [0, 12] }}
-                    transition={{ duration: 2, repeat: Infinity, repeatType: 'reverse' as const }}
-                  >
-                    <RocketIcon className="text-sky-300" size={24} />
-                  </motion.div>
-                </div>
-                <div className="text-left">
-                  <p className="text-base sm:text-lg lg:text-xl font-bold text-white/95 leading-tight">
-                    From Ideas to Impact —
-                  </p>
-                  <p className="text-sm sm:text-base text-slate-400 leading-snug">
-                    Where Technology Meets Perfection
-                  </p>
-                </div>
-              </motion.div>
-
-              <motion.div
-                variants={itemVariants}
-                className="grid grid-cols-3 gap-3 sm:gap-4 pt-1"
-              >
-                {[
-                  { value: '1000+', label: 'Projects', icon: RocketIcon, ring: 'from-sky-400/30' },
-                  { value: '50+', label: 'Countries', icon: SparklesIcon, ring: 'from-violet-400/30' },
-                  { value: '99.9%', label: 'Success', icon: ZapIcon, ring: 'from-fuchsia-400/25' },
-                ].map((stat, index) => (
-                  <motion.div
-                    key={index}
-                    whileHover={{ scale: 1.03, y: -4 }}
-                    transition={{ type: 'spring', stiffness: 380, damping: 22 }}
-                    className={`relative overflow-hidden rounded-2xl border border-white/12 bg-white/[0.05] backdrop-blur-md px-3 py-4 text-center lg:text-left shadow-inner shadow-white/5 ring-1 ring-white/[0.04]`}
-                  >
-                    <div
-                      className={`pointer-events-none absolute -inset-1 bg-gradient-to-br ${stat.ring} to-transparent opacity-40 blur-xl`}
-                    />
-                    <stat.icon
-                      className={`relative mx-auto lg:mx-0 mb-2 bg-gradient-to-r from-sky-300 to-violet-300 bg-clip-text text-transparent`}
-                      size={22}
-                    />
-                    <div className="relative text-xl sm:text-2xl font-bold bg-gradient-to-r from-white to-slate-200 bg-clip-text text-transparent">
-                      {stat.value}
-                    </div>
-                    <div className="relative mt-1 text-[10px] sm:text-xs font-medium text-slate-400">
-                      {stat.label}
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-
-              <motion.div
-                variants={itemVariants}
-                className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-2"
-              >
+              <motion.div variants={fadeUp} className="mt-8 flex flex-wrap justify-center gap-3 lg:justify-start">
                 <Link href="/booking" className="inline-flex">
-                  <Button
-                    size="lg"
-                    showArrow
-                    className="bg-gradient-to-r from-sky-500 to-violet-600 hover:from-sky-600 hover:to-violet-700 text-white shadow-lg shadow-sky-500/25 border border-white/10"
-                  >
-                    Get Started
+                  <Button size="lg" showArrow>
+                    Start Your Project
                   </Button>
                 </Link>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border border-white/25 bg-white/[0.06] text-white backdrop-blur-md hover:bg-white/12 shadow-lg shadow-black/20"
+                <Link
+                  href="/services"
+                  className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-white/[0.06] px-5 py-3.5 text-sm font-medium text-white backdrop-blur-md transition hover:border-white/30 hover:bg-white/10"
                 >
-                  View Portfolio
-                </Button>
+                  Explore Services
+                </Link>
               </motion.div>
             </div>
 
+            {/* Right: showcase — full-bleed scene + floating glass cards */}
             <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.85, delay: 0.25 }}
-              className="relative"
+              variants={fadeUp}
+              className="relative order-1 mx-auto w-full max-w-lg sm:max-w-xl lg:order-2 lg:col-span-7 lg:mx-0 lg:max-w-none"
             >
-              <div className="relative mx-auto w-full max-w-lg aspect-square lg:max-w-none">
-                <motion.div
-                  className="absolute inset-[-8%] rounded-[2rem] bg-gradient-to-r from-sky-500/25 via-violet-500/25 to-sky-500/20 blur-3xl"
-                  animate={{ scale: [1, 1.08, 1], opacity: [0.45, 0.65, 0.45] }}
-                  transition={{ duration: 5, repeat: Infinity }}
-                />
+              {/* Desktop */}
+              <div className="relative hidden lg:block">
+                <div className="relative mx-auto w-full max-w-[580px] xl:max-w-[620px]">
+                  <div className="rounded-[2rem] bg-gradient-to-br from-sky-400/45 via-violet-500/40 to-fuchsia-500/45 p-px shadow-[0_24px_80px_-12px_rgba(99,102,241,0.45),0_32px_64px_-24px_rgba(0,0,0,0.85)]">
+                    <div className="relative overflow-hidden rounded-[calc(2rem-1px)] bg-[#030014]">
+                      <div className="relative h-[min(54vw,500px)] min-h-[420px] w-full xl:h-[520px]">
+                        {/* Cinematic base — workspace + city (slight bias to subject) */}
+                        <Image
+                          src={h.pixal4}
+                          alt="Developer workspace with pixelbolts branding and neon city view"
+                          fill
+                          sizes="(max-width:1280px)50vw,620px"
+                          className="object-cover object-[center_38%] scale-[1.08]"
+                          priority
+                        />
+                        <div
+                          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#030014] via-[#030014]/25 to-violet-950/40"
+                          aria-hidden
+                        />
+                        <div
+                          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#030014]/70 via-transparent to-transparent"
+                          aria-hidden
+                        />
+                        <div
+                          className="pointer-events-none absolute inset-0 opacity-30 mix-blend-overlay"
+                          style={{
+                            backgroundImage:
+                              'radial-gradient(circle at 20% 30%, rgba(56,189,248,0.35), transparent 45%), radial-gradient(circle at 85% 20%, rgba(192,38,211,0.25), transparent 40%)',
+                          }}
+                          aria-hidden
+                        />
 
-                <div
-                  className={`relative h-full w-full overflow-hidden rounded-[1.75rem] border border-white/20 bg-gradient-to-br from-white/[0.12] to-white/[0.02] p-1 shadow-[0_20px_60px_rgba(0,0,0,0.45)] backdrop-blur-sm ring-1 ring-white/10`}
-                >
-                  <div className="relative h-full w-full overflow-hidden rounded-[1.5rem] bg-slate-900/40 ring-1 ring-inset ring-white/5">
-                    <Image
-                      src={images.robots.heroMain}
-                      alt="AI Software House - Pixalbotics"
-                      fill
-                      className="object-contain p-6 sm:p-8"
-                      priority
-                    />
+                        {/* Glass: SaaS */}
+                        <motion.div
+                          className="absolute left-5 top-7 z-10 w-[38%] max-w-[200px]"
+                          {...popIn}
+                          transition={{ ...popIn.transition, delay: 0.2 }}
+                        >
+                          <div className="rounded-2xl border border-white/20 bg-black/35 p-1.5 shadow-[0_16px_40px_-8px_rgba(0,0,0,0.75)] backdrop-blur-md ring-1 ring-sky-400/15">
+                            <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
+                              <Image
+                                src={h.hero1}
+                                alt="SaaS dashboards and analytics interfaces"
+                                fill
+                                sizes="200px"
+                                className="object-cover object-center"
+                              />
+                            </div>
+                          </div>
+                        </motion.div>
+
+                        {/* Glass: packaging */}
+                        <motion.div
+                          className="absolute right-5 top-12 z-10 w-[38%] max-w-[200px]"
+                          {...popIn}
+                          transition={{ ...popIn.transition, delay: 0.32 }}
+                          style={{ rotate: 2 }}
+                        >
+                          <div className="rounded-2xl border border-white/20 bg-black/35 p-1.5 shadow-[0_16px_40px_-8px_rgba(0,0,0,0.75)] backdrop-blur-md ring-1 ring-fuchsia-400/15">
+                            <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
+                              <Image
+                                src={h.hero}
+                                alt="Packaging design and print production graphics"
+                                fill
+                                sizes="200px"
+                                className="object-cover object-center"
+                              />
+                            </div>
+                          </div>
+                        </motion.div>
+
+                        {/* Logo gem */}
+                        <motion.div
+                          className="absolute left-1/2 top-9 z-20 flex h-14 w-14 -translate-x-1/2 items-center justify-center rounded-2xl border border-white/25 bg-white/10 shadow-[0_8px_32px_-4px_rgba(56,189,248,0.35)] backdrop-blur-xl ring-2 ring-cyan-400/25"
+                          {...popIn}
+                          transition={{ ...popIn.transition, delay: 0.12 }}
+                        >
+                          <div className="relative h-9 w-9">
+                            <Image src={h.logoMark} alt="Pixalbotics logo" fill sizes="36px" className="object-contain" />
+                          </div>
+                        </motion.div>
+
+                        {/* Mascot — hero foreground */}
+                        <div className="pointer-events-none absolute inset-x-0 bottom-[-6%] z-30 flex justify-center pb-1">
+                          <div className="relative h-[clamp(220px,36vw,300px)] w-[min(88%,360px)]">
+                            <FloatingAsset
+                              src={h.pixal1}
+                              alt="Pixalbotics hero logo with robot mascot"
+                              sizes="(max-width:1280px)40vw,340px"
+                              dur={7}
+                              glow="drop-shadow(0 20px 40px rgba(0,0,0,0.55)) drop-shadow(0 0 24px rgba(56,189,248,0.2))"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-
-                <motion.div
-                  className="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 flex h-14 w-14 sm:h-[4.5rem] sm:w-[4.5rem] items-center justify-center rounded-2xl border border-white/25 bg-gradient-to-br from-sky-500/90 to-violet-600/90 shadow-xl backdrop-blur-md"
-                  animate={{ y: [0, -12, 0], rotate: [0, 8] }}
-                  transition={{ duration: 3.2, repeat: Infinity, repeatType: 'reverse' as const }}
-                >
-                  <ZapIcon className="text-white drop-shadow-md" size={24} />
-                </motion.div>
-
-                <motion.div
-                  className="absolute -bottom-1 -left-1 sm:-bottom-3 sm:-left-3 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl border border-white/25 bg-gradient-to-br from-violet-500/90 to-fuchsia-600/85 shadow-xl backdrop-blur-md"
-                  animate={{ y: [0, 12, 0], rotate: [0, -8] }}
-                  transition={{ duration: 4, repeat: Infinity, repeatType: 'reverse' as const, delay: 0.4 }}
-                >
-                  <SparklesIcon className="text-white drop-shadow-md" size={20} />
-                </motion.div>
               </div>
 
+              {/* Mobile / tablet */}
+              <div className="relative lg:hidden">
+                <div className="mx-auto w-full max-w-[380px] sm:max-w-[420px]">
+                  <div className="rounded-[1.65rem] bg-gradient-to-br from-sky-400/40 via-violet-500/35 to-fuchsia-500/40 p-px shadow-[0_18px_50px_-10px_rgba(99,102,241,0.4),0_20px_50px_-20px_rgba(0,0,0,0.8)]">
+                    <div className="relative overflow-hidden rounded-[calc(1.65rem-1px)] bg-[#030014]">
+                      <div className="relative aspect-[3/4] w-full sm:aspect-[10/13]">
+                        <Image
+                          src={h.pixal4}
+                          alt="Developer workspace with pixelbolts branding and neon city view"
+                          fill
+                          sizes="100vw"
+                          className="object-cover object-[center_36%] scale-105"
+                          priority
+                        />
+                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#030014] via-transparent to-violet-950/35" aria-hidden />
+                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#030014]/55 via-transparent to-transparent" aria-hidden />
+
+                        <motion.div
+                          className="absolute left-3 top-4 z-10 w-[36%]"
+                          {...popIn}
+                          transition={{ ...popIn.transition, delay: 0.15 }}
+                        >
+                          <div className="rounded-xl border border-white/20 bg-black/40 p-1 shadow-lg backdrop-blur-md">
+                            <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
+                              <Image src={h.hero1} alt="SaaS and analytics dashboard visual" fill sizes="38vw" className="object-cover object-center" />
+                            </div>
+                          </div>
+                        </motion.div>
+                        <motion.div
+                          className="absolute right-3 top-8 z-10 w-[36%]"
+                          {...popIn}
+                          transition={{ ...popIn.transition, delay: 0.28 }}
+                          style={{ rotate: 2 }}
+                        >
+                          <div className="rounded-xl border border-white/20 bg-black/40 p-1 shadow-lg backdrop-blur-md">
+                            <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
+                              <Image src={h.hero} alt="Packaging and print design visual" fill sizes="38vw" className="object-cover object-center" />
+                            </div>
+                          </div>
+                        </motion.div>
+
+                        <motion.div
+                          className="absolute left-1/2 top-6 z-20 flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-xl border border-white/25 bg-white/10 backdrop-blur-md ring-1 ring-cyan-400/30"
+                          {...popIn}
+                          transition={{ ...popIn.transition, delay: 0.08 }}
+                        >
+                          <div className="relative h-7 w-7">
+                            <Image src={h.logoMark} alt="Pixalbotics logo icon" fill sizes="28px" className="object-contain" />
+                          </div>
+                        </motion.div>
+
+                        <div className="pointer-events-none absolute inset-x-0 bottom-[-5%] z-30 flex justify-center pb-1">
+                          <div className="relative h-[clamp(200px,42vw,280px)] w-[min(92%,320px)]">
+                            <FloatingAsset
+                              src={h.pixal1}
+                              alt="Pixalbotics hero brand visual"
+                              sizes="90vw"
+                              priority
+                              dur={7}
+                              glow="drop-shadow(0 16px 32px rgba(0,0,0,0.5)) drop-shadow(0 0 20px rgba(56,189,248,0.18))"
+                              className="h-full w-full"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           </div>
+
+          {/* ── SERVICE PILLS ── */}
+          <motion.div variants={fadeUp} className="mt-10 flex flex-wrap items-center justify-center gap-2 sm:mt-12 sm:gap-2.5">
+            {services.map(({ id, label, icon: Icon }) => (
+              <Link
+                key={id}
+                href="/services"
+                className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-slate-950/50 px-4 py-2.5 text-[13px] font-semibold text-white/90 backdrop-blur-xl transition-all hover:border-violet-400/35 hover:bg-white/[0.06] sm:px-5 sm:text-sm"
+              >
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-violet-500/25 to-sky-500/15 ring-1 ring-white/10 transition group-hover:ring-violet-400/30">
+                  <Icon className="h-3 w-3 text-sky-200" aria-hidden />
+                </span>
+                {label}
+              </Link>
+            ))}
+          </motion.div>
+
+          {/* ── STATS BAR ── */}
+          <motion.div
+            variants={fadeUp}
+            className="mx-auto mt-10 max-w-4xl overflow-hidden rounded-2xl border border-white/12 bg-gradient-to-r from-violet-950/40 via-slate-950/60 to-sky-950/40 shadow-[0_12px_48px_-8px_rgba(0,0,0,0.5)] backdrop-blur-xl sm:mt-12 sm:rounded-3xl"
+          >
+            <div className="grid grid-cols-2 lg:grid-cols-4">
+              {stats.map((s, i) => (
+                <div
+                  key={s.label}
+                  className={`flex items-center gap-3 px-4 py-4 sm:px-6 sm:py-5 ${
+                    i > 0 ? 'border-l border-white/[0.08]' : ''
+                  } ${i >= 2 ? 'border-t border-white/[0.08] lg:border-t-0' : ''}`}
+                >
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-violet-500/15 ring-1 ring-cyan-400/25">
+                    <FiCheck className="h-4 w-4 text-cyan-300" aria-hidden />
+                  </div>
+                  <div>
+                    <div className="text-xl font-bold tabular-nums leading-none text-white sm:text-2xl">{s.value}</div>
+                    <div className="mt-1 text-[12px] leading-tight text-slate-400 sm:text-[13px]">{s.label}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

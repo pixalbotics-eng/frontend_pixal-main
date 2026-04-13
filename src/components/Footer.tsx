@@ -5,6 +5,13 @@ import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import Logo from './Logo';
+import {
+  UK_PHONE_DISPLAY,
+  UK_PHONE_E164,
+  UK_PHONE_WA_DIGITS,
+  UK_WHATSAPP_PACKAGING_DIGITS,
+  formatUkWaDigits,
+} from '@/config/contact';
 import { 
   LinkedinIcon, 
   InstagramIcon, 
@@ -195,8 +202,24 @@ export default function Footer() {
                   className="flex items-start gap-3 group hover:text-white transition-colors"
                 >
                   <PhoneIcon className="w-5 h-5 mt-0.5 text-purple-400 group-hover:scale-110 transition-transform" />
-                  <a href="tel:+923431743916" className="hover:underline">
-                    +923431743916
+                  <a href={`tel:${UK_PHONE_E164.replace(/\s/g, '')}`} className="hover:underline">
+                    {UK_PHONE_DISPLAY}
+                  </a>
+                </motion.li>
+                <motion.li
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ delay: 0.52 }}
+                  className="flex items-start gap-3 group hover:text-white transition-colors"
+                >
+                  <WhatsAppIcon className="w-5 h-5 mt-0.5 text-green-400 group-hover:scale-110 transition-transform" />
+                  <a
+                    href={`https://wa.me/${UK_PHONE_WA_DIGITS}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline"
+                  >
+                    WhatsApp: {UK_PHONE_DISPLAY}
                   </a>
                 </motion.li>
                 <motion.li
@@ -206,9 +229,19 @@ export default function Footer() {
                   className="flex items-start gap-3 group hover:text-white transition-colors"
                 >
                   <WhatsAppIcon className="w-5 h-5 mt-0.5 text-green-400 group-hover:scale-110 transition-transform" />
-                  <a href="https://wa.me/923431743916" target="_blank" rel="noopener noreferrer" className="hover:underline">
-                    WhatsApp: +92 343 1743916
-                  </a>
+                  <div>
+                    <a
+                      href={`https://wa.me/${UK_WHATSAPP_PACKAGING_DIGITS}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:underline block"
+                    >
+                      WhatsApp: {formatUkWaDigits(UK_WHATSAPP_PACKAGING_DIGITS)}
+                    </a>
+                    <span className="text-xs text-gray-500 block mt-1">
+                      For packaging estimate with our experts
+                    </span>
+                  </div>
                 </motion.li>
                 <motion.li
                   initial={{ opacity: 0, x: -20 }}

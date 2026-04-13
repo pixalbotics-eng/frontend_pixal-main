@@ -35,22 +35,56 @@ export const API_ENDPOINTS = {
   CONTACT_BY_ID: (id: string) => `/api/contact/${id}`,
 };
 
+/** Coerce API values (string, Cloudinary-style object, etc.) to a single URL/path string. */
+function normalizeAssetPath(input: unknown): string {
+  if (input == null || input === '') return '';
+  if (typeof input === 'string') return input;
+  if (typeof input === 'number' || typeof input === 'boolean') return String(input);
+  if (typeof input === 'object' && input !== null) {
+    const o = input as Record<string, unknown>;
+    for (const key of ['url', 'secure_url', 'src', 'path'] as const) {
+      const v = o[key];
+      if (typeof v === 'string' && v.length > 0) return v;
+    }
+  }
+  return '';
+}
+
 /**
  * Build full URL for assets (images, PDFs) returned by the API.
  * Use for all image/photo/pdf display so they load from the backend base URL.
  */
-export function getAssetUrl(path: string | undefined | null): string {
-  if (!path) return '';
-  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+export function getAssetUrl(path: string | undefined | null | unknown): string {
+  const normalized = normalizeAssetPath(path);
+  if (!normalized) return '';
+  if (normalized.startsWith('http://') || normalized.startsWith('https://')) return normalized;
   const base = API_BASE_URL.endsWith('/') ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
-  const p = path.startsWith('/') ? path : `/${path}`;
+  const p = normalized.startsWith('/') ? normalized : `/${normalized}`;
   return `${base}${p}`;
 }
 
-/** Get image URL from API response item (handles photoUrl, imageUrl, image, photo). Use for rendering anywhere. */
-export function getDisplayImageUrl(item: { photoUrl?: string | null; imageUrl?: string | null; image?: string | null; photo?: string | null } | undefined | null): string {
+/** Get image URL from API response item (projects: coverImageUrl; blogs/team: imageUrl, etc.). */
+export function getDisplayImageUrl(
+  item:
+    | {
+        coverImageUrl?: string | null;
+        coverImage?: string | null;
+        photoUrl?: string | null;
+        imageUrl?: string | null;
+        image?: string | null;
+        photo?: string | null;
+      }
+    | undefined
+    | null
+): string {
   if (!item) return '';
-  const path = (item as { photoUrl?: string }).photoUrl ?? (item as { imageUrl?: string }).imageUrl ?? item.image ?? item.photo;
+  const path =
+    (item as { coverImageUrl?: string }).coverImageUrl ??
+    (item as { coverImage?: string }).coverImage ??
+    (item as { photoUrl?: string }).photoUrl ??
+    (item as { imageUrl?: string }).imageUrl ??
+    item.image ??
+    item.photo;
   return getAssetUrl(path ?? undefined);
 }
 

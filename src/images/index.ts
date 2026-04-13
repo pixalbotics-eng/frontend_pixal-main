@@ -1,53 +1,53 @@
 // Centralized image imports for the application
 import logo from '@/assets/PexilBeaudryweblogo.png';
-import robot1 from '@/assets/asset 1.png';
-import robot2 from '@/assets/asset 2.png';
-import robot3 from '@/assets/asset 3.jpeg';
-import robot4 from '@/assets/asset 4.jpeg';
-import robot5 from '@/assets/asset 5.jpeg';
-import robot6 from '@/assets/asset 6.png';
-import robot7 from '@/assets/asset 7.png';
-import robot8 from '@/assets/asset 8.jpeg';
-import robot9 from '@/assets/asset 9.png';
-import robot10 from '@/assets/asset 10.png';
-import robot11 from '@/assets/asset 11.png';
-import robot12 from '@/assets/asset 12.png';
-import robot13 from '@/assets/asset 13.jpeg';
-import robot14 from '@/assets/asset 14.png';
-import robot15 from '@/assets/asset 15.jpeg';
-import robot16 from '@/assets/asset 16.jpeg';
-import robot17 from '@/assets/asset 17.jpeg';
-import robot18 from '@/assets/asset 18.jpeg';
-import robot19 from '@/assets/asset 19.jpeg';
-import robot20 from '@/assets/asset 20.jpeg';
-import robot21 from '@/assets/asset 21.jpeg';
+import pixal1 from '@/assets/pixal (1).png';
+import pixal2 from '@/assets/pixal (2).png';
+import pixal3 from '@/assets/pixal (3).png';
+import pixal4 from '@/assets/pixal (4).png';
+import heroScene from '@/assets/hero.png';
+import heroSoftware from '@/assets/hero1.png';
 
 export const images = {
   logo,
+  /** Homepage hero — logo + hero + hero1 + pixal (1–4) */
+  heroSection: {
+    logoMark: logo,
+    hero: heroScene,
+    hero1: heroSoftware,
+    pixal1,
+    pixal2,
+    pixal3,
+    pixal4,
+    /** Aliases for older keys */
+    branding: pixal1,
+    softwareScene: pixal4,
+    packagingScene: heroScene,
+    splash: pixal2,
+    cube: pixal3,
+  },
   robots: {
-    heroMain: robot1,
-    heroSmall: robot2,
-    trustedPartner: robot3,
-    empoweringTop: robot4,
-    empoweringRight: robot5,
-    solution1: robot6,
-    solution2: robot7,
-    solution3: robot8,
-    solution4: robot9,
-    unlockPotential: robot10,
-    smartRetail: robot11,
-    faq: robot12,
-    testimonial: robot13,
-    extra1: robot14,
-    extra2: robot15,
-    extra3: robot16,
-    extra4: robot17,
-    extra5: robot18,
-    extra6: robot19,
-    extra7: robot20,
-    extra8: robot21,
+    heroMain: pixal1,
+    heroSmall: pixal2,
+    trustedPartner: pixal3,
+    empoweringTop: pixal4,
+    empoweringRight: heroScene,
+    solution1: pixal1,
+    solution2: pixal2,
+    solution3: pixal3,
+    solution4: heroSoftware,
+    unlockPotential: pixal1,
+    smartRetail: pixal2,
+    faq: pixal3,
+    testimonial: pixal4,
+    extra1: pixal1,
+    extra2: pixal2,
+    extra3: pixal3,
+    extra4: heroSoftware,
+    extra5: pixal1,
+    extra6: pixal2,
+    extra7: pixal3,
+    extra8: pixal4,
   },
 };
 
 export default images;
-

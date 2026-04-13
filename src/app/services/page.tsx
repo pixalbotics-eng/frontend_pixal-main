@@ -10,7 +10,7 @@ export default function ServicesPage() {
       {/* Modern Hero Section - Different Style */}
       <PageHero
         title="Our Services"
-        description="Complete technology solutions tailored to your business needs — from SaaS products to modern web applications"
+        description="Software, SaaS, and AI—plus packaging design and commercial printing—tailored to your product and brand."
         badge="Expert Solutions"
         topic="backend"
       />

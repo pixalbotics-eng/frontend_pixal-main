@@ -14,6 +14,7 @@ import {
   SettingsIcon,
   SparklesIcon,
 } from './ui/Icons';
+import { FiPackage, FiPrinter } from 'react-icons/fi';
 
 export default function Services() {
   const services = [
@@ -81,6 +82,24 @@ export default function Services() {
       iconBg: 'from-cyan-500 to-blue-500',
       hoverGradient: 'from-cyan-500/10 to-blue-500/10',
     },
+    {
+      Icon: FiPackage,
+      title: 'Packaging Design',
+      description:
+        'Structural packaging, dielines, and retail-ready artwork—from concept sketches to production files that match your brand and fulfilment workflow.',
+      gradient: 'from-fuchsia-500 via-purple-500 to-violet-600',
+      iconBg: 'from-fuchsia-500 to-purple-500',
+      hoverGradient: 'from-fuchsia-500/10 to-purple-500/10',
+    },
+    {
+      Icon: FiPrinter,
+      title: 'Printing & Labels',
+      description:
+        'High-quality commercial printing, labels, and finishing—colour-accurate proofs, consistent runs, and materials suited for shelf-ready packaging.',
+      gradient: 'from-amber-500 via-orange-500 to-rose-600',
+      iconBg: 'from-amber-500 to-orange-500',
+      hoverGradient: 'from-amber-500/10 to-orange-500/10',
+    },
   ];
 
   const ref = useRef(null);
@@ -110,7 +129,8 @@ export default function Services() {
             Complete Technology Solutions
           </h2>
           <p className="text-xl sm:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            From SaaS products to modern web applications — we deliver end-to-end solutions that drive business growth
+            From SaaS and AI software to packaging design, printing, and modern web apps — we deliver end-to-end solutions that
+            drive growth online and on the shelf
           </p>
         </motion.div>
 

@@ -5,6 +5,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import 'quill/dist/quill.snow.css';
 import ImageCropModal from './ImageCropModal';
 
+type QuillType = import('quill').default;
+
 type QuillInstance = {
   root: HTMLElement;
   on: (event: string, handler: () => void) => void;
@@ -14,13 +16,40 @@ type QuillInstance = {
   insertEmbed: (index: number, type: string, value: string) => void;
 };
 
+type ImageResizorCtor = {
+  Quill: QuillType | null;
+  new (q: QuillType, opts?: object): unknown;
+};
+
+function registerImageResizor(Quill: QuillType, ImageResizor: ImageResizorCtor) {
+  ImageResizor.Quill = Quill;
+  try {
+    Quill.register('modules/imageResizor', ImageResizor);
+  } catch {
+    /* already registered (e.g. strict mode re-run) */
+  }
+}
+
+function applyDefaultInsertedImageSize(quill: QuillInstance, onHtml: (html: string) => void) {
+  requestAnimationFrame(() => {
+    const imgs = quill.root.querySelectorAll('img');
+    const el = imgs[imgs.length - 1] as HTMLImageElement | undefined;
+    if (!el) return;
+    el.style.maxWidth = '100%';
+    el.style.width = '460px';
+    el.style.height = 'auto';
+    const html = quill.root.innerHTML;
+    onHtml(html === '<p><br></p>' ? '' : html);
+  });
+}
+
 export interface RichTextEditorProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
   className?: string;
   minHeight?: string;
-  /** When true, toolbar shows image button that opens file picker and crop modal before inserting. */
+  /** When true, toolbar image inserts full-size; use "Crop & insert image" below for zoom/crop before insert. */
   enableImageWithCrop?: boolean;
 }
 
@@ -35,6 +64,7 @@ export default function RichTextEditor({
   const containerRef = useRef<HTMLDivElement>(null);
   const quillRef = useRef<QuillInstance | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cropFileInputRef = useRef<HTMLInputElement>(null);
   const imageTriggerRef = useRef<() => void>(() => {});
   const isInternalChange = useRef(false);
   const onChangeRef = useRef(onChange);
@@ -47,13 +77,9 @@ export default function RichTextEditor({
     imageTriggerRef.current = () => fileInputRef.current?.click();
   }, []);
 
-  const onCropComplete = useCallback((file: File) => {
+  const insertImageFromFile = useCallback((file: File) => {
     const quill = quillRef.current;
-    if (!quill) {
-      setCropOpen(false);
-      setCropSrc(null);
-      return;
-    }
+    if (!quill) return;
     const reader = new FileReader();
     reader.onload = () => {
       const dataUrl = reader.result as string;
@@ -65,26 +91,59 @@ export default function RichTextEditor({
       setTimeout(() => {
         isInternalChange.current = false;
       }, 0);
+      if (enableImageWithCrop) {
+        applyDefaultInsertedImageSize(quill, (html) => {
+          isInternalChange.current = true;
+          onChangeRef.current(html);
+          setTimeout(() => {
+            isInternalChange.current = false;
+          }, 0);
+        });
+      }
     };
     reader.readAsDataURL(file);
-    setCropOpen(false);
-    setCropSrc(null);
-  }, []);
+  }, [enableImageWithCrop]);
+
+  const onCropComplete = useCallback(
+    (file: File) => {
+      insertImageFromFile(file);
+      setCropOpen(false);
+      setCropSrc((url) => {
+        if (url) URL.revokeObjectURL(url);
+        return null;
+      });
+    },
+    [insertImageFromFile]
+  );
 
   useEffect(() => {
     if (!containerRef.current) return;
     let mounted = true;
     let cleanup: (() => void) | null = null;
 
-    import('quill').then((QuillModule) => {
+    const loadPromise = enableImageWithCrop
+      ? Promise.all([import('quill'), import('quill-image-resizor')]).then(([q, r]) => ({
+          Quill: q.default,
+          ImageResizor: r.default as ImageResizorCtor,
+        }))
+      : import('quill').then((q) => ({
+          Quill: q.default,
+          ImageResizor: null as ImageResizorCtor | null,
+        }));
+
+    loadPromise.then(({ Quill, ImageResizor }) => {
       if (!mounted || !containerRef.current) return;
-      const Quill = QuillModule.default;
-      const wrapper = containerRef.current;
+
+      if (enableImageWithCrop && ImageResizor) {
+        registerImageResizor(Quill, ImageResizor);
+      }
+
+      const wrapper = containerRef.current!;
       const editorRoot = document.createElement('div');
       editorRoot.style.minHeight = minHeight;
       wrapper.appendChild(editorRoot);
 
-      const toolbarConfig: any[] = [
+      const toolbarConfig: unknown[] = [
         [{ header: [1, 2, 3, false] }],
         ['bold', 'italic', 'underline', 'strike'],
         [{ list: 'ordered' }, { list: 'bullet' }],
@@ -95,12 +154,19 @@ export default function RichTextEditor({
         toolbarConfig.push(['image']);
       }
 
+      const modules: Record<string, unknown> = {
+        toolbar: toolbarConfig,
+      };
+      if (enableImageWithCrop && ImageResizor) {
+        modules.imageResizor = {
+          modules: ['DisplaySize', 'Toolbar', 'Resize'],
+        };
+      }
+
       const quill = new Quill(editorRoot, {
         theme: 'snow',
         placeholder,
-        modules: {
-          toolbar: toolbarConfig,
-        },
+        modules,
       }) as unknown as QuillInstance;
 
       if (enableImageWithCrop) {
@@ -158,6 +224,13 @@ export default function RichTextEditor({
     const file = e.target.files?.[0];
     e.target.value = '';
     if (!file) return;
+    insertImageFromFile(file);
+  };
+
+  const onCropFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
     const url = URL.createObjectURL(file);
     setCropSrc(url);
     setCropOpen(true);
@@ -183,6 +256,14 @@ export default function RichTextEditor({
             onChange={onFileChange}
             aria-hidden
           />
+          <input
+            ref={cropFileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={onCropFileChange}
+            aria-hidden
+          />
           <ImageCropModal
             open={cropOpen}
             imageSrc={cropSrc}
@@ -194,6 +275,19 @@ export default function RichTextEditor({
         </>
       )}
       <div ref={containerRef} />
+      {enableImageWithCrop && (
+        <p className="mt-2 text-xs text-gray-500">
+          <button
+            type="button"
+            onClick={() => cropFileInputRef.current?.click()}
+            className="font-medium text-blue-600 hover:underline"
+          >
+            Crop &amp; insert image
+          </button>
+          <span className="text-gray-500"> — zoom/crop, then insert. </span>
+          <span className="text-gray-600">Click any image for corner handles to resize.</span>
+        </p>
+      )}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Cropper, { Area } from 'react-easy-crop';
 
 function createImage(url: string): Promise<HTMLImageElement> {
@@ -72,6 +72,14 @@ export default function ImageCropModal({
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (open && imageSrc) {
+      setCrop({ x: 0, y: 0 });
+      setZoom(1);
+      setCroppedAreaPixels(null);
+    }
+  }, [open, imageSrc]);
 
   const onCropChange = useCallback((c: { x: number; y: number }) => setCrop(c), []);
   const onZoomChange = useCallback((z: number) => setZoom(z), []);

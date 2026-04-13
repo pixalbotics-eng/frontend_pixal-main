@@ -6,7 +6,14 @@ import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import Card from './ui/Card';
 import Button from './ui/Button';
-import { MailIcon, PhoneIcon, ClockIcon, StarIcon } from './ui/Icons';
+import { MailIcon, PhoneIcon, ClockIcon, StarIcon, WhatsAppIcon } from './ui/Icons';
+import {
+  UK_PHONE_DISPLAY,
+  UK_PHONE_E164,
+  UK_PHONE_WA_DIGITS,
+  UK_WHATSAPP_PACKAGING_DIGITS,
+  formatUkWaDigits,
+} from '@/config/contact';
 import { contactApi, testimonialsApi } from '@/api';
 import { ApiError } from '@/api/client';
 
@@ -266,14 +273,14 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Phone
+                      Phone / WhatsApp (UK)
                     </label>
                     <input
                       type="tel"
                       id="phone"
                       name="phone"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-500"
-                      placeholder="+1234567890"
+                      placeholder={UK_PHONE_DISPLAY}
                     />
                   </div>
                   <div>
@@ -331,11 +338,46 @@ export default function ContactSection() {
                   <div>
                     <h4 className="text-lg font-semibold text-gray-900 mb-1">Phone</h4>
                     <a
-                      href="tel:+923431743916"
+                      href={`tel:${UK_PHONE_E164.replace(/\s/g, '')}`}
                       className="text-blue-600 hover:text-blue-700 transition-colors"
                     >
-                      +92 343 1743916
+                      {UK_PHONE_DISPLAY}
                     </a>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <WhatsAppIcon className="text-green-600" size={24} />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-1">WhatsApp</h4>
+                    <a
+                      href={`https://wa.me/${UK_PHONE_WA_DIGITS}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-700 transition-colors"
+                    >
+                      {UK_PHONE_DISPLAY}
+                    </a>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <WhatsAppIcon className="text-emerald-600" size={24} />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-1">WhatsApp</h4>
+                    <a
+                      href={`https://wa.me/${UK_WHATSAPP_PACKAGING_DIGITS}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-700 transition-colors"
+                    >
+                      {formatUkWaDigits(UK_WHATSAPP_PACKAGING_DIGITS)}
+                    </a>
+                    <p className="text-sm text-gray-600 mt-1">
+                      For packaging estimate with our experts
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
