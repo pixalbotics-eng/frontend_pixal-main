@@ -1,11 +1,26 @@
 'use client';
 
-import type { ComponentType } from 'react';
+import type { ComponentType, KeyboardEvent, MouseEvent } from 'react';
+import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 import { ArrowRightIcon } from './ui/Icons';
+
+/** Desktop / trackpad: CSS hover flip. Touch phones: tap to flip (hover is unreliable). */
+function usePrefersHoverFlip(): boolean {
+  return useSyncExternalStore(
+    (onStoreChange) => {
+      if (typeof window === 'undefined') return () => {};
+      const mq = window.matchMedia('(hover: hover) and (pointer: fine)');
+      mq.addEventListener('change', onStoreChange);
+      return () => mq.removeEventListener('change', onStoreChange);
+    },
+    () => window.matchMedia('(hover: hover) and (pointer: fine)').matches,
+    () => true,
+  );
+}
 
 export function projectDescriptionPreview(description: string | undefined, maxLen = 140): string {
   if (!description) return 'No description.';
@@ -40,22 +55,66 @@ export default function ProjectFlipCard({
   imagePriority,
 }: ProjectFlipCardProps) {
   const num = String(index + 1).padStart(2, '0');
+  const prefersHoverFlip = usePrefersHoverFlip();
+  const [flipped, setFlipped] = useState(false);
+
+  useEffect(() => {
+    if (prefersHoverFlip) setFlipped(false);
+  }, [prefersHoverFlip]);
+
+  const handleCardClick = useCallback(
+    (e: MouseEvent) => {
+      if (prefersHoverFlip) return;
+      if ((e.target as HTMLElement).closest('a')) return;
+      setFlipped((f) => !f);
+    },
+    [prefersHoverFlip],
+  );
+
+  const handleCardKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (prefersHoverFlip) return;
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      setFlipped((f) => !f);
+    },
+    [prefersHoverFlip],
+  );
+
+  const glowOn = !prefersHoverFlip && flipped;
+  const detailHint = prefersHoverFlip ? 'Hover for details' : 'Tap for details';
 
   return (
     <motion.article
       initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.55, delay: index * 0.08, ease: flipEase }}
-      whileHover={{ y: -6 }}
-      className="group relative h-[min(90vw,480px)] sm:h-[450px]"
-      aria-label={`${project.name}, hover to see project details`}
+      whileHover={prefersHoverFlip ? { y: -6 } : undefined}
+      tabIndex={prefersHoverFlip ? undefined : 0}
+      aria-expanded={prefersHoverFlip ? undefined : flipped}
+      aria-label={
+        prefersHoverFlip
+          ? `${project.name}, hover to see project details`
+          : flipped
+            ? `${project.name}, details shown, tap to go back`
+            : `${project.name}, tap to see project details`
+      }
+      onClick={handleCardClick}
+      onKeyDown={handleCardKeyDown}
+      className={`group relative h-[min(90vw,480px)] sm:h-[450px] outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${!prefersHoverFlip ? 'cursor-pointer touch-manipulation' : ''}`}
     >
       <div
-        className={`pointer-events-none absolute -inset-0.5 -z-10 rounded-3xl bg-gradient-to-r ${gradient} opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-25`}
+        className={`pointer-events-none absolute -inset-0.5 -z-10 rounded-3xl bg-gradient-to-r ${gradient} blur-lg transition-opacity duration-300 ${
+          prefersHoverFlip ? 'opacity-0 group-hover:opacity-25' : glowOn ? 'opacity-25' : 'opacity-0'
+        }`}
       />
       <div className="h-full w-full [perspective:1400px]">
         <div
-          className="relative h-full w-full rounded-3xl border border-gray-200 bg-white shadow-lg transition-[transform,box-shadow,border-color] duration-[800ms] ease-[cubic-bezier(0.23,1,0.32,1)] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] group-hover:border-transparent group-hover:shadow-2xl"
+          className={`relative h-full w-full rounded-3xl border border-gray-200 bg-white shadow-lg [transform-style:preserve-3d] ease-[cubic-bezier(0.23,1,0.32,1)] ${
+            prefersHoverFlip
+              ? 'transition-[transform,box-shadow,border-color] duration-[800ms] group-hover:[transform:rotateY(180deg)] group-hover:border-transparent group-hover:shadow-2xl'
+              : `transition-[transform,box-shadow,border-color] duration-500 ${flipped ? '[transform:rotateY(180deg)] border-transparent shadow-2xl' : ''}`
+          }`}
         >
           {/* Front — same family as section: white / gray-50, blue–purple accents */}
           <div className="absolute inset-0 flex flex-col overflow-hidden rounded-3xl bg-white [backface-visibility:hidden]">
@@ -82,7 +141,7 @@ export default function ProjectFlipCard({
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <p className="line-clamp-2 text-base font-bold leading-snug text-gray-900 sm:text-lg">{project.name}</p>
-                  <p className="mt-1 text-xs text-gray-500">Hover for details</p>
+                  <p className="mt-1 text-xs text-gray-500">{detailHint}</p>
                 </div>
                 <div
                   className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${gradient} shadow-md`}
@@ -107,6 +166,7 @@ export default function ProjectFlipCard({
               </p>
               <Link
                 href={`/projects/${project._id}`}
+                onClick={(e) => e.stopPropagation()}
                 className="mt-5 flex w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 py-3 text-sm font-semibold text-white shadow-md shadow-blue-500/25 transition hover:from-blue-700 hover:to-purple-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
               >
                 <span>View project</span>

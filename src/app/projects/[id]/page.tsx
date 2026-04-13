@@ -51,7 +51,7 @@ export default function ProjectDetailPage({ params }: PageProps) {
 
   if (loading) {
     return (
-      <main className="min-h-[70vh] bg-zinc-950">
+      <main className="min-h-[70vh] overflow-x-hidden bg-zinc-950">
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
           <div className="mb-8 h-4 w-40 animate-pulse rounded-full bg-white/10" />
           <div className="relative overflow-hidden rounded-3xl bg-white/5">
@@ -96,13 +96,13 @@ export default function ProjectDetailPage({ params }: PageProps) {
     .filter((url) => !coverOnlyUrl || url !== coverOnlyUrl);
 
   return (
-    <main className="bg-zinc-950 text-zinc-100">
+    <main className="overflow-x-hidden bg-zinc-950 text-zinc-100">
       {/* Top bar */}
       <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-zinc-950/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="mx-auto flex min-w-0 max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:gap-4 sm:px-6 lg:px-8">
           <Link
             href="/projects"
-            className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-zinc-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white sm:text-sm"
+            className="group inline-flex min-w-0 max-w-full shrink items-center gap-2 rounded-full border border-white/10 bg-white/5 px-2.5 py-1.5 text-xs font-medium text-zinc-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white sm:px-3 sm:text-sm"
           >
             <ArrowLeftIcon className="transition-transform group-hover:-translate-x-0.5" size={16} />
             All projects
@@ -111,10 +111,10 @@ export default function ProjectDetailPage({ params }: PageProps) {
         </div>
       </header>
 
-      {/* Hero — full-bleed cinematic */}
+      {/* Hero — full-bleed cinematic (overflow-x-hidden on main avoids 100vw scrollbar bleed) */}
       <section className="relative">
-        <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen">
-          <div className="relative mx-auto h-[min(78vh,880px)] min-h-[280px] w-full max-w-[1800px] sm:min-h-[360px]">
+        <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen max-w-[100vw]">
+          <div className="relative mx-auto h-[min(70vh,880px)] min-h-[220px] w-full max-w-[1800px] sm:h-[min(78vh,880px)] sm:min-h-[280px] md:min-h-[360px]">
             <Image
               src={imageSrc}
               alt={project.name}
@@ -128,14 +128,14 @@ export default function ProjectDetailPage({ params }: PageProps) {
             <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/80 via-transparent to-zinc-950/40" />
           </div>
         </div>
-        <div className="relative z-10 mx-auto -mt-32 max-w-4xl px-4 pb-16 text-center sm:-mt-40 sm:px-6 sm:pb-20 lg:pb-24">
+        <div className="relative z-10 mx-auto -mt-20 max-w-4xl px-4 pb-12 text-center sm:-mt-32 sm:pb-16 md:-mt-40 md:pb-20 lg:pb-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
           >
             <p className="text-[11px] font-semibold uppercase tracking-[0.4em] text-blue-400/90">Selected work</p>
-            <h1 className="mt-4 text-balance text-3xl font-semibold leading-[1.15] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-[3.5rem]">
+            <h1 className="mt-3 break-words text-balance text-2xl font-semibold leading-[1.15] tracking-tight text-white sm:mt-4 sm:text-4xl md:text-5xl lg:text-6xl xl:text-[3.5rem]">
               {project.name}
             </h1>
             <p className="mt-4 text-sm tabular-nums text-zinc-400">{formatDate(project.createdAt)}</p>
@@ -144,15 +144,15 @@ export default function ProjectDetailPage({ params }: PageProps) {
       </section>
 
       {/* Overview first (left on desktop), gallery right — clean editorial layout */}
-      <div className="relative rounded-t-[2rem] bg-gradient-to-b from-zinc-100/80 via-zinc-50 to-zinc-50 pb-20 pt-6 sm:rounded-t-[2.5rem] sm:pt-10 sm:pb-28">
+      <div className="relative rounded-t-[1.25rem] bg-gradient-to-b from-zinc-100/80 via-zinc-50 to-zinc-50 pb-14 pt-5 sm:rounded-t-[2rem] sm:pb-20 sm:pt-8 md:rounded-t-[2.5rem] md:pb-28 md:pt-10">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-200/60 to-transparent" aria-hidden />
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-14 lg:grid lg:grid-cols-12 lg:items-start lg:gap-12 xl:gap-16">
+        <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
+          <div className="flex min-w-0 flex-col gap-10 sm:gap-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-12 xl:gap-16">
             <motion.article
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-              className={`project-overview-article relative order-1 overflow-hidden border border-zinc-200/70 bg-white/95 px-6 py-8 shadow-[0_24px_80px_-32px_rgba(15,23,42,0.12)] ring-1 ring-indigo-100/30 backdrop-blur-sm sm:rounded-2xl sm:px-9 sm:py-11 ${
+              className={`project-overview-article relative order-1 min-w-0 w-full max-w-full overflow-hidden border border-zinc-200/70 bg-white/95 px-4 py-7 shadow-[0_24px_80px_-32px_rgba(15,23,42,0.12)] ring-1 ring-indigo-100/30 backdrop-blur-sm sm:rounded-2xl sm:px-8 sm:py-10 md:px-9 md:py-11 ${
                 galleryUrls.length > 0 ? 'lg:col-span-5' : 'lg:col-span-12 lg:mx-auto lg:max-w-3xl'
               }`}
             >
@@ -160,7 +160,7 @@ export default function ProjectDetailPage({ params }: PageProps) {
               <div className="pointer-events-none absolute -right-24 top-0 h-56 w-56 rounded-full bg-indigo-400/[0.07] blur-3xl" aria-hidden />
               <div className="relative">
                 <div className="mb-7 flex flex-wrap items-start justify-between gap-4 border-b border-zinc-100 pb-6">
-                  <div className="flex items-start gap-4">
+                  <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-4">
                     <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-zinc-800 to-zinc-900 text-white shadow-lg shadow-zinc-900/15 ring-1 ring-white/10">
                       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
@@ -168,12 +168,12 @@ export default function ProjectDetailPage({ params }: PageProps) {
                         <path d="M8 7h8M8 11h6" />
                       </svg>
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <p className="inline-flex items-center rounded-full bg-indigo-50 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-indigo-700 ring-1 ring-indigo-100">
                         Overview
                       </p>
-                      <h2 className="mt-3 text-xl font-semibold tracking-tight text-zinc-900 sm:text-2xl">About this project</h2>
-                      <p className="mt-2 max-w-sm text-sm leading-relaxed text-zinc-500">Story, scope, and what we shipped.</p>
+                      <h2 className="mt-3 text-lg font-semibold tracking-tight text-zinc-900 sm:text-xl md:text-2xl">About this project</h2>
+                      <p className="mt-2 max-w-full text-sm leading-relaxed text-zinc-500 sm:max-w-sm">Story, scope, and what we shipped.</p>
                     </div>
                   </div>
                 </div>
@@ -189,7 +189,7 @@ export default function ProjectDetailPage({ params }: PageProps) {
             </motion.article>
 
             {galleryUrls.length > 0 ? (
-              <div className="order-2 lg:col-span-7">
+              <div className="order-2 min-w-0 w-full lg:col-span-7">
                 <ProjectDetailGallery projectName={project.name} urls={galleryUrls} />
               </div>
             ) : null}
@@ -199,11 +199,11 @@ export default function ProjectDetailPage({ params }: PageProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.15, duration: 0.45 }}
-            className="mt-14 flex justify-center sm:mt-16"
+            className="mt-10 flex justify-center px-1 sm:mt-14 md:mt-16"
           >
             <Link
               href="/projects"
-              className="inline-flex items-center gap-2 rounded-full border border-zinc-300 bg-white px-6 py-3 text-sm font-medium text-zinc-800 shadow-sm transition hover:border-zinc-400 hover:bg-zinc-50"
+              className="inline-flex w-full max-w-md items-center justify-center gap-2 rounded-full border border-zinc-300 bg-white px-5 py-3 text-sm font-medium text-zinc-800 shadow-sm transition hover:border-zinc-400 hover:bg-zinc-50 sm:w-auto sm:max-w-none sm:px-6"
             >
               <ArrowLeftIcon size={16} />
               Back to all projects

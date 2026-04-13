@@ -1,11 +1,20 @@
 'use client';
 
+import type React from 'react';
 import Image from 'next/image';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type RefObject,
+  type SyntheticEvent,
+} from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const ZOOM_MIN = 1;
-const ZOOM_MAX = 4;
+const ZOOM_MAX = 10;
 const ZOOM_STEP = 0.25;
 
 type ProjectDetailGalleryProps = {
@@ -66,7 +75,63 @@ function MagnifierHintIcon({ className }: { className?: string }) {
   );
 }
 
+function ChevronLeftIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M15 18l-6-6 6-6" />
+    </svg>
+  );
+}
+
+function ChevronRightIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M9 18l6-6-6-6" />
+    </svg>
+  );
+}
+
+function CloseXIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M18 6L6 18M6 6l12 12" />
+    </svg>
+  );
+}
+
+function FilmstripIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <rect x="3" y="4" width="7" height="7" rx="1.5" />
+      <rect x="14" y="4" width="7" height="7" rx="1.5" />
+      <rect x="3" y="13" width="7" height="7" rx="1.5" />
+      <rect x="14" y="13" width="7" height="7" rx="1.5" />
+    </svg>
+  );
+}
+
+function FullscreenIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M8 3H5a2 2 0 00-2 2v3M21 8V5a2 2 0 00-2-2h-3M16 21h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3" />
+    </svg>
+  );
+}
+
+function ChevronDownSmallIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M6 9l6 6 6-6" />
+    </svg>
+  );
+}
+
 const ease = [0.23, 1, 0.32, 1] as const;
+const SWIPE_PX = 56;
+
+/** Windows-style smooth motion */
+const springSlide = { type: 'spring' as const, stiffness: 420, damping: 36, mass: 0.82 };
+const springZoom = { type: 'spring' as const, stiffness: 400, damping: 34, mass: 0.88 };
 
 function useViewportSize(active: boolean) {
   const [size, setSize] = useState({ w: 1200, h: 800 });
@@ -80,13 +145,48 @@ function useViewportSize(active: boolean) {
   return size;
 }
 
+function useElementBox(active: boolean, el: RefObject<HTMLElement | null>) {
+  const [box, setBox] = useState({ w: 0, h: 0 });
+  useEffect(() => {
+    if (!active) {
+      setBox({ w: 0, h: 0 });
+      return;
+    }
+    const node = el.current;
+    if (!node || typeof ResizeObserver === 'undefined') return;
+    const ro = new ResizeObserver(() => {
+      const r = node.getBoundingClientRect();
+      setBox({ w: r.width, h: r.height });
+    });
+    ro.observe(node);
+    const r = node.getBoundingClientRect();
+    setBox({ w: r.width, h: r.height });
+    return () => ro.disconnect();
+  }, [active, el]);
+  return box;
+}
+
 export default function ProjectDetailGallery({ projectName, urls }: ProjectDetailGalleryProps) {
   const [lightbox, setLightbox] = useState<number | null>(null);
+  const [slideDir, setSlideDir] = useState<0 | 1 | -1>(0);
   const [showAll, setShowAll] = useState(false);
   const [zoom, setZoom] = useState(1);
   const [natural, setNatural] = useState<{ w: number; h: number } | null>(null);
+  const [showFilmstrip, setShowFilmstrip] = useState(false);
+  const [zoomPresetsOpen, setZoomPresetsOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const viewerShellRef = useRef<HTMLDivElement>(null);
+  const zoomPresetsRef = useRef<HTMLDivElement>(null);
+  const lightboxIndexRef = useRef<number | null>(null);
+  const swipeRef = useRef<{ x: number; y: number; id: number | null; active: boolean }>({
+    x: 0,
+    y: 0,
+    id: null,
+    active: false,
+  });
+  lightboxIndexRef.current = lightbox;
   const vw = useViewportSize(lightbox !== null);
+  const viewBox = useElementBox(lightbox !== null, scrollRef);
 
   const items = showAll
     ? urls.map((src, i) => ({ src, i }))
@@ -103,8 +203,14 @@ export default function ProjectDetailGallery({ projectName, urls }: ProjectDetai
       s.scrollTop = Math.max(0, (s.scrollHeight - s.clientHeight) / 2);
     });
   }, []);
+  const centerScrollRef = useRef(centerScroll);
+  centerScrollRef.current = centerScroll;
 
   const close = useCallback(() => {
+    if (typeof document !== 'undefined' && document.fullscreenElement) {
+      void document.exitFullscreen().catch(() => {});
+    }
+    setZoomPresetsOpen(false);
     setLightbox(null);
     setZoom(1);
     setNatural(null);
@@ -121,47 +227,157 @@ export default function ProjectDetailGallery({ projectName, urls }: ProjectDetai
     centerScroll();
   }, [centerScroll]);
 
+  const applyZoom = useCallback(
+    (z: number) => {
+      const clamped = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, Math.round(z * 100) / 100));
+      setZoom(clamped);
+      requestAnimationFrame(() => centerScroll());
+    },
+    [centerScroll],
+  );
+
+  const toggleFullscreen = useCallback(() => {
+    const el = viewerShellRef.current;
+    if (!el || typeof document === 'undefined') return;
+    if (!document.fullscreenElement) {
+      void el.requestFullscreen().catch(() => {});
+    } else {
+      void document.exitFullscreen().catch(() => {});
+    }
+  }, []);
+
   const onPreviewDoubleClick = useCallback(() => {
     if (zoom <= ZOOM_MIN) setZoom(2);
     else zoomFit();
   }, [zoom, zoomFit]);
 
-  const onLightboxImgLoad = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
+  const onLightboxImgLoad = useCallback((e: SyntheticEvent<HTMLImageElement>) => {
     const el = e.currentTarget;
     setNatural({ w: el.naturalWidth, h: el.naturalHeight });
   }, []);
+  const openLightbox = useCallback((index: number) => {
+    setSlideDir(0);
+    setLightbox(index);
+  }, []);
+
+  const jumpToSlide = useCallback((index: number) => {
+    const cur = lightboxIndexRef.current;
+    if (cur === null || index === cur) return;
+    setSlideDir(index > cur ? 1 : -1);
+    setLightbox(index);
+  }, []);
+
   const goPrev = useCallback(() => {
+    setSlideDir(-1);
     setLightbox((i) => (i == null ? null : i <= 0 ? urls.length - 1 : i - 1));
   }, [urls.length]);
   const goNext = useCallback(() => {
+    setSlideDir(1);
     setLightbox((i) => (i == null ? null : i >= urls.length - 1 ? 0 : i + 1));
   }, [urls.length]);
+
+  const onStagePointerDown = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (zoom > ZOOM_MIN) return;
+      swipeRef.current = { x: e.clientX, y: e.clientY, id: e.pointerId, active: true };
+      e.currentTarget.setPointerCapture(e.pointerId);
+    },
+    [zoom],
+  );
+
+  const endSwipeTracking = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    const s = swipeRef.current;
+    if (!s.active || s.id !== e.pointerId) return;
+    s.active = false;
+    try {
+      (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+    } catch {
+      /* already released */
+    }
+  }, []);
+
+  const onStagePointerUp = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (zoom > ZOOM_MIN) {
+        endSwipeTracking(e);
+        return;
+      }
+      const s = swipeRef.current;
+      if (!s.active || s.id !== e.pointerId) return;
+      const dx = e.clientX - s.x;
+      const dy = e.clientY - s.y;
+      endSwipeTracking(e);
+      if (Math.abs(dx) < Math.abs(dy) || Math.abs(dx) < SWIPE_PX) return;
+      e.stopPropagation();
+      if (dx > 0) goPrev();
+      else goNext();
+    },
+    [zoom, goPrev, goNext, endSwipeTracking],
+  );
+
+  const onStagePointerCancel = useCallback(() => {
+    swipeRef.current.active = false;
+    swipeRef.current.id = null;
+  }, []);
 
   useEffect(() => {
     setZoom(1);
     setNatural(null);
   }, [lightbox]);
 
+  const recenterKey = useMemo(
+    () =>
+      `${lightbox ?? 'closed'}:${natural?.w ?? 0}:${natural?.h ?? 0}:${zoom}:${viewBox.w}:${viewBox.h}`,
+    [lightbox, natural?.w, natural?.h, zoom, viewBox.w, viewBox.h],
+  );
+
   useEffect(() => {
     if (lightbox === null || !natural) return;
-    centerScroll();
-  }, [lightbox, natural?.w, natural?.h, centerScroll]);
+    centerScrollRef.current();
+  }, [recenterKey]);
 
   const fitBase = useMemo(() => {
     if (!natural) return null;
-    const padX = 32;
-    const padY = 24;
-    const headerFooter = 200;
-    const maxW = Math.max(160, vw.w - padX * 2);
-    const maxH = Math.max(160, vw.h - headerFooter - padY * 2);
+    const maxW = Math.max(1, viewBox.w > 0 ? viewBox.w : vw.w);
+    const maxH = Math.max(1, viewBox.h > 0 ? viewBox.h : vw.h);
     const s = Math.min(maxW / natural.w, maxH / natural.h);
     return { w: natural.w * s, h: natural.h * s };
-  }, [natural, vw.w, vw.h]);
+  }, [natural, viewBox.w, viewBox.h, vw.w, vw.h]);
+
+  const zoomActualSize = useMemo(() => {
+    if (!natural || !fitBase) return null;
+    const z = Math.max(natural.w / fitBase.w, natural.h / fitBase.h);
+    return Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, Math.round(z * 100) / 100));
+  }, [natural, fitBase]);
+
+  useEffect(() => {
+    if (!zoomPresetsOpen) return;
+    const onDown = (e: MouseEvent) => {
+      if (zoomPresetsRef.current && !zoomPresetsRef.current.contains(e.target as Node)) {
+        setZoomPresetsOpen(false);
+      }
+    };
+    const t = window.setTimeout(() => {
+      document.addEventListener('mousedown', onDown);
+    }, 0);
+    return () => {
+      window.clearTimeout(t);
+      document.removeEventListener('mousedown', onDown);
+    };
+  }, [zoomPresetsOpen]);
 
   useEffect(() => {
     if (lightbox === null) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') close();
+      if (e.key === 'Escape') {
+        if (zoomPresetsOpen) {
+          e.preventDefault();
+          setZoomPresetsOpen(false);
+          return;
+        }
+        close();
+        return;
+      }
       if (e.key === 'ArrowLeft') goPrev();
       if (e.key === 'ArrowRight') goNext();
       if ((e.key === '+' || e.key === '=') && !e.metaKey && !e.ctrlKey) {
@@ -183,7 +399,7 @@ export default function ProjectDetailGallery({ projectName, urls }: ProjectDetai
       window.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
     };
-  }, [lightbox, close, goPrev, goNext, zoomIn, zoomOut, zoomFit]);
+  }, [lightbox, zoomPresetsOpen, close, goPrev, goNext, zoomIn, zoomOut, zoomFit]);
 
   useEffect(() => {
     if (lightbox === null) return;
@@ -212,10 +428,10 @@ export default function ProjectDetailGallery({ projectName, urls }: ProjectDetai
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease }}
-        className="lg:sticky lg:top-28"
+        className="min-w-0 w-full lg:sticky lg:top-28"
         aria-label="Project visuals"
       >
-        <div className="relative overflow-hidden rounded-2xl border border-indigo-100/70 bg-gradient-to-br from-white via-indigo-50/[0.35] to-violet-50/25 p-5 shadow-[0_20px_50px_-28px_rgba(79,70,229,0.2)] ring-1 ring-indigo-100/40 sm:p-6">
+        <div className="relative min-w-0 overflow-hidden rounded-xl border border-indigo-100/70 bg-gradient-to-br from-white via-indigo-50/[0.35] to-violet-50/25 p-4 shadow-[0_20px_50px_-28px_rgba(79,70,229,0.2)] ring-1 ring-indigo-100/40 sm:rounded-2xl sm:p-5 md:p-6">
           <div className="pointer-events-none absolute -right-20 -top-20 h-48 w-48 rounded-full bg-violet-400/15 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-indigo-400/10 blur-3xl" />
 
@@ -227,8 +443,8 @@ export default function ProjectDetailGallery({ projectName, urls }: ProjectDetai
               <div>
                 <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-indigo-600/90">Gallery</p>
                 <h3 className="mt-1 text-lg font-semibold tracking-tight text-zinc-900 sm:text-xl">Project shots</h3>
-                <p className="mt-1 max-w-[220px] text-xs leading-relaxed text-zinc-500">
-                  Tap to preview · zoom &amp; drag to explore detail
+                <p className="mt-1 max-w-[240px] text-xs leading-relaxed text-zinc-500">
+                  Viewer · grid icon opens thumbnails · zoom dock stays compact
                 </p>
               </div>
             </div>
@@ -237,7 +453,7 @@ export default function ProjectDetailGallery({ projectName, urls }: ProjectDetai
             </span>
           </div>
 
-        <ul className="relative grid grid-cols-2 gap-2.5 sm:gap-3">
+        <ul className="relative grid grid-cols-1 gap-2.5 min-[420px]:grid-cols-2 sm:gap-3">
           <AnimatePresence initial={false}>
             {items.map(({ src, i }) => (
               <motion.li
@@ -250,7 +466,7 @@ export default function ProjectDetailGallery({ projectName, urls }: ProjectDetai
               >
                 <button
                   type="button"
-                  onClick={() => setLightbox(i)}
+                  onClick={() => openLightbox(i)}
                   className="group relative aspect-square w-full cursor-pointer overflow-hidden rounded-xl border border-zinc-200/90 bg-zinc-100 text-left shadow-sm ring-1 ring-black/[0.02] transition-all duration-200 hover:border-indigo-300/80 hover:shadow-md hover:ring-indigo-500/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
                 >
                   <Image
@@ -258,7 +474,7 @@ export default function ProjectDetailGallery({ projectName, urls }: ProjectDetai
                     alt={`${projectName} — ${i + 1}`}
                     fill
                     className="object-cover transition duration-300 group-hover:scale-105"
-                    sizes="(max-width: 1024px) 50vw, 25vw"
+                    sizes="(max-width: 419px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     priority={i < 2}
                     unoptimized={src.startsWith('http')}
                   />
@@ -308,78 +524,38 @@ export default function ProjectDetailGallery({ projectName, urls }: ProjectDetai
 
       {lightbox !== null && currentSrc && (
         <div
-          className="fixed inset-0 z-[200] flex flex-col bg-zinc-950/97 backdrop-blur-md"
+          ref={viewerShellRef}
+          className="fixed inset-0 z-[200] flex flex-col bg-[#0c0c0c] text-white"
           role="dialog"
           aria-modal="true"
-          aria-label="Image viewer"
+          aria-label="Photos viewer"
         >
-          <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-white/10 px-4 py-3.5 sm:px-6">
-            <p className="min-w-0 flex-1 truncate text-sm font-medium text-white">
-              {projectName}
-              <span className="ml-2 font-normal text-indigo-300/90">
-                {lightbox + 1} / {urls.length}
-              </span>
-            </p>
-            <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-3">
-              <div
-                className="flex items-center rounded-full border border-white/15 bg-white/5 p-0.5"
-                role="group"
-                aria-label="Zoom"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button
-                  type="button"
-                  aria-label="Zoom out"
-                  onClick={zoomOut}
-                  disabled={zoom <= ZOOM_MIN}
-                  className="flex h-9 w-9 items-center justify-center rounded-full text-white transition hover:bg-white/10 disabled:pointer-events-none disabled:opacity-35"
-                >
-                  <ZoomOutIcon className="h-5 w-5" />
-                </button>
-                <span className="flex min-w-[3.25rem] select-none items-center justify-center gap-1 text-center text-xs font-medium tabular-nums text-white/90">
-                  <MagnifierHintIcon className="h-3.5 w-3.5 shrink-0 text-indigo-300/90" />
-                  {Math.round(zoom * 100)}%
-                </span>
-                <button
-                  type="button"
-                  aria-label="Zoom in"
-                  onClick={zoomIn}
-                  disabled={zoom >= ZOOM_MAX}
-                  className="flex h-9 w-9 items-center justify-center rounded-full text-white transition hover:bg-white/10 disabled:pointer-events-none disabled:opacity-35"
-                >
-                  <ZoomInIcon className="h-5 w-5" />
-                </button>
-              </div>
-              <button
-                type="button"
-                onClick={zoomFit}
-                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-2 text-xs font-semibold text-white transition hover:bg-white/10"
-              >
-                <FitScreenIcon className="h-4 w-4 shrink-0" />
-                <span className="hidden sm:inline">Fit</span>
-              </button>
-              <button
-                type="button"
-                onClick={close}
-                className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/15"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-          <div className="relative flex min-h-0 flex-1 flex-col">
+          <header className="relative z-50 flex h-10 shrink-0 items-center border-b border-white/[0.08] bg-[#1c1c1c]/90 px-1 pt-[env(safe-area-inset-top)] backdrop-blur-sm sm:h-11 sm:px-2">
+            <div className="w-10 shrink-0 sm:w-11" aria-hidden />
+            <h2 className="min-w-0 flex-1 truncate px-2 text-center text-[13px] font-normal tracking-tight text-white/95 sm:text-sm">
+              {projectName} <span className="text-white/45">—</span> {lightbox + 1} of {urls.length}
+            </h2>
+            <button
+              type="button"
+              onClick={close}
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white/75 transition hover:bg-white/10 hover:text-white"
+              aria-label="Close"
+            >
+              <CloseXIcon className="h-5 w-5" />
+            </button>
+          </header>
+
+          <div className="relative z-10 flex min-h-0 flex-1 flex-col">
             <button
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 goPrev();
               }}
-              className="absolute left-2 top-1/2 z-20 hidden -translate-y-1/2 rounded-full border border-white/20 bg-zinc-950/80 p-3 text-white shadow-lg backdrop-blur-sm transition hover:bg-indigo-500/50 sm:left-4 sm:block"
-              aria-label="Previous"
+              className="absolute left-2 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-xl border border-white/[0.12] bg-black/50 text-white shadow-lg backdrop-blur-md transition hover:bg-black/65 active:scale-[0.97] sm:left-4 sm:h-12 sm:w-12"
+              aria-label="Previous image"
             >
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
+              <ChevronLeftIcon className="h-6 w-6 sm:h-7 sm:w-7" />
             </button>
             <button
               type="button"
@@ -387,100 +563,311 @@ export default function ProjectDetailGallery({ projectName, urls }: ProjectDetai
                 e.stopPropagation();
                 goNext();
               }}
-              className="absolute right-2 top-1/2 z-20 hidden -translate-y-1/2 rounded-full border border-white/20 bg-zinc-950/80 p-3 text-white shadow-lg backdrop-blur-sm transition hover:bg-indigo-500/50 sm:right-4 sm:block"
-              aria-label="Next"
+              className="absolute right-2 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-xl border border-white/[0.12] bg-black/50 text-white shadow-lg backdrop-blur-md transition hover:bg-black/65 active:scale-[0.97] sm:right-4 sm:h-12 sm:w-12"
+              aria-label="Next image"
             >
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
+              <ChevronRightIcon className="h-6 w-6 sm:h-7 sm:w-7" />
             </button>
 
             <div
               ref={scrollRef}
-              className="relative min-h-0 flex-1 overflow-auto overscroll-contain [-webkit-overflow-scrolling:touch]"
+              className={`relative h-full min-h-0 flex-1 overflow-auto overscroll-contain [-webkit-overflow-scrolling:touch] ${
+                zoom > ZOOM_MIN ? 'touch-pan-x touch-pan-y' : ''
+              }`}
               onClick={close}
             >
               <div
-                className="flex min-h-full min-w-full items-center justify-center px-4 py-6 sm:px-10 sm:py-10"
-                style={{ minHeight: 'max(100%, 1px)' }}
+                className="box-border flex min-w-full items-center justify-center px-3 py-4 sm:px-6 sm:py-6"
+                style={
+                  natural && fitBase
+                    ? {
+                        /* Must exceed viewport when image is zoomed or scrollHeight/Width never grows — touch/mouse pan breaks */
+                        minHeight: `max(100%, ${Math.ceil(fitBase.h * zoom) + 96}px)`,
+                        minWidth: `max(100%, ${Math.ceil(fitBase.w * zoom) + 96}px)`,
+                      }
+                    : { minHeight: 'max(100%, 1px)', minWidth: '100%' }
+                }
               >
-                {!fitBase ? (
-                  <div className="flex flex-col items-center justify-center gap-4 py-16" onClick={(e) => e.stopPropagation()}>
-                    <div className="h-10 w-10 animate-spin rounded-full border-2 border-white/15 border-t-indigo-400" aria-hidden />
-                    <p className="text-xs text-white/45">Loading image…</p>
-                    <img
-                      src={currentSrc}
-                      alt=""
-                      className="sr-only"
-                      decoding="async"
-                      onLoad={onLightboxImgLoad}
-                    />
-                  </div>
-                ) : (
-                  <div
-                    role="presentation"
-                    onClick={(e) => e.stopPropagation()}
-                    onDoubleClick={onPreviewDoubleClick}
-                    style={{
-                      width: fitBase.w * zoom,
-                      height: fitBase.h * zoom,
-                    }}
-                    className={`relative shrink-0 overflow-hidden rounded-xl shadow-2xl ring-1 ring-white/15 ${zoom <= ZOOM_MIN ? 'cursor-zoom-in' : ''}`}
-                  >
-                    <img
-                      key={currentSrc}
-                      src={currentSrc}
-                      alt=""
-                      draggable={false}
-                      className="h-full w-full select-none object-contain bg-zinc-900/40"
-                    />
-                  </div>
-                )}
+                <AnimatePresence initial={false} mode="wait">
+                  {!natural || !fitBase ? (
+                    <motion.div
+                      key={`load-${lightbox}`}
+                      role="status"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.18, ease }}
+                      className="flex flex-col items-center justify-center gap-4 py-16"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div className="h-10 w-10 animate-spin rounded-full border-2 border-white/10 border-t-[#60a5fa]" aria-hidden />
+                      <p className="text-xs text-white/40">Loading…</p>
+                      <img
+                        src={currentSrc}
+                        alt=""
+                        className="sr-only"
+                        decoding="async"
+                        onLoad={onLightboxImgLoad}
+                      />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key={lightbox}
+                      role="presentation"
+                      initial={{
+                        opacity: 0,
+                        x: slideDir === 0 ? 0 : slideDir * 36,
+                      }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{
+                        opacity: 0,
+                        x: slideDir === 0 ? 0 : -slideDir * 36,
+                      }}
+                      transition={springSlide}
+                      onPointerDown={zoom <= ZOOM_MIN ? onStagePointerDown : undefined}
+                      onPointerUp={zoom <= ZOOM_MIN ? onStagePointerUp : undefined}
+                      onPointerCancel={zoom <= ZOOM_MIN ? onStagePointerCancel : undefined}
+                      onClick={(e) => e.stopPropagation()}
+                      onDoubleClick={onPreviewDoubleClick}
+                      style={
+                        zoom > ZOOM_MIN
+                          ? { touchAction: 'pan-x pan-y' }
+                          : { touchAction: 'pan-y pinch-zoom' }
+                      }
+                      className={`relative shrink-0 ${
+                        zoom > ZOOM_MIN
+                          ? 'touch-pan-x touch-pan-y cursor-grab active:cursor-grabbing'
+                          : 'touch-pan-y cursor-grab active:cursor-grabbing'
+                      }`}
+                    >
+                      <motion.div
+                        initial={false}
+                        animate={{
+                          width: fitBase.w * zoom,
+                          height: fitBase.h * zoom,
+                        }}
+                        transition={springZoom}
+                        style={zoom > ZOOM_MIN ? { touchAction: 'pan-x pan-y' } : undefined}
+                        className="relative box-border overflow-hidden rounded-[10px] bg-[#141414] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.85)] ring-1 ring-white/[0.14]"
+                      >
+                        <img
+                          key={currentSrc}
+                          src={currentSrc}
+                          alt={`${projectName} — ${lightbox + 1}`}
+                          draggable={false}
+                          style={zoom > ZOOM_MIN ? { touchAction: 'pan-x pan-y' } : { touchAction: 'manipulation' }}
+                          className="block h-full w-full select-none object-contain [-webkit-touch-callout:none]"
+                        />
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
 
             {zoom > ZOOM_MIN && fitBase && (
-              <div className="pointer-events-none absolute bottom-4 left-1/2 z-10 flex max-w-[92vw] -translate-x-1/2 items-center gap-2 rounded-full border border-white/15 bg-zinc-950/90 px-3 py-2 text-[11px] font-medium text-white shadow-xl backdrop-blur-md sm:bottom-6 sm:px-4 sm:text-xs">
-                <PanHintIcon className="h-4 w-4 shrink-0 text-indigo-300" />
-                <span className="leading-snug text-white/95">Swipe or scroll to explore · every edge is reachable</span>
+              <div className="pointer-events-none absolute bottom-[4.25rem] left-1/2 z-20 flex max-w-[min(92vw,20rem)] -translate-x-1/2 items-center gap-2 rounded-lg border border-white/10 bg-black/55 px-2.5 py-1.5 text-[10px] text-white/90 shadow-md backdrop-blur-md sm:bottom-[4.5rem] sm:text-[11px]">
+                <PanHintIcon className="h-3.5 w-3.5 shrink-0 text-[#93c5fd]" />
+                <span className="leading-snug">Drag to pan</span>
               </div>
             )}
           </div>
-          <div className="flex justify-center gap-3 pb-3 sm:hidden">
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                goPrev();
-              }}
-              className="rounded-full border border-white/20 bg-white/10 px-5 py-2 text-sm font-medium text-white"
-            >
-              Previous
-            </button>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                goNext();
-              }}
-              className="rounded-full border border-white/20 bg-white/10 px-5 py-2 text-sm font-medium text-white"
-            >
-              Next
-            </button>
+
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-40 flex justify-center px-2 pb-[max(0.35rem,env(safe-area-inset-bottom))] pt-2">
+            <div className="pointer-events-auto w-full max-w-[min(100%,28rem)] overflow-visible rounded-2xl border border-white/10 bg-black/45 shadow-lg backdrop-blur-md sm:max-w-xl">
+              <div className="flex flex-wrap items-center gap-x-0.5 gap-y-1 border-b border-white/[0.06] px-1.5 py-1.5 sm:gap-x-1 sm:px-2">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowFilmstrip((v) => !v);
+                  }}
+                  aria-pressed={showFilmstrip}
+                  aria-label="Toggle thumbnails"
+                  title="Thumbnails"
+                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition ${
+                    showFilmstrip ? 'bg-white/15 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'
+                  }`}
+                >
+                  <FilmstripIcon className="h-4 w-4" />
+                </button>
+                <span className="max-w-[4.5rem] truncate text-[9px] tabular-nums text-white/45 sm:hidden">
+                  {natural ? `${natural.w}×${natural.h}` : '\u00a0'}
+                </span>
+                <div className="hidden h-4 w-px shrink-0 bg-white/15 sm:block" aria-hidden />
+                <p className="hidden min-w-0 max-w-[5.5rem] truncate text-center text-[10px] tabular-nums text-white/50 sm:block sm:max-w-[9rem] md:max-w-none sm:text-[11px]">
+                  {natural ? (
+                    <>
+                      {natural.w} × {natural.h}
+                    </>
+                  ) : (
+                    '—'
+                  )}
+                </p>
+                <div className="flex min-w-0 flex-1 flex-wrap items-center justify-end gap-0.5 sm:gap-1">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      zoomFit();
+                    }}
+                    className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[10px] font-medium text-white/90 transition hover:bg-white/10 sm:text-[11px]"
+                  >
+                    <FitScreenIcon className="h-3 w-3 shrink-0 opacity-75" />
+                    Fit
+                  </button>
+                  <button
+                    type="button"
+                    disabled={zoomActualSize == null}
+                    title="Pixel-accurate zoom"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (zoomActualSize != null) applyZoom(zoomActualSize);
+                    }}
+                    className="rounded-md px-1.5 py-1 text-[10px] font-medium text-white/90 transition hover:bg-white/10 disabled:pointer-events-none disabled:opacity-35 sm:px-2 sm:text-[11px]"
+                  >
+                    <span className="sm:hidden">1:1</span>
+                    <span className="hidden sm:inline">Actual</span>
+                  </button>
+                  <div
+                    ref={zoomPresetsRef}
+                    className="flex items-center rounded-lg border border-white/10 bg-black/30 p-px"
+                    role="group"
+                    aria-label="Zoom"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <button
+                      type="button"
+                      aria-label="Zoom out"
+                      onClick={zoomOut}
+                      disabled={zoom <= ZOOM_MIN}
+                      className="flex h-7 w-7 items-center justify-center rounded-md text-white transition hover:bg-white/10 disabled:pointer-events-none disabled:opacity-35 sm:h-8 sm:w-8"
+                    >
+                      <ZoomOutIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    </button>
+                    <div className="relative z-[100]">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setZoomPresetsOpen((o) => !o);
+                        }}
+                        className="flex h-7 min-w-12 items-center justify-center gap-0.5 rounded-md px-1 text-[11px] font-medium tabular-nums text-white/90 hover:bg-white/10 sm:h-8 sm:min-w-[3.25rem] sm:text-xs"
+                        aria-expanded={zoomPresetsOpen}
+                        aria-haspopup="listbox"
+                      >
+                        {Math.round(zoom * 100)}%
+                        <ChevronDownSmallIcon className="opacity-70" />
+                      </button>
+                      {zoomPresetsOpen && (
+                        <ul
+                          role="listbox"
+                          className="absolute bottom-full left-1/2 z-[110] mb-2 min-w-[10.5rem] max-h-[min(50vh,20rem)] -translate-x-1/2 overflow-y-auto rounded-lg border border-white/10 bg-[#323232] py-1 shadow-[0_-8px_32px_rgba(0,0,0,0.55)]"
+                        >
+                          <li>
+                            <button
+                              type="button"
+                              role="option"
+                              className="w-full px-3 py-2 text-left text-xs text-white/90 hover:bg-white/10"
+                              onClick={() => {
+                                setZoomPresetsOpen(false);
+                                zoomFit();
+                              }}
+                            >
+                              Fit to window
+                            </button>
+                          </li>
+                          {([1.25, 1.5, 2, 3] as const).map((z) => (
+                            <li key={z}>
+                              <button
+                                type="button"
+                                role="option"
+                                className="w-full px-3 py-2 text-left text-xs text-white/90 hover:bg-white/10"
+                                onClick={() => {
+                                  setZoomPresetsOpen(false);
+                                  applyZoom(z);
+                                }}
+                              >
+                                {Math.round(z * 100)}%
+                              </button>
+                            </li>
+                          ))}
+                          {zoomActualSize != null && (
+                            <li>
+                              <button
+                                type="button"
+                                role="option"
+                                className="w-full px-3 py-2 text-left text-xs text-white/90 hover:bg-white/10"
+                                onClick={() => {
+                                  setZoomPresetsOpen(false);
+                                  applyZoom(zoomActualSize);
+                                }}
+                              >
+                                Actual size (1:1 px)
+                              </button>
+                            </li>
+                          )}
+                        </ul>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      aria-label="Zoom in"
+                      onClick={zoomIn}
+                      disabled={zoom >= ZOOM_MAX}
+                      className="flex h-7 w-7 items-center justify-center rounded-md text-white transition hover:bg-white/10 disabled:pointer-events-none disabled:opacity-35 sm:h-8 sm:w-8"
+                    >
+                      <ZoomInIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    </button>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleFullscreen();
+                    }}
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-white/75 transition hover:bg-white/10 hover:text-white"
+                    aria-label="Full screen"
+                  >
+                    <FullscreenIcon className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+
+              <div
+                className={`grid overflow-hidden transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  showFilmstrip ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                }`}
+              >
+                <div className="min-h-0">
+                  <div
+                    className="flex gap-1.5 overflow-x-auto border-t border-white/[0.05] bg-black/25 px-1.5 py-1.5 sm:gap-2 sm:px-2 [-ms-overflow-style:none] [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/25"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {urls.map((src, i) => (
+                      <button
+                        key={`${src}-${i}`}
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          jumpToSlide(i);
+                        }}
+                        aria-label={`Image ${i + 1}`}
+                        aria-current={i === lightbox ? 'true' : undefined}
+                        className={`relative h-9 w-9 shrink-0 overflow-hidden rounded-md transition sm:h-11 sm:w-11 ${
+                          i === lightbox
+                            ? 'ring-2 ring-[#60a5fa] ring-offset-1 ring-offset-black/40'
+                            : 'opacity-55 ring-1 ring-white/15 hover:opacity-100'
+                        }`}
+                      >
+                        <img src={src} alt="" className="h-full w-full object-cover" loading="lazy" decoding="async" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 px-3 pb-4 text-center text-[11px] text-white/40">
-            <span className="inline-flex items-center gap-1">
-              <ZoomInIcon className="h-3.5 w-3.5" />
-              Wheel zooms at 100%
-            </span>
-            <span className="text-white/25">·</span>
-            <span className="inline-flex items-center gap-1">
-              <PanHintIcon className="h-3.5 w-3.5" />
-              Then scroll the canvas
-            </span>
-            <span className="hidden text-white/25 sm:inline">·</span>
-            <span className="hidden sm:inline">Esc · ← → · dbl-click</span>
-          </p>
         </div>
       )}
     </>
