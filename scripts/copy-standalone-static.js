@@ -9,6 +9,8 @@ const path = require('path');
 const root = path.join(__dirname, '..');
 const staticSrc = path.join(root, '.next', 'static');
 const staticDest = path.join(root, '.next', 'standalone', '.next', 'static');
+const publicSrc = path.join(root, 'public');
+const publicDest = path.join(root, '.next', 'standalone', 'public');
 
 if (!fs.existsSync(path.join(root, '.next', 'standalone'))) {
   console.error('Error: .next/standalone not found. Run "npm run build" first.');
@@ -37,6 +39,14 @@ function copyRecursive(src, dest) {
 }
 
 copyRecursive(staticSrc, staticDest);
+console.log('Done: .next/static copied to .next/standalone/.next/static');
+
+if (fs.existsSync(publicSrc)) {
+  copyRecursive(publicSrc, publicDest);
+  console.log('Done: public/ copied to .next/standalone/public/');
+} else {
+  console.log('Skip: no public/ folder at project root.');
+}
 
 // SEO env reference for cPanel – user yahan apni SEO links daal sakta hai (Environment Variables me)
 const standaloneDir = path.join(root, '.next', 'standalone');
@@ -54,6 +64,7 @@ SITE_URL=https://yourdomain.com
 `;
 fs.writeFileSync(path.join(standaloneDir, 'SEO_CPANEL_ENV.txt'), seoEnvRef, 'utf8');
 
-console.log('Done: .next/static copied to .next/standalone/.next/static');
 console.log('Done: SEO_CPANEL_ENV.txt added to standalone (SEO env reference for cPanel).');
-console.log('Upload the contents of .next/standalone to your cPanel Node.js app root.');
+console.log('');
+console.log('cPanel deploy: upload EVERYTHING inside .next/standalone/ to your Node app root.');
+console.log('Startup: node server.js   |   Set NODE_ENV=production and PORT (cPanel assigns this).');

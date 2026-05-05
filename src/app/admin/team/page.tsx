@@ -30,20 +30,24 @@ export default function TeamPage() {
   const [cropImageSrc, setCropImageSrc] = useState<string | null>(null);
   const [pendingCropFile, setPendingCropFile] = useState<File | null>(null);
   const [customRoleInput, setCustomRoleInput] = useState('');
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState<{ total: number; page: number; limit: number; totalPages: number } | null>(null);
+  const limit = 9;
 
   const fetchTeam = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await teamApi.getAll();
+      const response = await teamApi.getAll({ page, limit, sortBy: '-createdAt' });
       if (response.success && response.data?.team) {
         setTeam(response.data.team);
       }
+      setPagination(response.pagination ?? null);
     } catch (err) {
       toast.error(getErrorMessage(err));
     } finally {
       setLoading(false);
     }
-  }, [toast]);
+  }, [toast, page]);
 
   useEffect(() => {
     fetchTeam();
@@ -193,6 +197,7 @@ export default function TeamPage() {
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
           </div>
         ) : (
+          <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {team.map((member) => (
               <div key={member._id} className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -235,6 +240,32 @@ export default function TeamPage() {
               </div>
             ))}
           </div>
+          {pagination && pagination.totalPages > 1 && (
+            <div className="mt-6 px-4 py-3 border border-gray-200 rounded-lg flex items-center justify-between text-sm text-gray-600 bg-white">
+              <span>
+                Page {pagination.page} of {pagination.totalPages} ({pagination.total} total)
+              </span>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={page <= 1}
+                  className="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Previous
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPage((p) => p + 1)}
+                  disabled={page >= pagination.totalPages}
+                  className="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
+          </>
         )}
 
         {showModal && (

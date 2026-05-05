@@ -15,14 +15,39 @@ export interface UpdateUserData {
   role?: 'user' | 'admin' | 'systemmanager';
 }
 
+export interface UserListParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  sortBy?: string;
+}
+
 // Users API functions
 export const usersApi = {
-  getAll: async (token: string) => {
-    const response = await api.get<{ users: User[] }>(
-      API_ENDPOINTS.USERS,
-      token
-    );
-    return response;
+  getAll: async (token: string, params?: UserListParams) => {
+    const queryParams = new URLSearchParams();
+    if (params?.page) queryParams.append('page', params.page.toString());
+    if (params?.limit) queryParams.append('limit', params.limit.toString());
+    if (params?.search) queryParams.append('search', params.search);
+    if (params?.sortBy) queryParams.append('sortBy', params.sortBy);
+
+    const queryString = queryParams.toString();
+    const endpoint = queryString ? `${API_ENDPOINTS.USERS}?${queryString}` : API_ENDPOINTS.USERS;
+
+    const response = await api.get<{
+      users?: User[];
+      pagination?: {
+        total: number;
+        page: number;
+        limit: number;
+        totalPages: number;
+      };
+    }>(endpoint, token);
+    return {
+      ...response,
+      data: { users: response.data?.users ?? [] },
+      pagination: response.data?.pagination ?? response.pagination,
+    };
   },
 
   getById: async (id: string, token: string) => {

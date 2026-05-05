@@ -34,6 +34,13 @@ export interface BlogListParams {
   sortBy?: string;
 }
 
+type PaginationMeta = {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+};
+
 // Blogs API functions
 export const blogsApi = {
   getAll: async (params?: BlogListParams) => {
@@ -46,8 +53,15 @@ export const blogsApi = {
     const queryString = queryParams.toString();
     const endpoint = queryString ? `${API_ENDPOINTS.BLOGS}?${queryString}` : API_ENDPOINTS.BLOGS;
     
-    const response = await api.get<{ blogs: Blog[] }>(endpoint);
-    return response;
+    const response = await api.get<{
+      blogs?: Blog[];
+      pagination?: PaginationMeta;
+    }>(endpoint);
+    return {
+      ...response,
+      data: { blogs: response.data?.blogs ?? [] },
+      pagination: response.data?.pagination ?? response.pagination,
+    };
   },
 
   getById: async (id: string) => {

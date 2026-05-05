@@ -29,7 +29,8 @@ export default function Testimonials() {
   }, []);
 
   useEffect(() => {
-    fetchTestimonials();
+    // Defer to avoid synchronous setState during effect execution (eslint rule)
+    void Promise.resolve().then(() => fetchTestimonials());
   }, [fetchTestimonials]);
 
   useRefetchOnWindowFocus(fetchTestimonials);
@@ -197,6 +198,7 @@ export default function Testimonials() {
           </Button>
         </motion.div>
         )}
+
       </div>
     </section>
   );

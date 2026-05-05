@@ -15,6 +15,9 @@ function UsersPageContent() {
     users,
     loading,
     refetch,
+    page,
+    setPage,
+    pagination,
     createUser,
     updateUser,
     deleteUser,
@@ -160,6 +163,31 @@ function UsersPageContent() {
                 ))}
               </tbody>
             </table>
+            {pagination && pagination.totalPages > 1 && (
+              <div className="px-6 py-3 border-t border-gray-200 flex items-center justify-between text-sm text-gray-600">
+                <span>
+                  Page {pagination.page} of {pagination.totalPages} ({pagination.total} total)
+                </span>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setPage(Math.max(1, page - 1))}
+                    disabled={page <= 1}
+                    className="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPage(page + 1)}
+                    disabled={page >= pagination.totalPages}
+                    className="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
 

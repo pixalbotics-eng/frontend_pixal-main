@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
@@ -19,11 +19,12 @@ function getMemberImage(member: TeamMember) {
 
 /** Role display order: CEO → Co-founder/Founder → CTO → Team Lead → others */
 function getRoleSortOrder(member: TeamMember): number {
-  const r = (member.role || member.position || '').toLowerCase().trim();
-  if (r.includes('ceo')) return 0;
-  if (r.includes('co-founder') || r.includes('cofounder') || r.includes('founder')) return 1;
-  if (r.includes('cto')) return 2;
-  if (r.includes('team lead') || r.includes('teamlead')) return 3;
+  const rawRole = (member.role || member.position || '').toLowerCase().trim();
+  const normalizedRole = rawRole.replace(/[\s_-]+/g, '');
+  if (normalizedRole.includes('ceo')) return 0;
+  if (normalizedRole.includes('cofounder') || normalizedRole.includes('founder')) return 1;
+  if (normalizedRole.includes('cto')) return 2;
+  if (normalizedRole.includes('teamlead')) return 3;
   return 4;
 }
 
@@ -34,22 +35,40 @@ function sortTeamByRole(members: TeamMember[]): TeamMember[] {
 export default function TeamSection() {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const membersPerPage = 10;
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
-  const fetchTeam = useCallback(() => {
+  const fetchTeam = useCallback((page = currentPage + 1) => {
     setLoading(true);
-    teamApi.getAll()
-      .then((res) => setTeamMembers(res.data?.team ?? []))
+    teamApi.getAll({ page, limit: membersPerPage })
+      .then((res) => {
+        setTeamMembers(res.data?.team ?? []);
+        setTotalPages(Math.max(1, res.pagination?.totalPages ?? 1));
+      })
       .catch(() => setTeamMembers([]))
       .finally(() => setLoading(false));
-  }, []);
+  }, [currentPage]);
 
   useEffect(() => {
-    fetchTeam();
-  }, [fetchTeam]);
+    // Defer to avoid synchronous setState during effect execution (eslint rule)
+    void Promise.resolve().then(() => fetchTeam(currentPage + 1));
+  }, [fetchTeam, currentPage]);
 
   useRefetchOnWindowFocus(fetchTeam);
+
+  const currentMembers = useMemo(() => sortTeamByRole(teamMembers), [teamMembers]);
+  const activePage = Math.min(currentPage, totalPages - 1);
+
+  const handleNext = () => {
+    setCurrentPage((prev) => (prev + 1) % totalPages);
+  };
+
+  const handlePrevious = () => {
+    setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
+  };
 
   return (
     <section className="w-full bg-gradient-to-b from-gray-50 via-white to-gray-50 py-16 sm:py-20 lg:py-24 relative overflow-hidden" ref={ref}>
@@ -118,7 +137,7 @@ export default function TeamSection() {
               <EmptyState message="No team members yet." />
             </div>
           ) : (
-            sortTeamByRole(teamMembers).map((member, index) => {
+            currentMembers.map((member, index) => {
               const gradient = GRADIENTS[index % GRADIENTS.length];
               const imgUrl = getMemberImage(member);
               return (
@@ -182,6 +201,47 @@ export default function TeamSection() {
             })
           )}
         </div>
+
+        {!loading && teamMembers.length > 0 && totalPages > 1 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mt-10 flex items-center justify-center gap-4"
+          >
+            <button
+              type="button"
+              onClick={handlePrevious}
+              className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors"
+              aria-label="Previous page"
+            >
+              Previous
+            </button>
+
+            <div className="flex items-center gap-2">
+              {Array.from({ length: totalPages }).map((_, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => setCurrentPage(index)}
+                  className={`h-2 rounded-full transition-all ${
+                    index === activePage ? 'bg-blue-600 w-8' : 'bg-gray-300 hover:bg-gray-400 w-2'
+                  }`}
+                  aria-label={`Go to page ${index + 1}`}
+                />
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={handleNext}
+              className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors"
+              aria-label="Next page"
+            >
+              Next
+            </button>
+          </motion.div>
+        )}
 
         {/* Join Team CTA */}
         <motion.div

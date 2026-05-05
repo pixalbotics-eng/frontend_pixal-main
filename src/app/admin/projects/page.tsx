@@ -39,6 +39,9 @@ export default function ProjectsPage() {
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [coverRemoved, setCoverRemoved] = useState(false);
   const [galleryItems, setGalleryItems] = useState<GalleryEntry[]>([]);
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState<{ total: number; page: number; limit: number; totalPages: number } | null>(null);
+  const limit = 9;
 
   const revokeGalleryBlob = useCallback((items: GalleryEntry[]) => {
     items.forEach((e) => {
@@ -61,16 +64,17 @@ export default function ProjectsPage() {
   const fetchProjects = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await projectsApi.getAll();
+      const response = await projectsApi.getAll({ page, limit, sortBy: '-createdAt' });
       if (response.success && response.data?.projects) {
         setProjects(response.data.projects);
       }
+      setPagination(response.pagination ?? null);
     } catch (err) {
       toast.error(getErrorMessage(err));
     } finally {
       setLoading(false);
     }
-  }, [toast]);
+  }, [toast, page]);
 
   useEffect(() => {
     fetchProjects();
@@ -272,6 +276,7 @@ export default function ProjectsPage() {
           <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-blue-600" />
         </div>
       ) : (
+        <>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => {
             const imgUrl = getProjectDisplayImage(project);
@@ -325,6 +330,32 @@ export default function ProjectsPage() {
             );
           })}
         </div>
+        {pagination && pagination.totalPages > 1 && (
+          <div className="mt-6 px-4 py-3 border border-gray-200 rounded-lg flex items-center justify-between text-sm text-gray-600 bg-white">
+            <span>
+              Page {pagination.page} of {pagination.totalPages} ({pagination.total} total)
+            </span>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page <= 1}
+                className="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Previous
+              </button>
+              <button
+                type="button"
+                onClick={() => setPage((p) => p + 1)}
+                disabled={page >= pagination.totalPages}
+                className="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        )}
+        </>
       )}
 
       {showModal && (

@@ -34,6 +34,13 @@ export interface TestimonialListParams {
   sortBy?: string;
 }
 
+type PaginationMeta = {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+};
+
 // Testimonials API (OAS: application/json - clientName, reviewText, stars)
 export const testimonialsApi = {
   getAll: async (params?: TestimonialListParams) => {
@@ -46,8 +53,15 @@ export const testimonialsApi = {
     const queryString = queryParams.toString();
     const endpoint = queryString ? `${API_ENDPOINTS.TESTIMONIALS}?${queryString}` : API_ENDPOINTS.TESTIMONIALS;
 
-    const response = await api.get<{ testimonials: Testimonial[] }>(endpoint);
-    return response;
+    const response = await api.get<{
+      testimonials?: Testimonial[];
+      pagination?: PaginationMeta;
+    }>(endpoint);
+    return {
+      ...response,
+      data: { testimonials: response.data?.testimonials ?? [] },
+      pagination: response.data?.pagination ?? response.pagination,
+    };
   },
 
   getById: async (id: string) => {

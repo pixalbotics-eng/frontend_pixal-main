@@ -58,6 +58,13 @@ export interface ProjectListParams {
   sortBy?: string;
 }
 
+type PaginationMeta = {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+};
+
 function appendGalleryFiles(formData: FormData, files: File[] | undefined) {
   if (!files?.length) return;
   for (const file of files) {
@@ -77,8 +84,15 @@ export const projectsApi = {
     const queryString = queryParams.toString();
     const endpoint = queryString ? `${API_ENDPOINTS.PROJECTS}?${queryString}` : API_ENDPOINTS.PROJECTS;
 
-    const response = await api.get<{ projects: Project[] }>(endpoint);
-    return response;
+    const response = await api.get<{
+      projects?: Project[];
+      pagination?: PaginationMeta;
+    }>(endpoint);
+    return {
+      ...response,
+      data: { projects: response.data?.projects ?? [] },
+      pagination: response.data?.pagination ?? response.pagination,
+    };
   },
 
   getById: async (id: string) => {

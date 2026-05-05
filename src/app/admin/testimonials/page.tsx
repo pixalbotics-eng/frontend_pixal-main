@@ -22,20 +22,24 @@ export default function TestimonialsPage() {
     reviewText: '',
     stars: 5,
   });
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState<{ total: number; page: number; limit: number; totalPages: number } | null>(null);
+  const limit = 9;
 
   const fetchTestimonials = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await testimonialsApi.getAll();
+      const response = await testimonialsApi.getAll({ page, limit, sortBy: '-createdAt' });
       if (response.success && response.data?.testimonials) {
         setTestimonials(response.data.testimonials);
       }
+      setPagination(response.pagination ?? null);
     } catch (err) {
       toast.error(getErrorMessage(err));
     } finally {
       setLoading(false);
     }
-  }, [toast]);
+  }, [toast, page]);
 
   useEffect(() => {
     fetchTestimonials();
@@ -123,6 +127,7 @@ export default function TestimonialsPage() {
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
           </div>
         ) : (
+          <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {testimonials.map((testimonial) => (
               <div key={testimonial._id} className="bg-white rounded-lg shadow-md p-6">
@@ -160,6 +165,32 @@ export default function TestimonialsPage() {
               </div>
             ))}
           </div>
+          {pagination && pagination.totalPages > 1 && (
+            <div className="mt-6 px-4 py-3 border border-gray-200 rounded-lg flex items-center justify-between text-sm text-gray-600 bg-white">
+              <span>
+                Page {pagination.page} of {pagination.totalPages} ({pagination.total} total)
+              </span>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={page <= 1}
+                  className="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Previous
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPage((p) => p + 1)}
+                  disabled={page >= pagination.totalPages}
+                  className="px-3 py-1 rounded border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
+          </>
         )}
 
         {showModal && (

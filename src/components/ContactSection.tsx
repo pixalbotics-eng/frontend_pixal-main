@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
@@ -30,6 +30,20 @@ export default function ContactSection() {
 
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+
+  // Trustpilot widget bootstrap script (load once)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const scriptId = 'tp-widget-bootstrap';
+    if (document.getElementById(scriptId)) return;
+
+    const s = document.createElement('script');
+    s.id = scriptId;
+    s.type = 'text/javascript';
+    s.async = true;
+    s.src = '//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.js';
+    document.body.appendChild(s);
+  }, []);
 
   const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -398,6 +412,36 @@ export default function ContactSection() {
                   <div>
                     <h4 className="text-lg font-semibold text-gray-900 mb-1">Business Hours</h4>
                     <p className="text-gray-600">Mon - Fri: 9AM - 6PM</p>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            {/* Trustpilot Review Widget */}
+            <Card variant="default">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                Trustpilot Reviews
+              </h3>
+              <p className="text-sm text-gray-600 mb-4">
+                Read and write reviews for Pixalbotics.
+              </p>
+              <div className="flex justify-center">
+                <div className="w-full max-w-[520px]">
+                  <div
+                    className="trustpilot-widget"
+                    data-locale="en-US"
+                    data-template-id="56278e9abfbbba0bdcd568bc"
+                    data-businessunit-id="69e0d43879fa28791387d80b"
+                    data-style-height="70px"
+                    data-style-width="100%"
+                  >
+                    <a
+                      href="https://www.trustpilot.com/review/pixalbotics.com"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      Trustpilot
+                    </a>
                   </div>
                 </div>
               </div>

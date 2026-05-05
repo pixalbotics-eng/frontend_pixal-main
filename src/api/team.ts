@@ -49,10 +49,25 @@ export const teamApi = {
     const queryString = queryParams.toString();
     const endpoint = queryString ? `${API_ENDPOINTS.TEAM}?${queryString}` : API_ENDPOINTS.TEAM;
 
-    const response = await api.get<{ team?: TeamMember[]; members?: TeamMember[] }>(endpoint);
+    const response = await api.get<{
+      team?: TeamMember[];
+      members?: TeamMember[];
+      pagination?: {
+        total: number;
+        page: number;
+        limit: number;
+        totalPages: number;
+        hasNextPage?: boolean;
+        hasPrevPage?: boolean;
+        nextPage?: number | null;
+        prevPage?: number | null;
+        count?: number;
+      };
+    }>(endpoint);
     const raw = response.data;
     const list = Array.isArray(raw?.members) ? raw.members : Array.isArray(raw?.team) ? raw.team : [];
-    return { ...response, data: { team: list }, pagination: response.pagination };
+    const pagination = raw?.pagination ?? response.pagination;
+    return { ...response, data: { team: list }, pagination };
   },
 
   getById: async (id: string) => {

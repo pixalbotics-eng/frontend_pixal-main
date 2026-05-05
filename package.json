@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "build:cpanel": "node scripts/copy-standalone-static.js"
+    "build:cpanel": "npm run build && node scripts/copy-standalone-static.js",
+    "build:cpanel:export": "cross-env NEXT_OUTPUT=export next build"
   },
   "dependencies": {
     "@next/swc-wasm-nodejs": "^16.0.1",

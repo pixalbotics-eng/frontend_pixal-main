@@ -17,6 +17,9 @@ export interface UsersContextType {
   users: User[];
   loading: boolean;
   refetch: () => Promise<void>;
+  page: number;
+  setPage: (page: number) => void;
+  pagination: { total: number; page: number; limit: number; totalPages: number } | null;
   createUser: (data: CreateUserData) => Promise<void>;
   updateUser: (id: string, data: UpdateUserData) => Promise<void>;
   deleteUser: (id: string) => Promise<void>;
@@ -36,8 +39,11 @@ export function UsersProvider({ children, token, onError, onSuccess }: UsersProv
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState<{ total: number; page: number; limit: number; totalPages: number } | null>(null);
   const fetchInFlightRef = useRef(false);
   const hasFetchedRef = useRef(false);
+  const limit = 10;
 
   const refetch = useCallback(async () => {
     if (!token) return;
@@ -45,17 +51,18 @@ export function UsersProvider({ children, token, onError, onSuccess }: UsersProv
     fetchInFlightRef.current = true;
     setLoading(true);
     try {
-      const response = await usersApi.getAll(token);
+      const response = await usersApi.getAll(token, { page, limit, sortBy: '-createdAt' });
       if (response.success && response.data?.users) {
         setUsers(response.data.users);
       }
+      setPagination(response.pagination ?? null);
     } catch (err) {
       onError(getErrorMessage(err));
     } finally {
       setLoading(false);
       fetchInFlightRef.current = false;
     }
-  }, [token, onError]);
+  }, [token, onError, page]);
 
   useEffect(() => {
     if (!token) return;
@@ -105,6 +112,9 @@ export function UsersProvider({ children, token, onError, onSuccess }: UsersProv
     users,
     loading,
     refetch,
+    page,
+    setPage,
+    pagination,
     createUser,
     updateUser,
     deleteUser,
