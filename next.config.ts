@@ -3,10 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   typescript: { ignoreBuildErrors: true },
-  // Production optimizations
-  // For cPanel: use 'export' for static export
-  // For VPS/Server with PM2: use 'standalone'
-  output: process.env.NEXT_OUTPUT === 'export' ? 'export' : 'standalone',
+  // Keep Netlify/Next runtime defaults unless explicitly exporting static files.
+  output: process.env.NEXT_OUTPUT === "export" ? "export" : undefined,
   images: {
     remotePatterns: [
       { protocol: 'http', hostname: 'localhost', pathname: '/**' },
