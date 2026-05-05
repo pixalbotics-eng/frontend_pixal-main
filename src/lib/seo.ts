@@ -60,28 +60,28 @@ export const SEO_BLOG_POSTS = [
 
 export const HOME_FAQS = [
   {
-    question: "What does Pixalbotic do?",
+    question: "What services does Pixalbotic provide for growth-stage and enterprise teams?",
     answer:
-      "Pixalbotic provides software engineering services and packaging solutions. We build web applications, AI workflows, and MERN stack products, and we also deliver custom packaging design and manufacturing support.",
+      "Pixalbotic delivers end-to-end software and packaging services, including web platforms, AI workflow automation, API and cloud integration, MERN engineering, custom packaging systems, and production-ready design support.",
   },
   {
-    question: "Do you offer both software and packaging under one team?",
+    question: "Can you manage both software and packaging under one delivery model?",
     answer:
-      "Yes. Our team combines software strategy with packaging execution so businesses can launch digital products and physical packaging with one partner.",
+      "Yes. We run a unified delivery model where product, engineering, and packaging specialists collaborate through one roadmap, one communication channel, and clear milestones to reduce execution gaps.",
   },
   {
-    question: "Can you support companies in the USA, UK, and Pakistan?",
+    question: "How do you structure timelines, reporting, and project governance?",
     answer:
-      "Yes. We support clients globally with focused packaging and software workflows for the USA, UK, and Pakistan markets.",
+      "Each engagement starts with discovery and scope definition, followed by sprint-based execution, weekly progress reporting, and milestone reviews. Typical timelines range from 4 to 16 weeks based on scope and complexity.",
   },
   {
-    question: "Do you provide MERN stack developers for custom projects?",
+    question: "Do you support regional delivery requirements for USA, UK, and Pakistan?",
     answer:
-      "Yes. We provide MERN stack developers for startup MVPs, business platforms, internal dashboards, and long-term product engineering teams.",
+      "Absolutely. We support clients across USA, UK, and Pakistan with region-aware recommendations for compliance, packaging specifications, fulfillment realities, and go-to-market execution.",
   },
   {
-    question: "Can you help with product packaging design and sourcing?",
+    question: "What happens after launch in terms of support and optimization?",
     answer:
-      "Yes. We handle product packaging design, material recommendations, structural box planning, and supplier coordination for production.",
+      "We provide structured post-launch support that includes monitoring, performance optimization, iterative enhancements, issue resolution, and long-term maintenance plans aligned with your growth roadmap.",
   },
 ];

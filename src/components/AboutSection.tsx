@@ -98,7 +98,7 @@ export default function AboutSection() {
             </div>
 
             <h2 className="text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Software house +{' '}
+              Software Agency +{' '}
               <span className="bg-gradient-to-r from-fuchsia-400 via-violet-400 to-cyan-300 bg-clip-text text-transparent">
                 packaging partner
               </span>

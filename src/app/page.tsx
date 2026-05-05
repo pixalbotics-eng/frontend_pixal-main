@@ -43,7 +43,7 @@ export default function Home() {
       <section className="w-full bg-linear-to-b from-white via-slate-50 to-white py-16 sm:py-20 lg:py-24">
         <div className="container mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="mb-6 inline-flex rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold tracking-wide text-blue-700">
-            Pixalbotic · Software House
+            Pixalbotic · Software Agency
           </div>
           <h1 className="mb-6 max-w-4xl bg-linear-to-r from-gray-900 to-gray-700 bg-clip-text text-4xl font-extrabold text-transparent sm:text-5xl">
             Pixalbotic: Software and Packaging Partner for Growth

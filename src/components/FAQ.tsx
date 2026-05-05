@@ -9,24 +9,24 @@ export default function FAQ() {
 
   const faqs = [
     {
-      question: 'What software services do you offer?',
-      answer: 'We deliver custom SaaS products, modern websites, AI workflows, API integrations, and scalable full-stack platforms using technologies like Next.js, React, and Node.js.',
+      question: 'What services does Pixalbotic provide for growth-stage and enterprise teams?',
+      answer: 'Pixalbotic delivers end-to-end software and packaging services, including web platforms, AI workflow automation, API and cloud integration, MERN engineering, custom packaging systems, and production-ready design support.',
     },
     {
-      question: 'Do you provide custom packaging services too?',
-      answer: 'Yes. Along with software, we provide custom packaging, product packaging design, structural concepts, and print-ready assets for ecommerce and retail brands.',
+      question: 'Can you manage both software and packaging under one delivery model?',
+      answer: 'Yes. We run a unified delivery model where product, engineering, and packaging specialists collaborate through one roadmap, one communication channel, and clear milestones to reduce execution gaps.',
     },
     {
-      question: 'How long does a project usually take?',
-      answer: 'Timeline depends on scope. Smaller builds may launch in a few weeks, while full platforms or packaging programs can take a few months. We share a clear timeline after discovery.',
+      question: 'How do you structure timelines, reporting, and project governance?',
+      answer: 'Each engagement starts with discovery and scope definition, followed by sprint-based execution, weekly progress reporting, and milestone reviews. Typical timelines range from 4 to 16 weeks based on scope and complexity.',
     },
     {
-      question: 'Can you support businesses in USA, UK, and Pakistan?',
-      answer: 'Absolutely. We work with teams in the USA, UK, and Pakistan, with market-specific recommendations for software delivery and packaging operations.',
+      question: 'Do you support regional delivery requirements for USA, UK, and Pakistan?',
+      answer: 'Absolutely. We support clients across USA, UK, and Pakistan with region-aware recommendations for compliance, packaging specifications, fulfillment realities, and go-to-market execution.',
     },
     {
-      question: 'Do you provide ongoing support after launch?',
-      answer: 'Yes. We provide post-launch support, updates, optimization, and maintenance so your software and packaging systems stay reliable as your business grows.',
+      question: 'What happens after launch in terms of support and optimization?',
+      answer: 'We provide structured post-launch support that includes monitoring, performance optimization, iterative enhancements, issue resolution, and long-term maintenance plans aligned with your growth roadmap.',
     },
   ];
 
@@ -35,31 +35,42 @@ export default function FAQ() {
   };
 
   return (
-    <section className="w-full bg-linear-to-b from-slate-50 to-white py-12 sm:py-16 lg:py-24">
+    <section className="relative w-full overflow-hidden bg-linear-to-b from-slate-50 via-white to-slate-100 py-14 sm:py-18 lg:py-24">
+      <div className="pointer-events-none absolute -left-24 top-8 h-56 w-56 rounded-full bg-blue-200/30 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 bottom-8 h-56 w-56 rounded-full bg-purple-200/30 blur-3xl" />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="mb-4 text-center text-3xl font-bold text-black sm:text-4xl lg:text-5xl">
-          Clear Answers to Your Questions
-        </h2>
-        <p className="mx-auto mb-12 max-w-3xl text-center text-base text-gray-600 sm:text-lg">
-          Software, AI, and packaging services explained in clear language so you can move faster with confidence.
-        </p>
+        <div className="mx-auto mb-12 max-w-3xl text-center">
+          <span className="mb-4 inline-flex rounded-full border border-blue-200 bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-blue-700 shadow-sm sm:text-sm">
+            FAQ · Pixalbotic
+          </span>
+          <h2 className="mt-4 bg-linear-to-r from-gray-900 via-blue-800 to-purple-700 bg-clip-text text-3xl font-extrabold text-transparent sm:text-4xl lg:text-5xl">
+            Clear Answers, Faster Decisions
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-gray-600 sm:text-lg">
+            Get straightforward guidance on software, AI, and custom packaging so your team can plan and execute with confidence.
+          </p>
+        </div>
 
-        <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-12">
-          {/* Left Side - FAQ Accordion */}
-          <div className="flex-1 w-full space-y-4">
+        <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10">
+          <div className="w-full space-y-4 lg:col-span-7">
             {faqs.map((faq, index) => (
-              <div key={index} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition">
+              <div
+                key={index}
+                className={`overflow-hidden rounded-2xl border bg-white shadow-sm transition-all ${
+                  openIndex === index ? "border-blue-300 shadow-md" : "border-gray-200 hover:border-blue-200 hover:shadow-md"
+                }`}
+              >
                 <button
                   onClick={() => toggleFAQ(index)}
-                  className="w-full bg-white p-5 text-left transition hover:bg-slate-50 sm:p-6"
+                  className="flex w-full items-center justify-between gap-3 bg-white p-5 text-left transition hover:bg-slate-50 sm:p-6"
+                  aria-expanded={openIndex === index}
                 >
-                  <span className="pr-4 text-base font-semibold text-black sm:text-lg">
+                  <span className="pr-4 text-base font-semibold text-gray-900 sm:text-lg">
                     {faq.question}
                   </span>
-                  {/* Use asset icon for angle-down */}
                   <svg
-                    className={`w-5 h-5 sm:w-6 sm:h-6 text-[#FF6B35] shrink-0 transition-transform ${
-                      openIndex === index ? 'rotate-180' : ''
+                    className={`h-5 w-5 shrink-0 text-blue-600 transition-transform sm:h-6 sm:w-6 ${
+                      openIndex === index ? "rotate-180" : ""
                     }`}
                     viewBox="0 0 320 512"
                     fill="currentColor"
@@ -78,16 +89,23 @@ export default function FAQ() {
             ))}
           </div>
 
-          {/* Right Side - Robot Image */}
-          <div className="flex-1 flex justify-center lg:justify-end w-full lg:w-auto">
-            <div className="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
-              <div className="w-full h-full rounded-2xl overflow-hidden relative">
-                <Image
-                  src={images.robots.faq}
-                  alt="Robot"
-                  fill
-                  className="object-contain"
-                />
+          <div className="w-full lg:col-span-5">
+            <div className="rounded-3xl border border-gray-200 bg-white/90 p-6 shadow-lg backdrop-blur sm:p-7">
+              <div className="mb-5 inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-700">
+                Quick Support
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 sm:text-3xl">Still have questions?</h3>
+              <p className="mt-3 text-sm leading-7 text-gray-600 sm:text-base">
+                Talk to Pixalbotic experts for software strategy, AI implementation, and custom packaging planning tailored to your business goals.
+              </p>
+              <div className="mt-5 grid grid-cols-2 gap-3 text-sm">
+                <div className="rounded-xl border border-gray-200 bg-slate-50 px-3 py-2 font-medium text-gray-700">Software</div>
+                <div className="rounded-xl border border-gray-200 bg-slate-50 px-3 py-2 font-medium text-gray-700">AI</div>
+                <div className="rounded-xl border border-gray-200 bg-slate-50 px-3 py-2 font-medium text-gray-700">Packaging</div>
+                <div className="rounded-xl border border-gray-200 bg-slate-50 px-3 py-2 font-medium text-gray-700">Support</div>
+              </div>
+              <div className="relative mt-6 h-64 overflow-hidden rounded-2xl border border-gray-200 bg-linear-to-br from-slate-50 to-slate-100 sm:h-72">
+                <Image src={images.robots.faq} alt="Pixalbotic support assistant" fill className="object-contain p-4" />
               </div>
             </div>
           </div>
