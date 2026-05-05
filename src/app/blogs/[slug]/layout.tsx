@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { BRAND_NAME, SITE_URL } from "@/lib/seo";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
-const siteUrl = process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || "https://pixalbotics.com";
-const siteName = "Pixalbotics";
+const siteUrl = SITE_URL;
+const siteName = BRAND_NAME;
 
 function stripHtml(html: string): string {
   if (!html || typeof html !== "string") return "";

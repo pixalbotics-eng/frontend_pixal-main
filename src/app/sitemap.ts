@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
+import { PACKAGING_PAGES, SEO_BLOG_POSTS, SERVICE_PAGES, SITE_URL } from "@/lib/seo";
 
-const baseUrl = process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || "https://pixalbotics.com";
+const baseUrl = SITE_URL;
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 async function getBlogSlugs(): Promise<string[]> {
@@ -40,6 +41,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/booking`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.4 },
     { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.4 },
+    ...SERVICE_PAGES.map((path) => ({
+      url: `${baseUrl}${path}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.85,
+    })),
+    ...PACKAGING_PAGES.map((path) => ({
+      url: `${baseUrl}${path}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.85,
+    })),
+    ...SEO_BLOG_POSTS.map((post) => ({
+      url: `${baseUrl}/blogs/${post.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.82,
+    })),
   ];
 
   const blogUrls: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({

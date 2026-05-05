@@ -6,16 +6,21 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { ToastProvider } from "@/contexts/ToastContext";
 import ToastContainer from "@/components/ui/Toast";
 import PingKeeper from "@/components/PingKeeper";
+import {
+  BRAND_ALTERNATE,
+  BRAND_NAME,
+  CORE_KEYWORDS,
+  GLOBAL_DESCRIPTION,
+  GLOBAL_TITLE,
+  SITE_URL,
+} from "@/lib/seo";
 
-const SITE_NAME = "Pixalbotics";
-const TAGLINE = "AI & Technology Solutions – Smart Solutions for Digital Evolution";
-const FULL_DESCRIPTION =
-  "Pixalbotics delivers intelligent AI-powered solutions to streamline operations, enhance efficiency, and drive innovation. We specialize in robotics, automation, smart retail, and digital transformation for businesses worldwide.";
+const FULL_DESCRIPTION = GLOBAL_DESCRIPTION;
 
 /** SEO / metadata: cPanel par env se set hota hai (bina rebuild ke). */
 function getSeoEnv() {
   return {
-    siteUrl: process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || "https://pixalbotics.com",
+    siteUrl: SITE_URL,
     googleVerification: process.env.GOOGLE_SITE_VERIFICATION || undefined,
     sameAs: process.env.SEO_SAME_AS
       ? process.env.SEO_SAME_AS.split(",").map((s) => s.trim()).filter(Boolean)
@@ -28,45 +33,34 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL(siteUrl),
     title: {
-      default: `${SITE_NAME} - ${TAGLINE}`,
-      template: `%s | ${SITE_NAME}`,
+      default: GLOBAL_TITLE,
+      template: `%s | ${BRAND_NAME}`,
     },
     description: FULL_DESCRIPTION,
-    keywords: [
-      "Pixalbotics",
-      "pixalbotics",
-      "AI solutions",
-      "technology solutions",
-      "robotics",
-      "automation",
-      "smart retail",
-      "digital transformation",
-      "intelligent automation",
-      "innovation",
-    ],
-    authors: [{ name: SITE_NAME, url: siteUrl }],
-    creator: SITE_NAME,
-    publisher: SITE_NAME,
+    keywords: CORE_KEYWORDS,
+    authors: [{ name: BRAND_NAME, url: siteUrl }],
+    creator: BRAND_NAME,
+    publisher: BRAND_NAME,
     formatDetection: { email: false, address: false, telephone: false },
     openGraph: {
       type: "website",
       locale: "en_US",
       url: siteUrl,
-      siteName: SITE_NAME,
-      title: `${SITE_NAME} - ${TAGLINE}`,
+      siteName: BRAND_NAME,
+      title: GLOBAL_TITLE,
       description: FULL_DESCRIPTION,
       images: [
         {
           url: "/pixalbotics-logo.png",
           width: 512,
           height: 512,
-          alt: `${SITE_NAME} Logo`,
+          alt: `${BRAND_NAME} logo`,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${SITE_NAME} - ${TAGLINE}`,
+      title: GLOBAL_TITLE,
       description: FULL_DESCRIPTION,
       images: ["/pixalbotics-logo.png"],
     },
@@ -100,17 +94,39 @@ export default function RootLayout({
       {
         "@type": "Organization",
         "@id": `${siteUrl}/#organization`,
-        name: SITE_NAME,
+        name: BRAND_NAME,
+        alternateName: BRAND_ALTERNATE,
         url: siteUrl,
         logo: { "@type": "ImageObject", url: `${siteUrl}/pixalbotics-logo.png` },
         description: FULL_DESCRIPTION,
         sameAs,
+        areaServed: ["USA", "UK", "Pakistan"],
+        knowsAbout: [
+          "Web Development Services",
+          "AI Solutions",
+          "MERN Stack Development",
+          "Custom Packaging",
+          "Product Packaging Design",
+          "Box Packaging Supplier Services",
+        ],
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "Software and Packaging Services",
+          itemListElement: [
+            { "@type": "Offer", itemOffered: { "@type": "Service", name: "Web Development Services" } },
+            { "@type": "Offer", itemOffered: { "@type": "Service", name: "AI Solutions" } },
+            { "@type": "Offer", itemOffered: { "@type": "Service", name: "MERN Stack Developers" } },
+            { "@type": "Offer", itemOffered: { "@type": "Service", name: "Custom Packaging Solutions" } },
+            { "@type": "Offer", itemOffered: { "@type": "Service", name: "Product Packaging Design" } },
+            { "@type": "Offer", itemOffered: { "@type": "Service", name: "Box Packaging Supplier" } },
+          ],
+        },
       },
       {
         "@type": "WebSite",
         "@id": `${siteUrl}/#website`,
         url: siteUrl,
-        name: SITE_NAME,
+        name: BRAND_NAME,
         description: FULL_DESCRIPTION,
         publisher: { "@id": `${siteUrl}/#organization` },
       },

@@ -14,6 +14,7 @@ import { blogsApi, type Blog } from '@/api';
 import { getDisplayImageUrl } from '@/api/config';
 import EmptyState from '@/components/ui/EmptyState';
 import { useRefetchOnWindowFocus } from '@/hooks';
+import { SEO_BLOG_POSTS } from '@/lib/seo';
 
 const GRADIENTS = ['from-blue-500 to-cyan-500', 'from-purple-500 to-pink-500', 'from-indigo-500 to-blue-500', 'from-green-500 to-emerald-500', 'from-orange-500 to-red-500', 'from-violet-500 to-purple-500'] as const;
 const ICONS = [SparklesIcon, RocketIcon, BookIcon];
@@ -71,6 +72,21 @@ export default function BlogsPage() {
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="mb-12">
+            <h2 className="mb-4 text-2xl font-bold text-gray-900 sm:text-3xl">Featured SEO Guides</h2>
+            <div className="grid gap-4 md:grid-cols-3">
+              {SEO_BLOG_POSTS.map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blogs/${post.slug}`}
+                  className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-blue-500 hover:shadow-md"
+                >
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900">{post.title}</h3>
+                  <p className="text-sm text-gray-600">{post.description}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
           {loading ? (
             <div className="flex flex-col items-center justify-center py-16 text-gray-500">
               <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-3" />

@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import { BRAND_ALTERNATE, BRAND_NAME, SITE_URL } from "@/lib/seo";
 
-const siteUrl = process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || "https://pixalbotics.com";
-const siteName = "Pixalbotics";
+const siteUrl = SITE_URL;
+const siteName = BRAND_NAME;
 
 export const metadata: Metadata = {
   title: "Our Blog | " + siteName,
   description:
-    "Stay updated with the latest trends, insights, and best practices in AI, technology, and software development. Read articles from Pixalbotics.",
+    `Stay updated with software and packaging insights from ${siteName} (${BRAND_ALTERNATE}), including AI development, web delivery, and packaging strategy.`,
   openGraph: {
     title: "Our Blog | " + siteName,
     description: "Latest insights on AI, technology, and software development.",
