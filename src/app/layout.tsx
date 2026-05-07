@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import Layout from "@/components/Layout";
 import { AuthProvider } from "@/contexts/AuthContext";
@@ -176,6 +177,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <ToastContainer />
           </ToastProvider>
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );

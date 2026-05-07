@@ -1,6 +1,12 @@
 {
   "site": {
-    "defaultUrl": "https://www.pixalbotic.com"
+    "defaultUrl": "https://www.pixalbotic.com",
+    "officialDomains": [
+      "https://www.pixalbotic.com",
+      "https://pixalbotic.com",
+      "https://www.pixalbotics.com",
+      "https://pixalbotics.com"
+    ]
   },
   "brand": {
     "primary": "Pixalbotic",

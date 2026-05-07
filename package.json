@@ -11,6 +11,7 @@
     "build:cpanel:export": "cross-env NEXT_OUTPUT=export next build"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "framer-motion": "^12.23.24",
     "next": "16.0.10",
     "pdfjs-dist": "^5.4.624",

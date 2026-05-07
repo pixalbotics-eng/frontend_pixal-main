@@ -2,7 +2,12 @@
 
 Pixalbotics – AI & Technology Solutions. Smart Solutions for Digital Evolution.
 
-Website: https://pixalbotics.com
+Official domains (same site): https://pixalbotics.com · https://www.pixalbotics.com · https://www.pixalbotic.com · https://pixalbotic.com
+
+Website (example): https://pixalbotics.com
+
+AI / assistants index (llms): https://pixalbotics.com/llms.txt · https://www.pixalbotic.com/llms.txt
+Structured facts page: https://pixalbotics.com/ai · https://www.pixalbotic.com/ai
 
 ## Social
 Instagram: https://www.instagram.com/Pixal_Botics
