@@ -4,27 +4,20 @@ import React from 'react';
 import Link from 'next/link';
 import { motion, type Variants } from 'framer-motion';
 import Image, { type StaticImageData } from 'next/image';
-import { FiCheck, FiCode, FiCpu, FiLayers, FiPackage, FiPrinter, FiZap } from 'react-icons/fi';
+import { FiCheck } from 'react-icons/fi';
 import { images } from '@/images';
+import siteContent from '@/data/site-content.json';
+import { getContentIcon } from '@/data/icon-registry';
 import Button from './ui/Button';
 
-/* ─── data ────────────────────────────────────────────────────────── */
-
-const services = [
-  { id: 'saas', label: 'SaaS Solutions', icon: FiCode },
-  { id: 'ai', label: 'AI Software Development', icon: FiZap },
-  { id: 'api', label: 'API & Cloud Integration', icon: FiCpu },
-  { id: 'pack', label: 'Packaging Design', icon: FiPackage },
-  { id: 'struct', label: 'Structural Packaging', icon: FiLayers },
-  { id: 'print', label: 'Printing & Labels', icon: FiPrinter },
-];
-
-const stats = [
-  { value: '200+', label: 'AI Software Projects' },
-  { value: '150+', label: 'Packaging Designs Delivered' },
-  { value: '50+', label: 'Business Clients' },
-  { value: '99%', label: 'Client Satisfaction' },
-];
+const heroCopy = siteContent.hero;
+const heroServices = heroCopy.serviceChips.map((chip) => ({
+  id: chip.id,
+  label: chip.label,
+  icon: getContentIcon(chip.icon),
+}));
+const heroStats = heroCopy.stats;
+const heroAlts = heroCopy.imageAlts;
 
 /* ─── animations ──────────────────────────────────────────────────── */
 
@@ -123,7 +116,7 @@ export default function Hero() {
                   <Image src={h.logoMark} alt="" fill className="object-contain" sizes="28px" />
                 </div>
                 <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-300">
-                  Pixalbotics · Software House
+                  {heroCopy.badge}
                 </span>
               </motion.div>
 
@@ -132,32 +125,31 @@ export default function Hero() {
                 variants={fadeUp}
                 className="text-[2rem] font-extrabold leading-[1.1] tracking-tight text-white sm:text-[2.5rem] lg:text-[2.6rem] xl:text-[3rem]"
               >
-                We Build Intelligent{' '}
+                {heroCopy.titleLine1}{' '}
                 <span className="bg-gradient-to-r from-sky-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
-                  Software
+                  {heroCopy.titleGradientSoftware}
                 </span>{' '}
-                &amp; Smart{' '}
+                {heroCopy.titleLine2Amp} {heroCopy.titleGradientSmart}{' '}
                 <span className="bg-gradient-to-r from-fuchsia-400 to-pink-400 bg-clip-text text-transparent">
-                  Packaging
+                  {heroCopy.titleGradientPackaging}
                 </span>
               </motion.h1>
 
               <motion.p variants={fadeUp} className="mx-auto mt-5 max-w-lg text-[15px] leading-relaxed text-slate-300/90 sm:text-base lg:mx-0">
-                From custom SaaS platforms and AI-powered products to structural packaging design and commercial print—we are your
-                full-service technology partner. One team, every deliverable.
+                {heroCopy.subtitle}
               </motion.p>
 
               <motion.div variants={fadeUp} className="mt-8 flex flex-wrap justify-center gap-3 lg:justify-start">
-                <Link href="/booking" className="inline-flex">
+                <Link href={heroCopy.primaryCta.href} className="inline-flex">
                   <Button size="lg" showArrow>
-                    Start Your Project
+                    {heroCopy.primaryCta.label}
                   </Button>
                 </Link>
                 <Link
-                  href="/services"
+                  href={heroCopy.secondaryCta.href}
                   className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-white/[0.06] px-5 py-3.5 text-sm font-medium text-white backdrop-blur-md transition hover:border-white/30 hover:bg-white/10"
                 >
-                  Explore Services
+                  {heroCopy.secondaryCta.label}
                 </Link>
               </motion.div>
             </div>
@@ -176,7 +168,7 @@ export default function Hero() {
                         {/* Cinematic base — workspace + city (slight bias to subject) */}
                         <Image
                           src={h.pixal4}
-                          alt="Developer workspace with pixelbolts branding and neon city view"
+                          alt={heroAlts.workspace}
                           fill
                           sizes="(max-width:1280px)50vw,620px"
                           className="object-cover object-[center_38%] scale-[1.08]"
@@ -209,7 +201,7 @@ export default function Hero() {
                             <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
                               <Image
                                 src={h.hero1}
-                                alt="SaaS dashboards and analytics interfaces"
+                                alt={heroAlts.saasCard}
                                 fill
                                 sizes="200px"
                                 className="object-cover object-center"
@@ -229,7 +221,7 @@ export default function Hero() {
                             <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
                               <Image
                                 src={h.hero}
-                                alt="Packaging design and print production graphics"
+                                alt={heroAlts.packagingCard}
                                 fill
                                 sizes="200px"
                                 className="object-cover object-center"
@@ -245,7 +237,7 @@ export default function Hero() {
                           transition={{ ...popIn.transition, delay: 0.12 }}
                         >
                           <div className="relative h-9 w-9">
-                            <Image src={h.logoMark} alt="Pixalbotics logo" fill sizes="36px" className="object-contain" />
+                            <Image src={h.logoMark} alt={heroAlts.logoCenter} fill sizes="36px" className="object-contain" />
                           </div>
                         </motion.div>
 
@@ -254,7 +246,7 @@ export default function Hero() {
                           <div className="relative h-[clamp(220px,36vw,300px)] w-[min(88%,360px)]">
                             <FloatingAsset
                               src={h.pixal1}
-                              alt="Pixalbotics hero logo with robot mascot"
+                              alt={heroAlts.mascotDesktop}
                               sizes="(max-width:1280px)40vw,340px"
                               dur={7}
                               glow="drop-shadow(0 20px 40px rgba(0,0,0,0.55)) drop-shadow(0 0 24px rgba(56,189,248,0.2))"
@@ -275,7 +267,7 @@ export default function Hero() {
                       <div className="relative aspect-[3/4] w-full sm:aspect-[10/13]">
                         <Image
                           src={h.pixal4}
-                          alt="Developer workspace with pixelbolts branding and neon city view"
+                          alt={heroAlts.workspace}
                           fill
                           sizes="100vw"
                           className="object-cover object-[center_36%] scale-105"
@@ -291,7 +283,7 @@ export default function Hero() {
                         >
                           <div className="rounded-xl border border-white/20 bg-black/40 p-1 shadow-lg backdrop-blur-md">
                             <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
-                              <Image src={h.hero1} alt="SaaS and analytics dashboard visual" fill sizes="38vw" className="object-cover object-center" />
+                              <Image src={h.hero1} alt={heroAlts.saasCardMobile} fill sizes="38vw" className="object-cover object-center" />
                             </div>
                           </div>
                         </motion.div>
@@ -303,7 +295,7 @@ export default function Hero() {
                         >
                           <div className="rounded-xl border border-white/20 bg-black/40 p-1 shadow-lg backdrop-blur-md">
                             <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
-                              <Image src={h.hero} alt="Packaging and print design visual" fill sizes="38vw" className="object-cover object-center" />
+                              <Image src={h.hero} alt={heroAlts.packagingMobile} fill sizes="38vw" className="object-cover object-center" />
                             </div>
                           </div>
                         </motion.div>
@@ -314,7 +306,7 @@ export default function Hero() {
                           transition={{ ...popIn.transition, delay: 0.08 }}
                         >
                           <div className="relative h-7 w-7">
-                            <Image src={h.logoMark} alt="Pixalbotics logo icon" fill sizes="28px" className="object-contain" />
+                            <Image src={h.logoMark} alt={heroAlts.logoCenter} fill sizes="28px" className="object-contain" />
                           </div>
                         </motion.div>
 
@@ -322,7 +314,7 @@ export default function Hero() {
                           <div className="relative h-[clamp(200px,42vw,280px)] w-[min(92%,320px)]">
                             <FloatingAsset
                               src={h.pixal1}
-                              alt="Pixalbotics hero brand visual"
+                              alt={heroAlts.mascotMobile}
                               sizes="90vw"
                               priority
                               dur={7}
@@ -341,7 +333,7 @@ export default function Hero() {
 
           {/* ── SERVICE PILLS ── */}
           <motion.div variants={fadeUp} className="mt-10 flex flex-wrap items-center justify-center gap-2 sm:mt-12 sm:gap-2.5">
-            {services.map(({ id, label, icon: Icon }) => (
+            {heroServices.map(({ id, label, icon: Icon }) => (
               <Link
                 key={id}
                 href="/services"
@@ -361,7 +353,7 @@ export default function Hero() {
             className="mx-auto mt-10 max-w-4xl overflow-hidden rounded-2xl border border-white/12 bg-gradient-to-r from-violet-950/40 via-slate-950/60 to-sky-950/40 shadow-[0_12px_48px_-8px_rgba(0,0,0,0.5)] backdrop-blur-xl sm:mt-12 sm:rounded-3xl"
           >
             <div className="grid grid-cols-2 lg:grid-cols-4">
-              {stats.map((s, i) => (
+              {heroStats.map((s, i) => (
                 <div
                   key={s.label}
                   className={`flex items-center gap-3 px-4 py-4 sm:px-6 sm:py-5 ${

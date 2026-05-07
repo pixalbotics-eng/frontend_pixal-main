@@ -17,6 +17,9 @@ import {
 } from '@/config/contact';
 import { contactApi, testimonialsApi } from '@/api';
 import { ApiError } from '@/api/client';
+import siteContent from '@/data/site-content.json';
+
+const cc = siteContent.contactSection;
 
 export default function ContactSection() {
   const [rating, setRating] = useState(0);
@@ -62,7 +65,7 @@ export default function ContactSection() {
       setContactSuccess(true);
       form.reset();
     } catch (err) {
-      setContactError(err instanceof ApiError ? err.message : 'Failed to send message. Please try again.');
+      setContactError(err instanceof ApiError ? err.message : cc.forms.errorContact);
     } finally {
       setContactLoading(false);
     }
@@ -88,7 +91,7 @@ export default function ContactSection() {
       setRating(0);
       form.reset();
     } catch (err) {
-      setReviewError(err instanceof ApiError ? err.message : 'Failed to submit review. Please try again.');
+      setReviewError(err instanceof ApiError ? err.message : cc.forms.errorReview);
     } finally {
       setReviewLoading(false);
     }
@@ -112,13 +115,13 @@ export default function ContactSection() {
           className="text-center mb-12 lg:mb-16"
         >
           <div className="inline-block px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 rounded-full text-sm font-semibold mb-4 border border-blue-200">
-            Get In Touch
+            {cc.badge}
           </div>
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-            Connect With Us
+            {cc.title}
           </h2>
           <p className="text-xl sm:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Have questions, need support, or want to share your experience? We&apos;d love to hear from you!
+            {cc.subtitle}
           </p>
         </motion.div>
 
@@ -130,7 +133,7 @@ export default function ContactSection() {
             onClick={() => setIsReviewForm(false)}
             className={!isReviewForm ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' : ''}
           >
-            Contact Us
+            {cc.toggleContact}
           </Button>
           <Button
             size="md"
@@ -138,7 +141,7 @@ export default function ContactSection() {
             onClick={() => setIsReviewForm(true)}
             className={isReviewForm ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' : ''}
           >
-            Write a Review
+            {cc.toggleReview}
           </Button>
         </div>
 
@@ -153,14 +156,14 @@ export default function ContactSection() {
               <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${isReviewForm ? 'from-yellow-500 to-orange-500' : 'from-blue-500 to-purple-500'} opacity-5 rounded-bl-full`}></div>
               
               <h3 className="text-2xl font-bold text-gray-900 mb-6 relative z-10">
-                {isReviewForm ? 'Share Your Experience' : 'Send Us a Message'}
+                {isReviewForm ? cc.forms.reviewTitle : cc.forms.contactTitle}
               </h3>
               
               {isReviewForm ? (
                 <form className="space-y-6 relative z-10" onSubmit={handleReviewSubmit}>
                   <div>
                     <label htmlFor="reviewName" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Your Name *
+                      {cc.forms.nameLabel} *
                     </label>
                     <input
                       type="text"
@@ -168,12 +171,12 @@ export default function ContactSection() {
                       name="reviewName"
                       required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-500"
-                      placeholder="Enter your name"
+                      placeholder={cc.forms.placeholders.name}
                     />
                   </div>
                   <div>
                     <label htmlFor="reviewEmail" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Email Address *
+                      {cc.forms.emailLabel} *
                     </label>
                     <input
                       type="email"
@@ -181,12 +184,12 @@ export default function ContactSection() {
                       name="reviewEmail"
                       required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-500"
-                      placeholder="your.email@example.com"
+                      placeholder={cc.forms.placeholders.email}
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Rating *
+                      {cc.forms.reviewRatingLabel} *
                     </label>
                     <div className="flex gap-2">
                       {[1, 2, 3, 4, 5].map((star) => (
@@ -208,12 +211,17 @@ export default function ContactSection() {
                       ))}
                     </div>
                     <p className="text-xs text-gray-500 mt-2">
-                      {rating > 0 ? `You selected ${rating} star${rating > 1 ? 's' : ''}` : 'Please select a rating'}
+                      {rating > 0
+                        ? (rating > 1 ? cc.forms.ratingHintPlural : cc.forms.ratingHint).replace(
+                            '{{N}}',
+                            String(rating)
+                          )
+                        : cc.forms.ratingHintNone}
                     </p>
                   </div>
                   <div>
                     <label htmlFor="reviewTitle" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Review Title *
+                      {cc.forms.reviewTitleLabel} *
                     </label>
                     <input
                       type="text"
@@ -221,12 +229,12 @@ export default function ContactSection() {
                       name="reviewTitle"
                       required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-500"
-                      placeholder="Brief title for your review"
+                      placeholder={cc.forms.placeholders.reviewTitle}
                     />
                   </div>
                   <div>
                     <label htmlFor="reviewMessage" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Your Review *
+                      {cc.forms.reviewBodyLabel} *
                     </label>
                     <textarea
                       id="reviewMessage"
@@ -234,61 +242,61 @@ export default function ContactSection() {
                       rows={5}
                       required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none text-gray-900 placeholder-gray-500"
-                      placeholder="Share your experience with Pixalbotics..."
+                      placeholder={cc.forms.placeholders.reviewBody}
                     ></textarea>
                   </div>
                   {reviewError && <p className="text-sm text-red-600">{reviewError}</p>}
-                  {reviewSuccess && <p className="text-sm text-green-600">Thank you! Your review has been submitted.</p>}
+                  {reviewSuccess && <p className="text-sm text-green-600">{cc.forms.successReview}</p>}
                   <Button 
                     type="submit"
                     size="lg" 
                     className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 shadow-lg shadow-yellow-500/30"
                     disabled={rating === 0 || reviewLoading}
                   >
-                    {reviewLoading ? 'Submitting...' : 'Submit Review'}
+                    {reviewLoading ? cc.forms.submitting : cc.forms.submitReview}
                   </Button>
                 </form>
               ) : (
                 <form className="space-y-6 relative z-10" onSubmit={handleContactSubmit}>
                   <div>
                     <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Your Name
+                      {cc.forms.nameLabel}
                     </label>
                     <input
                       type="text"
                       id="name"
                       name="name"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-500"
-                      placeholder="Enter your name"
+                      placeholder={cc.forms.placeholders.name}
                     />
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Email Address
+                      {cc.forms.emailLabel}
                     </label>
                     <input
                       type="email"
                       id="email"
                       name="email"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-500"
-                      placeholder="your.email@example.com"
+                      placeholder={cc.forms.placeholders.email}
                     />
                   </div>
                   <div>
                     <label htmlFor="subject" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Subject
+                      {cc.forms.subjectLabel}
                     </label>
                     <input
                       type="text"
                       id="subject"
                       name="subject"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-500"
-                      placeholder="e.g. Project Inquiry"
+                      placeholder={cc.forms.placeholders.subject}
                     />
                   </div>
                   <div>
                     <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Phone / WhatsApp
+                      {cc.forms.phoneLabel}
                     </label>
                     <input
                       type="tel"
@@ -300,20 +308,20 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Message
+                      {cc.forms.messageLabel}
                     </label>
                     <textarea
                       id="message"
                       name="message"
                       rows={5}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none text-gray-900 placeholder-gray-500"
-                      placeholder="Tell us about your project or questions..."
+                      placeholder={cc.forms.placeholders.message}
                     ></textarea>
                   </div>
                   {contactError && <p className="text-sm text-red-600">{contactError}</p>}
-                  {contactSuccess && <p className="text-sm text-green-600">Message sent successfully. We&apos;ll get back to you soon.</p>}
+                  {contactSuccess && <p className="text-sm text-green-600">{cc.forms.successContact}</p>}
                   <Button type="submit" size="lg" className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg shadow-blue-500/30" disabled={contactLoading}>
-                    {contactLoading ? 'Sending...' : 'Send Message'}
+                    {contactLoading ? cc.forms.sending : cc.forms.sendMessage}
                   </Button>
                 </form>
               )}
@@ -329,7 +337,7 @@ export default function ContactSection() {
           >
             <Card variant="default">
               <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                Contact Information
+                {cc.infoCard.title}
               </h3>
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
@@ -337,12 +345,12 @@ export default function ContactSection() {
                     <MailIcon className="text-blue-600" size={24} />
                   </div>
                   <div>
-                    <h4 className="text-lg font-semibold text-gray-900 mb-1">Email</h4>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-1">{cc.infoCard.emailHeading}</h4>
                     <a
-                      href="mailto:info@pixalbotics.com"
+                      href={cc.infoCard.emailHref}
                       className="text-blue-600 hover:text-blue-700 transition-colors"
                     >
-                      info@pixalbotics.com
+                      {cc.infoCard.emailDisplay}
                     </a>
                   </div>
                 </div>
@@ -352,8 +360,8 @@ export default function ContactSection() {
                   </div>
                   <div className="space-y-3">
                     <div>
-                      <h4 className="text-lg font-semibold text-gray-900 mb-1">Phone</h4>
-                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">UK branch</p>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-1">{cc.infoCard.phoneHeading}</h4>
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">{cc.infoCard.ukBranch}</p>
                       <a
                         href={`tel:${UK_PHONE_E164.replace(/\s/g, '')}`}
                         className="text-blue-600 hover:text-blue-700 transition-colors block"
@@ -362,7 +370,7 @@ export default function ContactSection() {
                       </a>
                     </div>
                     <div>
-                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Pakistan branch</p>
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">{cc.infoCard.pkBranch}</p>
                       <a
                         href={`tel:${PK_SALES_PHONE_E164.replace(/\s/g, '')}`}
                         className="text-blue-600 hover:text-blue-700 transition-colors block"
@@ -378,8 +386,8 @@ export default function ContactSection() {
                   </div>
                   <div className="space-y-3">
                     <div>
-                      <h4 className="text-lg font-semibold text-gray-900 mb-1">WhatsApp</h4>
-                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">UK branch</p>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-1">{cc.infoCard.whatsappHeading}</h4>
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">{cc.infoCard.ukBranch}</p>
                       <a
                         href={`https://wa.me/${UK_PHONE_WA_DIGITS}`}
                         target="_blank"
@@ -390,7 +398,7 @@ export default function ContactSection() {
                       </a>
                     </div>
                     <div>
-                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Pakistan branch</p>
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">{cc.infoCard.pkBranch}</p>
                       <a
                         href={`https://wa.me/${PK_SALES_WHATSAPP_DIGITS}`}
                         target="_blank"
@@ -400,7 +408,7 @@ export default function ContactSection() {
                         {PK_SALES_PHONE_DISPLAY}
                       </a>
                       <p className="text-sm text-gray-600 mt-1">
-                        Urgent enquiries &amp; estimates — sales team
+                        {cc.infoCard.pkWhatsAppNote}
                       </p>
                     </div>
                   </div>
@@ -410,8 +418,8 @@ export default function ContactSection() {
                     <ClockIcon className="text-green-600" size={24} />
                   </div>
                   <div>
-                    <h4 className="text-lg font-semibold text-gray-900 mb-1">Business Hours</h4>
-                    <p className="text-gray-600">Mon - Fri: 9AM - 6PM</p>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-1">{cc.infoCard.hoursHeading}</h4>
+                    <p className="text-gray-600">{cc.infoCard.hoursLine}</p>
                   </div>
                 </div>
               </div>
@@ -420,10 +428,10 @@ export default function ContactSection() {
             {/* Trustpilot Review Widget */}
             <Card variant="default">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Trustpilot Reviews
+                {cc.trustpilot.title}
               </h3>
               <p className="text-sm text-gray-600 mb-4">
-                Read and write reviews for Pixalbotics.
+                {cc.trustpilot.subtitle}
               </p>
               <div className="flex justify-center">
                 <div className="w-full max-w-[520px]">
@@ -436,11 +444,11 @@ export default function ContactSection() {
                     data-style-width="100%"
                   >
                     <a
-                      href="https://www.trustpilot.com/review/pixalbotics.com"
+                      href={cc.trustpilot.linkHref}
                       target="_blank"
                       rel="noopener"
                     >
-                      Trustpilot
+                      {cc.trustpilot.linkLabel}
                     </a>
                   </div>
                 </div>

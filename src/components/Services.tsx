@@ -5,102 +5,20 @@ import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import Button from './ui/Button';
-import {
-  RocketIcon,
-  ZapIcon,
-  UsersIcon,
-  BookIcon,
-  ShieldIcon,
-  SettingsIcon,
-  SparklesIcon,
-} from './ui/Icons';
-import { FiPackage, FiPrinter } from 'react-icons/fi';
+import siteContent from '@/data/site-content.json';
+import { getContentIcon } from '@/data/icon-registry';
+
+const sv = siteContent.servicesSection;
 
 export default function Services() {
-  const services = [
-    {
-      Icon: RocketIcon,
-      title: 'SaaS Products',
-      description: 'Build scalable Software-as-a-Service solutions with modern architecture, subscription management, and cloud infrastructure.',
-      gradient: 'from-blue-500 via-cyan-500 to-blue-600',
-      iconBg: 'from-blue-500 to-cyan-500',
-      hoverGradient: 'from-blue-500/10 to-cyan-500/10',
-    },
-    {
-      Icon: UsersIcon,
-      title: 'CRMs & Gohighlevel',
-      description: 'Custom CRM development and Gohighlevel integrations to manage customer relationships and automate sales processes.',
-      gradient: 'from-purple-500 via-pink-500 to-purple-600',
-      iconBg: 'from-purple-500 to-pink-500',
-      hoverGradient: 'from-purple-500/10 to-pink-500/10',
-    },
-    {
-      Icon: SparklesIcon,
-      title: 'AI Modern Solutions',
-      description: 'Cutting-edge AI-powered applications with machine learning, natural language processing, and intelligent automation.',
-      gradient: 'from-indigo-500 via-blue-500 to-indigo-600',
-      iconBg: 'from-indigo-500 to-blue-500',
-      hoverGradient: 'from-indigo-500/10 to-blue-500/10',
-    },
-    {
-      Icon: ZapIcon,
-      title: 'React Native Apps',
-      description: 'Cross-platform mobile applications for iOS and Android built with React Native for seamless user experiences.',
-      gradient: 'from-green-500 via-emerald-500 to-green-600',
-      iconBg: 'from-green-500 to-emerald-500',
-      hoverGradient: 'from-green-500/10 to-emerald-500/10',
-    },
-    {
-      Icon: SettingsIcon,
-      title: 'Next.js & React',
-      description: 'Modern web applications built with Next.js and React for optimal performance, SEO, and user experience.',
-      gradient: 'from-orange-500 via-red-500 to-orange-600',
-      iconBg: 'from-orange-500 to-red-500',
-      hoverGradient: 'from-orange-500/10 to-red-500/10',
-    },
-    {
-      Icon: ShieldIcon,
-      title: 'Node.js Modern Apps',
-      description: 'Robust backend solutions and full-stack applications using Node.js with modern frameworks and best practices.',
-      gradient: 'from-violet-500 via-purple-500 to-violet-600',
-      iconBg: 'from-violet-500 to-purple-500',
-      hoverGradient: 'from-violet-500/10 to-purple-500/10',
-    },
-    {
-      Icon: RocketIcon,
-      title: 'Modern Websites',
-      description: 'Beautiful, responsive, and high-performance websites built with modern technologies and best design practices.',
-      gradient: 'from-pink-500 via-rose-500 to-pink-600',
-      iconBg: 'from-pink-500 to-rose-500',
-      hoverGradient: 'from-pink-500/10 to-rose-500/10',
-    },
-    {
-      Icon: BookIcon,
-      title: 'E-Commerce Solutions',
-      description: 'Complete e-commerce platforms with payment integration, inventory management, and customer management systems.',
-      gradient: 'from-cyan-500 via-blue-500 to-cyan-600',
-      iconBg: 'from-cyan-500 to-blue-500',
-      hoverGradient: 'from-cyan-500/10 to-blue-500/10',
-    },
-    {
-      Icon: FiPackage,
-      title: 'Packaging Design',
-      description:
-        'Structural packaging, dielines, and retail-ready artwork—from concept sketches to production files that match your brand and fulfilment workflow.',
-      gradient: 'from-fuchsia-500 via-purple-500 to-violet-600',
-      iconBg: 'from-fuchsia-500 to-purple-500',
-      hoverGradient: 'from-fuchsia-500/10 to-purple-500/10',
-    },
-    {
-      Icon: FiPrinter,
-      title: 'Printing & Labels',
-      description:
-        'High-quality commercial printing, labels, and finishing—colour-accurate proofs, consistent runs, and materials suited for shelf-ready packaging.',
-      gradient: 'from-amber-500 via-orange-500 to-rose-600',
-      iconBg: 'from-amber-500 to-orange-500',
-      hoverGradient: 'from-amber-500/10 to-orange-500/10',
-    },
-  ];
+  const services = sv.cards.map((c) => ({
+    Icon: getContentIcon(c.icon),
+    title: c.title,
+    description: c.description,
+    gradient: c.gradient,
+    iconBg: c.iconBg,
+    hoverGradient: c.hoverGradient,
+  }));
 
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
@@ -123,14 +41,13 @@ export default function Services() {
           className="text-center mb-12 lg:mb-16"
         >
           <div className="inline-block px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 rounded-full text-sm font-semibold mb-4 border border-blue-200">
-            Our Services
+            {sv.headerBadge}
           </div>
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-            Complete Technology Solutions
+            {sv.title}
           </h2>
           <p className="text-xl sm:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            From SaaS and AI software to packaging design, printing, and modern web apps — we deliver end-to-end solutions that
-            drive growth online and on the shelf
+            {sv.subtitle}
           </p>
         </motion.div>
 
@@ -258,27 +175,15 @@ export default function Services() {
 
             <div className="text-center max-w-4xl mx-auto relative z-10">
               <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-6">
-                Your Complete Technology Partner
+                {sv.summaryTitle}
               </h3>
               <p className="text-lg sm:text-xl text-gray-300 mb-8 leading-relaxed">
-                We specialize in building modern, scalable solutions across all technology domains. Whether you need a SaaS product, mobile app, e-commerce platform, or custom software — we deliver excellence.
+                {sv.summarySubtitle}
               </p>
               
               {/* Technology Stack */}
               <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-                {[
-                  'SaaS Products',
-                  'CRMs',
-                  'Gohighlevel',
-                  'AI Modern',
-                  'React Native',
-                  'Next.js',
-                  'React',
-                  'Node.js',
-                  'Modern Apps',
-                  'Modern Websites',
-                  'E-Commerce',
-                ].map((tech, index) => (
+                {sv.techBadges.map((tech, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, scale: 0.8 }}

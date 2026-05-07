@@ -1,0 +1,129 @@
+{
+  "site": {
+    "defaultUrl": "https://www.pixalbotic.com"
+  },
+  "brand": {
+    "primary": "Pixalbotic",
+    "alternate": "Pixalbotics"
+  },
+  "seo": {
+    "globalTitle": "Pixalbotic | Software & Packaging Solutions",
+    "globalDescription": "Pixalbotic (Pixalbotics) is a web development company and AI development agency delivering MERN stack developers, custom packaging, product packaging design, and box packaging supplier services for brands in the USA, UK, and Pakistan.",
+    "coreKeywords": [
+      "pixalbotic",
+      "pixalbotics",
+      "web development company",
+      "AI development agency",
+      "MERN stack developers",
+      "custom packaging",
+      "product packaging design",
+      "box packaging supplier",
+      "packaging company USA",
+      "packaging company UK",
+      "packaging company Pakistan"
+    ],
+    "servicePages": [
+      "/services/web-development",
+      "/services/ai-solutions",
+      "/services/packaging"
+    ],
+    "packagingPages": [
+      "/packaging/custom-boxes",
+      "/packaging/product-packaging",
+      "/packaging/eco-friendly-packaging",
+      "/usa-packaging-company",
+      "/uk-packaging-company",
+      "/pakistan-packaging-company"
+    ],
+    "seoBlogPosts": [
+      {
+        "slug": "best-packaging-company-in-usa",
+        "title": "Best Packaging Company in USA",
+        "description": "How to evaluate and choose the best packaging company in USA for custom boxes, brand consistency, and scalable fulfillment."
+      },
+      {
+        "slug": "custom-box-packaging-trends-2026",
+        "title": "Custom Box Packaging Trends 2026",
+        "description": "A practical look at custom box packaging trends in 2026, including eco-friendly materials, smart printing, and UX-focused design."
+      },
+      {
+        "slug": "how-to-choose-packaging-supplier",
+        "title": "How to Choose Packaging Supplier",
+        "description": "A structured framework to choose a reliable packaging supplier for quality control, pricing, timelines, and global logistics."
+      }
+    ],
+    "homeFaqs": [
+      {
+        "question": "What services does Pixalbotic provide for growth-stage and enterprise teams?",
+        "answer": "Pixalbotic delivers end-to-end software and packaging services, including web platforms, AI workflow automation, API and cloud integration, MERN engineering, custom packaging systems, and production-ready design support."
+      },
+      {
+        "question": "Can you manage both software and packaging under one delivery model?",
+        "answer": "Yes. We run a unified delivery model where product, engineering, and packaging specialists collaborate through one roadmap, one communication channel, and clear milestones to reduce execution gaps."
+      },
+      {
+        "question": "How do you structure timelines, reporting, and project governance?",
+        "answer": "Each engagement starts with discovery and scope definition, followed by sprint-based execution, weekly progress reporting, and milestone reviews. Typical timelines range from 4 to 16 weeks based on scope and complexity."
+      },
+      {
+        "question": "Do you support regional delivery requirements for USA, UK, and Pakistan?",
+        "answer": "Absolutely. We support clients across USA, UK, and Pakistan with region-aware recommendations for compliance, packaging specifications, fulfillment realities, and go-to-market execution."
+      },
+      {
+        "question": "What happens after launch in terms of support and optimization?",
+        "answer": "We provide structured post-launch support that includes monitoring, performance optimization, iterative enhancements, issue resolution, and long-term maintenance plans aligned with your growth roadmap."
+      }
+    ]
+  },
+  "homeArticle": {
+    "badge": "Pixalbotic · Software Agency",
+    "title": "Pixalbotic: Software and Packaging Partner for Growth",
+    "paragraphs": [
+      "Pixalbotic, also recognized as Pixalbotics, helps businesses build better products through software engineering and custom packaging. Many companies only solve one side of growth: either the digital experience or the physical customer experience. Our model is different. We support both. If you need a web platform, AI workflow, and packaging system that works together, our team can design, build, and scale the complete workflow from idea to delivery.",
+      "We work with startups, scaling ecommerce brands, and established companies in the USA, UK, and Pakistan. On the software side, clients choose us as a web development company and AI development agency because we build practical systems that are reliable, measurable, and easy to maintain. On the packaging side, clients choose us for custom packaging, product packaging design, and supplier coordination because packaging quality has direct impact on brand trust, fulfillment performance, and repeat purchases.",
+      "Our process begins with clarity. We map business goals, customer behavior, product constraints, and launch timelines. Then we define the solution in simple language so stakeholders can align quickly. This approach improves execution quality and reduces delays. It also creates content clarity for modern search systems, because clear structure and direct answers help both users and AI assistants understand what your company does."
+    ],
+    "pillarCards": [
+      {
+        "id": "web-development",
+        "colSpanWide": true,
+        "title": "Web Development Services",
+        "paragraphs": [
+          "As a web development company, Pixalbotic builds websites and web applications that prioritize performance, SEO, accessibility, and conversion. We design architecture for long-term growth, not only short-term launch. Our team handles discovery, UI engineering, backend integration, API orchestration, analytics setup, and ongoing optimization. For organizations that need rapid product output, we provide MERN stack developers who can ship new features with clear documentation and stable code practices.",
+          "We build with measurable objectives: faster load speed, lower bounce rates, stronger lead quality, and better operational visibility. Whether the requirement is a corporate website, ecommerce storefront, admin dashboard, or custom business portal, we focus on maintainable systems that can evolve as your market changes. This is critical for brands operating across multiple countries where customer expectations, compliance needs, and content strategy vary by region."
+        ]
+      },
+      {
+        "id": "ai-solutions",
+        "title": "AI Solutions",
+        "paragraphs": [
+          "As an AI development agency, we implement AI solutions that create real operational value. Instead of deploying AI for hype, we align each workflow to a business metric such as reduced response time, improved forecast accuracy, or better customer support consistency. We design AI-driven content operations, intelligent document processing, recommendation systems, and automation pipelines that integrate with your existing stack.",
+          "Our implementation method is practical and transparent. We identify where AI can improve decision speed, where human review is required, and how results will be measured over time. We also create clear, structured prompts and knowledge flows so AI search engines and answer assistants can interpret business information accurately. When your website content is organized into meaningful sections, concise definitions, and relevant FAQs, your visibility improves across traditional search and AI-powered discovery channels."
+        ]
+      },
+      {
+        "id": "custom-packaging",
+        "title": "Custom Packaging Solutions",
+        "paragraphs": [
+          "Packaging is not only visual branding. It is a product experience and a logistics system. Pixalbotic provides custom packaging services for brands that need structural design, print quality, compliance clarity, and dependable production coordination. We support product packaging design for retail shelves, ecommerce shipments, and specialty launches where unboxing quality directly affects customer perception and social sharing.",
+          "If you are searching for a box packaging supplier, we help you evaluate options based on material standards, durability, finishing methods, lead times, and region-specific fulfillment constraints. Our teams coordinate with packaging partners and quality checkpoints so your packaging output remains consistent at scale. This reduces costly reprints and keeps launch windows on track for campaigns in the USA, UK, and Pakistan.",
+          "Our packaging strategy is tightly connected to software systems. For example, product metadata, SKU logic, and campaign planning can be synchronized with packaging variants. This helps marketing and operations teams make faster decisions and avoids communication gaps between digital and physical workflows."
+        ]
+      }
+    ],
+    "closing": {
+      "title": "Why Global Brands Choose Pixalbotic",
+      "paragraphs": [
+        "Companies choose Pixalbotic because we combine technical depth with business clarity. Instead of treating web, AI, and packaging as separate projects, we build connected systems that improve speed and consistency across departments. This unified approach is especially useful for cross-border businesses that manage distributed teams and complex delivery timelines.",
+        "Every engagement is built around transparency, documentation, and measurable outcomes. You always know what is being built, why it matters, and what success looks like. That reliability supports stronger rankings for brand searches like Pixalbotic and Pixalbotics while also improving discoverability for commercial queries such as web development company, AI development agency, custom packaging, and product packaging design.",
+        "If your business needs an execution partner for software and packaging, our team is ready to help. Explore our service pages, review market-specific packaging solutions, and read our practical blog guides for decision support. You can also contact us directly to plan a roadmap tailored to your region, product category, and growth goals. Learn more at {{SITE_URL}}."
+      ]
+    }
+  },
+  "pages": {
+    "about": {
+      "metadataTitle": "About Us | Pixalbotics — Software House & Packaging Design",
+      "metadataDescription": "Pixalbotics is a software house for SaaS, AI integration, and cloud apps—plus packaging design and commercial printing. Meet the team behind your digital and physical brand."
+    }
+  }
+}

@@ -1,0 +1,605 @@
+{
+  "navigation": {
+    "headerLinks": [
+      {
+        "label": "Home",
+        "href": "/"
+      },
+      {
+        "label": "Projects",
+        "href": "/projects"
+      },
+      {
+        "label": "Team",
+        "href": "/team"
+      },
+      {
+        "label": "Blogs",
+        "href": "/blogs"
+      },
+      {
+        "label": "Contact",
+        "href": "/contact"
+      }
+    ],
+    "cta": {
+      "label": "Get Started",
+      "href": "/booking"
+    }
+  },
+  "hero": {
+    "badge": "Pixalbotics · Technology Partner",
+    "titleLine1": "We Build Intelligent",
+    "titleGradientSoftware": "Software",
+    "titleLine2Amp": "&",
+    "titleGradientSmart": "Smart",
+    "titleGradientPackaging": "Packaging",
+    "subtitle": "From custom SaaS platforms and AI-powered products to structural packaging design and commercial print—we are your full-service technology partner. One team, every deliverable.",
+    "primaryCta": {
+      "label": "Start Your Project",
+      "href": "/booking"
+    },
+    "secondaryCta": {
+      "label": "Explore Services",
+      "href": "/services"
+    },
+    "serviceChips": [
+      {
+        "id": "saas",
+        "label": "SaaS Solutions",
+        "icon": "FiCode"
+      },
+      {
+        "id": "ai",
+        "label": "AI Software Development",
+        "icon": "FiZap"
+      },
+      {
+        "id": "api",
+        "label": "API & Cloud Integration",
+        "icon": "FiCpu"
+      },
+      {
+        "id": "pack",
+        "label": "Packaging Design",
+        "icon": "FiPackage"
+      },
+      {
+        "id": "struct",
+        "label": "Structural Packaging",
+        "icon": "FiLayers"
+      },
+      {
+        "id": "print",
+        "label": "Printing & Labels",
+        "icon": "FiPrinter"
+      }
+    ],
+    "stats": [
+      {
+        "value": "200+",
+        "label": "AI Software Projects"
+      },
+      {
+        "value": "150+",
+        "label": "Packaging Designs Delivered"
+      },
+      {
+        "value": "50+",
+        "label": "Business Clients"
+      },
+      {
+        "value": "99%",
+        "label": "Client Satisfaction"
+      }
+    ],
+    "imageAlts": {
+      "workspace": "Developer workspace with pixelbolts branding and neon city view",
+      "saasCard": "SaaS dashboards and analytics interfaces",
+      "packagingCard": "Packaging design and print production graphics",
+      "saasCardMobile": "SaaS and analytics dashboard visual",
+      "packagingMobile": "Packaging and print design visual",
+      "logoCenter": "Pixalbotics logo",
+      "mascotDesktop": "Pixalbotics hero logo with robot mascot",
+      "mascotMobile": "Pixalbotics hero brand visual"
+    }
+  },
+  "aboutSection": {
+    "badge": "About Us",
+    "headlineLead": "Software Agency + ",
+    "headlineAccent": "packaging partner",
+    "paragraph2": "Designers and engineers work together under one roof: discovery, UX, build, launch, and ongoing support—with optional print-ready assets when you ship physical goods.",
+    "ctas": {
+      "exploreServices": {
+        "label": "Explore our services",
+        "href": "/services"
+      },
+      "viewWork": {
+        "label": "View work",
+        "href": "/projects"
+      }
+    },
+    "panelLead": "Software + packaging — ",
+    "panelAccent": "one partner",
+    "panelSubtext": "Digital craft · Physical brand delivery",
+    "imageAlts": {
+      "wordmark": "Pixalbotics — PIXALBOTICS wordmark and World of AI identity",
+      "cube": "Pixalbotics — gradient cube brand mark"
+    },
+    "features": [
+      {
+        "icon": "RocketIcon",
+        "title": "Full-stack software",
+        "description": "SaaS, APIs, cloud apps, and DevOps—from MVP to scale.",
+        "color": "from-sky-500 to-cyan-500"
+      },
+      {
+        "icon": "SparklesIcon",
+        "title": "AI & automation",
+        "description": "Practical AI integration, workflows, and intelligent products.",
+        "color": "from-violet-500 to-fuchsia-500"
+      },
+      {
+        "icon": "ZapIcon",
+        "title": "Packaging & print",
+        "description": "Structural packaging design plus commercial printing and labels.",
+        "color": "from-pink-500 to-orange-500"
+      },
+      {
+        "icon": "SettingsIcon",
+        "title": "Enterprise-ready",
+        "description": "Secure, maintainable systems built for real-world operations.",
+        "color": "from-emerald-500 to-teal-500"
+      }
+    ],
+    "introSpans": [
+      {
+        "type": "strongBrand",
+        "brandKey": "alternate"
+      },
+      {
+        "type": "text",
+        "text": " builds custom SaaS, AI-powered products, and cloud software for teams that need speed and quality. We extend that same craft to "
+      },
+      {
+        "type": "mutedPink",
+        "text": "packaging design"
+      },
+      {
+        "type": "text",
+        "text": " and "
+      },
+      {
+        "type": "mutedCyan",
+        "text": "commercial printing"
+      },
+      {
+        "type": "text",
+        "text": "—so your product story stays consistent from code to carton."
+      }
+    ]
+  },
+  "servicesSection": {
+    "headerBadge": "Our Services",
+    "title": "Complete Technology Solutions",
+    "subtitle": "From SaaS and AI software to packaging design, printing, and modern web apps — we deliver end-to-end solutions that drive growth online and on the shelf",
+    "summaryTitle": "Your Complete Technology Partner",
+    "summarySubtitle": "We specialize in building modern, scalable solutions across all technology domains. Whether you need a SaaS product, mobile app, e-commerce platform, or custom software — we deliver excellence.",
+    "techBadges": [
+      "SaaS Products",
+      "CRMs",
+      "Gohighlevel",
+      "AI Modern",
+      "React Native",
+      "Next.js",
+      "React",
+      "Node.js",
+      "Modern Apps",
+      "Modern Websites",
+      "E-Commerce"
+    ],
+    "cards": [
+      {
+        "icon": "RocketIcon",
+        "title": "SaaS Products",
+        "description": "Build scalable Software-as-a-Service solutions with modern architecture, subscription management, and cloud infrastructure.",
+        "gradient": "from-blue-500 via-cyan-500 to-blue-600",
+        "iconBg": "from-blue-500 to-cyan-500",
+        "hoverGradient": "from-blue-500/10 to-cyan-500/10"
+      },
+      {
+        "icon": "UsersIcon",
+        "title": "CRMs & Gohighlevel",
+        "description": "Custom CRM development and Gohighlevel integrations to manage customer relationships and automate sales processes.",
+        "gradient": "from-purple-500 via-pink-500 to-purple-600",
+        "iconBg": "from-purple-500 to-pink-500",
+        "hoverGradient": "from-purple-500/10 to-pink-500/10"
+      },
+      {
+        "icon": "SparklesIcon",
+        "title": "AI Modern Solutions",
+        "description": "Cutting-edge AI-powered applications with machine learning, natural language processing, and intelligent automation.",
+        "gradient": "from-indigo-500 via-blue-500 to-indigo-600",
+        "iconBg": "from-indigo-500 to-blue-500",
+        "hoverGradient": "from-indigo-500/10 to-blue-500/10"
+      },
+      {
+        "icon": "ZapIcon",
+        "title": "React Native Apps",
+        "description": "Cross-platform mobile applications for iOS and Android built with React Native for seamless user experiences.",
+        "gradient": "from-green-500 via-emerald-500 to-green-600",
+        "iconBg": "from-green-500 to-emerald-500",
+        "hoverGradient": "from-green-500/10 to-emerald-500/10"
+      },
+      {
+        "icon": "SettingsIcon",
+        "title": "Next.js & React",
+        "description": "Modern web applications built with Next.js and React for optimal performance, SEO, and user experience.",
+        "gradient": "from-orange-500 via-red-500 to-orange-600",
+        "iconBg": "from-orange-500 to-red-500",
+        "hoverGradient": "from-orange-500/10 to-red-500/10"
+      },
+      {
+        "icon": "ShieldIcon",
+        "title": "Node.js Modern Apps",
+        "description": "Robust backend solutions and full-stack applications using Node.js with modern frameworks and best practices.",
+        "gradient": "from-violet-500 via-purple-500 to-violet-600",
+        "iconBg": "from-violet-500 to-purple-500",
+        "hoverGradient": "from-violet-500/10 to-purple-500/10"
+      },
+      {
+        "icon": "RocketIcon",
+        "title": "Modern Websites",
+        "description": "Beautiful, responsive, and high-performance websites built with modern technologies and best design practices.",
+        "gradient": "from-pink-500 via-rose-500 to-pink-600",
+        "iconBg": "from-pink-500 to-rose-500",
+        "hoverGradient": "from-pink-500/10 to-rose-500/10"
+      },
+      {
+        "icon": "BookIcon",
+        "title": "E-Commerce Solutions",
+        "description": "Complete e-commerce platforms with payment integration, inventory management, and customer management systems.",
+        "gradient": "from-cyan-500 via-blue-500 to-cyan-600",
+        "iconBg": "from-cyan-500 to-blue-500",
+        "hoverGradient": "from-cyan-500/10 to-blue-500/10"
+      },
+      {
+        "icon": "FiPackage",
+        "title": "Packaging Design",
+        "description": "Structural packaging, dielines, and retail-ready artwork—from concept sketches to production files that match your brand and fulfilment workflow.",
+        "gradient": "from-fuchsia-500 via-purple-500 to-violet-600",
+        "iconBg": "from-fuchsia-500 to-purple-500",
+        "hoverGradient": "from-fuchsia-500/10 to-purple-500/10"
+      },
+      {
+        "icon": "FiPrinter",
+        "title": "Printing & Labels",
+        "description": "High-quality commercial printing, labels, and finishing—colour-accurate proofs, consistent runs, and materials suited for shelf-ready packaging.",
+        "gradient": "from-amber-500 via-orange-500 to-rose-600",
+        "iconBg": "from-amber-500 to-orange-500",
+        "hoverGradient": "from-amber-500/10 to-orange-500/10"
+      }
+    ]
+  },
+  "partnersSection": {
+    "badge": "Trusted Partners",
+    "title": "We Work With Industry Leaders",
+    "subtitle": "Partnering with the world's most innovative companies to deliver exceptional results",
+    "partnerSets": [
+      [
+        {
+          "name": "Google",
+          "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+          "description": "Cloud & Analytics",
+          "gradient": "from-blue-500 to-cyan-500",
+          "delay": 0
+        },
+        {
+          "name": "Gohighlevel",
+          "logoUrl": "https://logo.clearbit.com/gohighlevel.com",
+          "description": "Marketing Platform",
+          "gradient": "from-purple-500 to-pink-500",
+          "delay": 0.1
+        },
+        {
+          "name": "Instagram",
+          "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png",
+          "description": "Social Media",
+          "gradient": "from-pink-500 to-rose-500",
+          "delay": 0.2
+        },
+        {
+          "name": "Microsoft",
+          "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+          "description": "Enterprise Solutions",
+          "gradient": "from-blue-500 to-indigo-500",
+          "delay": 0.3
+        },
+        {
+          "name": "Meta",
+          "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg",
+          "description": "AI & VR",
+          "gradient": "from-indigo-500 to-purple-500",
+          "delay": 0.4
+        },
+        {
+          "name": "Amazon",
+          "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+          "description": "Cloud Services",
+          "gradient": "from-orange-500 to-amber-500",
+          "delay": 0.5
+        }
+      ],
+      [
+        {
+          "name": "Apple",
+          "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg",
+          "description": "Technology Innovation",
+          "gradient": "from-gray-600 to-gray-800",
+          "delay": 0
+        },
+        {
+          "name": "Netflix",
+          "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
+          "description": "Streaming Platform",
+          "gradient": "from-red-500 to-red-700",
+          "delay": 0.1
+        },
+        {
+          "name": "Spotify",
+          "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg",
+          "description": "Music Streaming",
+          "gradient": "from-green-500 to-green-600",
+          "delay": 0.2
+        },
+        {
+          "name": "Adobe",
+          "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Adobe_Systems_logo_and_wordmark.svg",
+          "description": "Creative Tools",
+          "gradient": "from-red-500 to-orange-500",
+          "delay": 0.3
+        },
+        {
+          "name": "Salesforce",
+          "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg",
+          "description": "CRM Solutions",
+          "gradient": "from-blue-400 to-blue-600",
+          "delay": 0.4
+        },
+        {
+          "name": "IBM",
+          "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
+          "description": "Enterprise Tech",
+          "gradient": "from-blue-600 to-blue-800",
+          "delay": 0.5
+        }
+      ],
+      [
+        {
+          "name": "Tesla",
+          "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg",
+          "description": "Electric Vehicles",
+          "gradient": "from-red-500 to-red-700",
+          "delay": 0
+        },
+        {
+          "name": "Slack",
+          "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b9/Slack_Technologies_Logo.svg",
+          "description": "Team Collaboration",
+          "gradient": "from-purple-500 to-pink-500",
+          "delay": 0.1
+        },
+        {
+          "name": "Zoom",
+          "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Zoom_Communications_Logo.svg",
+          "description": "Video Conferencing",
+          "gradient": "from-blue-400 to-blue-600",
+          "delay": 0.2
+        },
+        {
+          "name": "Stripe",
+          "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg",
+          "description": "Payment Processing",
+          "gradient": "from-purple-500 to-indigo-500",
+          "delay": 0.3
+        },
+        {
+          "name": "Shopify",
+          "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0e/Shopify_logo_2018.svg",
+          "description": "E-Commerce Platform",
+          "gradient": "from-green-500 to-teal-500",
+          "delay": 0.4
+        },
+        {
+          "name": "GitHub",
+          "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg",
+          "description": "Code Repository",
+          "gradient": "from-gray-700 to-gray-900",
+          "delay": 0.5
+        }
+      ]
+    ]
+  },
+  "faqSection": {
+    "badge": "FAQ · Pixalbotic",
+    "title": "Clear Answers, Faster Decisions",
+    "subtitle": "Get straightforward guidance on software, AI, and custom packaging so your team can plan and execute with confidence.",
+    "sideBadge": "Quick Support",
+    "sideTitle": "Still have questions?",
+    "sideBody": "Talk to Pixalbotic experts for software strategy, AI implementation, and custom packaging planning tailored to your business goals.",
+    "sideChipLabels": [
+      "Software",
+      "AI",
+      "Packaging",
+      "Support"
+    ],
+    "contactCta": {
+      "label": "Contact us",
+      "href": "/contact"
+    },
+    "bookingCta": {
+      "label": "Book a session",
+      "href": "/booking"
+    },
+    "imageAlt": "Pixalbotic support assistant"
+  },
+  "contactSection": {
+    "badge": "Get In Touch",
+    "title": "Connect With Us",
+    "subtitle": "Have questions, need support, or want to share your experience? We'd love to hear from you!",
+    "toggleContact": "Contact Us",
+    "toggleReview": "Write a Review",
+    "forms": {
+      "contactTitle": "Send Us a Message",
+      "reviewTitle": "Share Your Experience",
+      "nameLabel": "Your Name",
+      "emailLabel": "Email Address",
+      "subjectLabel": "Subject",
+      "phoneLabel": "Phone / WhatsApp",
+      "messageLabel": "Message",
+      "reviewRatingLabel": "Rating",
+      "reviewTitleLabel": "Review Title",
+      "reviewBodyLabel": "Your Review",
+      "placeholders": {
+        "name": "Enter your name",
+        "email": "your.email@example.com",
+        "subject": "e.g. Project Inquiry",
+        "message": "Tell us about your project or questions...",
+        "reviewTitle": "Brief title for your review",
+        "reviewBody": "Share your experience with Pixalbotics..."
+      },
+      "ratingHintNone": "Please select a rating",
+      "ratingHint": "You selected {{N}} star",
+      "ratingHintPlural": "You selected {{N}} stars",
+      "sendMessage": "Send Message",
+      "sending": "Sending...",
+      "submitReview": "Submit Review",
+      "submitting": "Submitting...",
+      "successContact": "Message sent successfully. We'll get back to you soon.",
+      "successReview": "Thank you! Your review has been submitted.",
+      "errorContact": "Failed to send message. Please try again.",
+      "errorReview": "Failed to submit review. Please try again."
+    },
+    "infoCard": {
+      "title": "Contact Information",
+      "emailHeading": "Email",
+      "emailDisplay": "info@pixalbotics.com",
+      "emailHref": "mailto:info@pixalbotics.com",
+      "phoneHeading": "Phone",
+      "ukBranch": "UK branch",
+      "pkBranch": "Pakistan branch",
+      "whatsappHeading": "WhatsApp",
+      "pkWhatsAppNote": "Urgent enquiries & estimates — sales team",
+      "hoursHeading": "Business Hours",
+      "hoursLine": "Mon - Fri: 9AM - 6PM"
+    },
+    "trustpilot": {
+      "title": "Trustpilot Reviews",
+      "subtitle": "Read and write reviews for Pixalbotics.",
+      "linkLabel": "Trustpilot",
+      "linkHref": "https://www.trustpilot.com/review/pixalbotics.com"
+    }
+  },
+  "footer": {
+    "tagline": "Empowering businesses with smart agency software and professional courses. Your complete growth ecosystem for success.",
+    "newsletterTitle": "Subscribe to Newsletter",
+    "emailPlaceholder": "Enter your email",
+    "subscribeCta": "Subscribe",
+    "quickLinksTitle": "Quick Links",
+    "companyTitle": "Company",
+    "contactTitle": "Contact Us",
+    "phoneLabel": "Phone",
+    "whatsappLabel": "WhatsApp",
+    "whatsappPkNote": "Pakistan — urgent & estimates",
+    "hoursLine": "Mon - Fri: 9AM - 6PM",
+    "copyrightBrand": "pixalbotics",
+    "bottomLinks": [
+      {
+        "label": "Privacy",
+        "href": "/privacy"
+      },
+      {
+        "label": "Terms",
+        "href": "/terms"
+      },
+      {
+        "label": "Cookies",
+        "href": "/cookies"
+      }
+    ],
+    "quickLinks": [
+      {
+        "label": "Home",
+        "href": "/"
+      },
+      {
+        "label": "Services",
+        "href": "/services"
+      },
+      {
+        "label": "Projects",
+        "href": "/projects"
+      },
+      {
+        "label": "Blogs",
+        "href": "/blogs"
+      },
+      {
+        "label": "Contact",
+        "href": "/contact"
+      }
+    ],
+    "companyLinks": [
+      {
+        "label": "About Us",
+        "href": "/about"
+      },
+      {
+        "label": "Privacy Policy",
+        "href": "/privacy"
+      },
+      {
+        "label": "Terms of Service",
+        "href": "/terms"
+      },
+      {
+        "label": "Careers",
+        "href": "/careers"
+      }
+    ],
+    "socialLinks": [
+      {
+        "name": "Email",
+        "href": "mailto:pixalbotics@gmail.com",
+        "color": "hover:text-blue-400"
+      },
+      {
+        "name": "LinkedIn",
+        "href": "https://www.linkedin.com/company/pixalbotics",
+        "color": "hover:text-blue-400"
+      },
+      {
+        "name": "Instagram",
+        "href": "https://www.instagram.com/Pixal_Botics",
+        "color": "hover:text-pink-400"
+      },
+      {
+        "name": "Facebook",
+        "href": "https://www.facebook.com/share/1CaExqPQG4",
+        "color": "hover:text-blue-400"
+      }
+    ],
+    "contactEmailDisplay": "pixalbotics@gmail.com",
+    "contactEmailHref": "mailto:pixalbotics@gmail.com"
+  },
+  "pages": {
+    "about": {
+      "pageHero": {
+        "title": "About Pixalbotics",
+        "description": "We build intelligent software and ship beautiful packaging—one partner for SaaS, AI, APIs, design, and print.",
+        "badge": "About Us",
+        "topic": "cloud"
+      }
+    }
+  }
+}

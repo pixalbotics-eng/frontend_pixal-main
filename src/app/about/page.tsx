@@ -1,21 +1,26 @@
 import PageHero from '@/components/PageHero';
 import AboutSection from '@/components/AboutSection';
 import Testimonials from '@/components/Testimonials';
+import siteContent from '@/data/site-content.json';
+import seoContent from '@/data/seo-content.json';
+
+const aboutSeo = seoContent.pages.about;
 
 export const metadata = {
-  title: 'About Us | Pixalbotics — Software House & Packaging Design',
-  description:
-    'Pixalbotics is a software house for SaaS, AI integration, and cloud apps—plus packaging design and commercial printing. Meet the team behind your digital and physical brand.',
+  title: aboutSeo.metadataTitle,
+  description: aboutSeo.metadataDescription,
 };
 
 export default function AboutPage() {
+  const ph = siteContent.pages.about.pageHero;
+
   return (
     <>
       <PageHero
-        title="About Pixalbotics"
-        description="We build intelligent software and ship beautiful packaging—one partner for SaaS, AI, APIs, design, and print."
-        badge="About Us"
-        topic="cloud"
+        title={ph.title}
+        description={ph.description}
+        badge={ph.badge}
+        topic={ph.topic}
       />
       <AboutSection />
       <Testimonials />

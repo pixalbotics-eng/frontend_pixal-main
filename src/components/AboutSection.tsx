@@ -7,7 +7,11 @@ import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import Image from 'next/image';
 import { images } from '@/images';
-import { RocketIcon, SparklesIcon, ZapIcon, SettingsIcon } from './ui/Icons';
+import siteContent from '@/data/site-content.json';
+import { BRAND_ALTERNATE, BRAND_NAME } from '@/lib/seo';
+import { getContentIcon } from '@/data/icon-registry';
+
+const ab = siteContent.aboutSection;
 
 const ctaBase =
   'font-medium rounded-lg transition-colors inline-flex items-center justify-center gap-2 font-sans px-8 py-4 text-lg';
@@ -21,32 +25,12 @@ export default function AboutSection() {
   const brandLogo = images.heroSection.pixal1;
   const brandCube = images.heroSection.pixal3;
 
-  const features = [
-    {
-      icon: RocketIcon,
-      title: 'Full-stack software',
-      description: 'SaaS, APIs, cloud apps, and DevOps—from MVP to scale.',
-      color: 'from-sky-500 to-cyan-500',
-    },
-    {
-      icon: SparklesIcon,
-      title: 'AI & automation',
-      description: 'Practical AI integration, workflows, and intelligent products.',
-      color: 'from-violet-500 to-fuchsia-500',
-    },
-    {
-      icon: ZapIcon,
-      title: 'Packaging & print',
-      description: 'Structural packaging design plus commercial printing and labels.',
-      color: 'from-pink-500 to-orange-500',
-    },
-    {
-      icon: SettingsIcon,
-      title: 'Enterprise-ready',
-      description: 'Secure, maintainable systems built for real-world operations.',
-      color: 'from-emerald-500 to-teal-500',
-    },
-  ];
+  const features = ab.features.map((f) => ({
+    icon: getContentIcon(f.icon),
+    title: f.title,
+    description: f.description,
+    color: f.color,
+  }));
 
   return (
     <section
@@ -94,38 +78,56 @@ export default function AboutSection() {
             className="space-y-6 text-center lg:text-left"
           >
             <div className="inline-block rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-sm font-semibold text-sky-200 backdrop-blur-md">
-              About Us
+              {ab.badge}
             </div>
 
             <h2 className="text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Software Agency +{' '}
+              {ab.headlineLead}
               <span className="bg-gradient-to-r from-fuchsia-400 via-violet-400 to-cyan-300 bg-clip-text text-transparent">
-                packaging partner
+                {ab.headlineAccent}
               </span>
             </h2>
 
             <p className="text-lg leading-relaxed text-slate-300 sm:text-xl">
-              <strong className="text-white">Pixalbotics</strong> builds custom SaaS, AI-powered products, and cloud software
-              for teams that need speed and quality. We extend that same craft to{' '}
-              <span className="text-fuchsia-200/90">packaging design</span> and{' '}
-              <span className="text-cyan-200/90">commercial printing</span>—so your product story stays consistent from code to
-              carton.
+              {ab.introSpans.map((seg, i) => {
+                if (seg.type === 'text')
+                  return <React.Fragment key={i}>{seg.text}</React.Fragment>;
+                if (seg.type === 'strongBrand') {
+                  const name =
+                    seg.brandKey === 'alternate' ? BRAND_ALTERNATE : BRAND_NAME;
+                  return (
+                    <strong key={i} className="text-white">
+                      {name}
+                    </strong>
+                  );
+                }
+                if (seg.type === 'mutedPink')
+                  return (
+                    <span key={i} className="text-fuchsia-200/90">
+                      {seg.text}
+                    </span>
+                  );
+                if (seg.type === 'mutedCyan')
+                  return (
+                    <span key={i} className="text-cyan-200/90">
+                      {seg.text}
+                    </span>
+                  );
+                return null;
+              })}
             </p>
 
-            <p className="text-base leading-relaxed text-slate-400 sm:text-lg">
-              Designers and engineers work together under one roof: discovery, UX, build, launch, and ongoing support—with
-              optional print-ready assets when you ship physical goods.
-            </p>
+            <p className="text-base leading-relaxed text-slate-400 sm:text-lg">{ab.paragraph2}</p>
 
             <div className="flex flex-col justify-center gap-3 pt-2 sm:flex-row lg:justify-start">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-flex justify-center lg:justify-start">
-                <Link href="/services" className={ctaPrimary}>
-                  Explore our services
+                <Link href={ab.ctas.exploreServices.href} className={ctaPrimary}>
+                  {ab.ctas.exploreServices.label}
                 </Link>
               </motion.div>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="inline-flex justify-center lg:justify-start">
-                <Link href="/projects" className={ctaOutline}>
-                  View work
+                <Link href={ab.ctas.viewWork.href} className={ctaOutline}>
+                  {ab.ctas.viewWork.label}
                 </Link>
               </motion.div>
             </div>
@@ -155,7 +157,7 @@ export default function AboutSection() {
                 <div className="relative mx-auto min-h-[300px] w-full max-w-[min(100%,400px)] flex-1 sm:mx-0 sm:max-w-none sm:min-h-[380px] lg:min-h-[460px]">
                   <Image
                     src={brandLogo}
-                    alt="Pixalbotics — PIXALBOTICS wordmark and World of AI identity"
+                    alt={ab.imageAlts.wordmark}
                     fill
                     className="object-contain object-center"
                     sizes="(max-width: 640px) 95vw, (max-width: 1024px) 42vw, 28vw"
@@ -164,7 +166,7 @@ export default function AboutSection() {
                 <div className="relative mx-auto min-h-[280px] w-full max-w-[min(100%,360px)] flex-1 sm:mx-0 sm:max-w-none sm:min-h-[380px] lg:min-h-[460px]">
                   <Image
                     src={brandCube}
-                    alt="Pixalbotics — gradient cube brand mark"
+                    alt={ab.imageAlts.cube}
                     fill
                     className="object-contain object-center"
                     sizes="(max-width: 640px) 95vw, (max-width: 1024px) 42vw, 28vw"
@@ -173,12 +175,12 @@ export default function AboutSection() {
               </div>
               <div className="relative border-t border-white/10 bg-black/50 px-4 py-3 text-center backdrop-blur-md">
                 <p className="text-sm font-semibold text-white sm:text-base">
-                  Software + packaging —{' '}
+                  {ab.panelLead}
                   <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-300 bg-clip-text text-transparent">
-                    one partner
+                    {ab.panelAccent}
                   </span>
                 </p>
-                <p className="mt-1 text-xs text-slate-400 sm:text-sm">Digital craft · Physical brand delivery</p>
+                <p className="mt-1 text-xs text-slate-400 sm:text-sm">{ab.panelSubtext}</p>
               </div>
             </motion.div>
           </motion.div>

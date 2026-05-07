@@ -5,6 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import Image from 'next/image';
+import siteContent from '@/data/site-content.json';
+
+const { partnersSection: ps } = siteContent;
 
 export default function PartnersSection() {
   const ref = useRef(null);
@@ -13,144 +16,7 @@ export default function PartnersSection() {
   const [currentSet, setCurrentSet] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
 
-  // Partner logos - multiple sets
-  const allPartners = [
-    // Set 1
-    [
-      { 
-        name: 'Google', 
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg',
-        description: 'Cloud & Analytics',
-        gradient: 'from-blue-500 to-cyan-500',
-        delay: 0,
-      },
-      { 
-        name: 'Gohighlevel', 
-        logoUrl: 'https://logo.clearbit.com/gohighlevel.com',
-        description: 'Marketing Platform',
-        gradient: 'from-purple-500 to-pink-500',
-        delay: 0.1,
-      },
-      { 
-        name: 'Instagram', 
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png',
-        description: 'Social Media',
-        gradient: 'from-pink-500 to-rose-500',
-        delay: 0.2,
-      },
-      { 
-        name: 'Microsoft', 
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg',
-        description: 'Enterprise Solutions',
-        gradient: 'from-blue-500 to-indigo-500',
-        delay: 0.3,
-      },
-      { 
-        name: 'Meta', 
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg',
-        description: 'AI & VR',
-        gradient: 'from-indigo-500 to-purple-500',
-        delay: 0.4,
-      },
-      { 
-        name: 'Amazon', 
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
-        description: 'Cloud Services',
-        gradient: 'from-orange-500 to-amber-500',
-        delay: 0.5,
-      },
-    ],
-    // Set 2
-    [
-      { 
-        name: 'Apple', 
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg',
-        description: 'Technology Innovation',
-        gradient: 'from-gray-600 to-gray-800',
-        delay: 0,
-      },
-      { 
-        name: 'Netflix', 
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg',
-        description: 'Streaming Platform',
-        gradient: 'from-red-500 to-red-700',
-        delay: 0.1,
-      },
-      { 
-        name: 'Spotify', 
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg',
-        description: 'Music Streaming',
-        gradient: 'from-green-500 to-green-600',
-        delay: 0.2,
-      },
-      { 
-        name: 'Adobe', 
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/7b/Adobe_Systems_logo_and_wordmark.svg',
-        description: 'Creative Tools',
-        gradient: 'from-red-500 to-orange-500',
-        delay: 0.3,
-      },
-      { 
-        name: 'Salesforce', 
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg',
-        description: 'CRM Solutions',
-        gradient: 'from-blue-400 to-blue-600',
-        delay: 0.4,
-      },
-      { 
-        name: 'IBM', 
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg',
-        description: 'Enterprise Tech',
-        gradient: 'from-blue-600 to-blue-800',
-        delay: 0.5,
-      },
-    ],
-    // Set 3
-    [
-      { 
-        name: 'Tesla', 
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg',
-        description: 'Electric Vehicles',
-        gradient: 'from-red-500 to-red-700',
-        delay: 0,
-      },
-      { 
-        name: 'Slack', 
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Slack_Technologies_Logo.svg',
-        description: 'Team Collaboration',
-        gradient: 'from-purple-500 to-pink-500',
-        delay: 0.1,
-      },
-      { 
-        name: 'Zoom', 
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/7b/Zoom_Communications_Logo.svg',
-        description: 'Video Conferencing',
-        gradient: 'from-blue-400 to-blue-600',
-        delay: 0.2,
-      },
-      { 
-        name: 'Stripe', 
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg',
-        description: 'Payment Processing',
-        gradient: 'from-purple-500 to-indigo-500',
-        delay: 0.3,
-      },
-      { 
-        name: 'Shopify', 
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Shopify_logo_2018.svg',
-        description: 'E-Commerce Platform',
-        gradient: 'from-green-500 to-teal-500',
-        delay: 0.4,
-      },
-      { 
-        name: 'GitHub', 
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg',
-        description: 'Code Repository',
-        gradient: 'from-gray-700 to-gray-900',
-        delay: 0.5,
-      },
-    ],
-  ];
+  const allPartners = ps.partnerSets;
 
   const partners = allPartners[currentSet];
   const totalSets = allPartners.length;
@@ -221,13 +87,13 @@ export default function PartnersSection() {
           className="text-center mb-12 lg:mb-16"
         >
           <div className="inline-block px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 rounded-full text-sm font-semibold mb-4 border border-blue-200">
-            Trusted Partners
+            {ps.badge}
           </div>
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-            We Work With Industry Leaders
+            {ps.title}
           </h2>
           <p className="text-xl sm:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Partnering with the world&apos;s most innovative companies to deliver exceptional results
+            {ps.subtitle}
           </p>
         </motion.div>
 

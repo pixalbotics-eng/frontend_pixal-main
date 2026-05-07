@@ -22,32 +22,27 @@ import {
   WhatsAppIcon,
   ArrowRightIcon,
 } from './ui/Icons';
+import siteContent from '@/data/site-content.json';
+
+const ft = siteContent.footer;
+
+const socialIconByName = {
+  Email: MailIcon,
+  LinkedIn: LinkedinIcon,
+  Instagram: InstagramIcon,
+  Facebook: FacebookIcon,
+} as const;
 
 export default function Footer() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
-  const quickLinks = [
-    { label: 'Home', href: '/' },
-    { label: 'Services', href: '/services' },
-    { label: 'Projects', href: '/projects' },
-    { label: 'Blogs', href: '/blogs' },
-    { label: 'Contact', href: '/contact' },
-  ];
-
-  const companyLinks = [
-    { label: 'About Us', href: '/about' },
-    { label: 'Privacy Policy', href: '/privacy' },
-    { label: 'Terms of Service', href: '/terms' },
-    { label: 'Careers', href: '/careers' },
-  ];
-
-  const socialLinks = [
-    { name: 'Email', Icon: MailIcon, href: 'mailto:pixalbotics@gmail.com', color: 'hover:text-blue-400' },
-    { name: 'LinkedIn', Icon: LinkedinIcon, href: 'https://www.linkedin.com/company/pixalbotics', color: 'hover:text-blue-400' },
-    { name: 'Instagram', Icon: InstagramIcon, href: 'https://www.instagram.com/Pixal_Botics', color: 'hover:text-pink-400' },
-    { name: 'Facebook', Icon: FacebookIcon, href: 'https://www.facebook.com/share/1CaExqPQG4', color: 'hover:text-blue-400' },
-  ];
+  const quickLinks = ft.quickLinks;
+  const companyLinks = ft.companyLinks;
+  const socialLinks = ft.socialLinks.map((s) => ({
+    ...s,
+    Icon: socialIconByName[s.name as keyof typeof socialIconByName] ?? MailIcon,
+  }));
 
   return (
     <footer className="w-full bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white relative overflow-hidden" ref={ref}>
@@ -72,18 +67,18 @@ export default function Footer() {
             >
               <Logo showText={true} />
               <p className="text-gray-400 text-sm sm:text-base leading-relaxed max-w-md">
-                Empowering businesses with smart agency software and professional courses. Your complete growth ecosystem for success.
+                {ft.tagline}
               </p>
               
               {/* Newsletter Subscription */}
               <div className="space-y-3">
                 <h4 className="text-sm font-semibold text-white uppercase tracking-wider">
-                  Subscribe to Newsletter
+                  {ft.newsletterTitle}
                 </h4>
                 <form className="flex gap-2">
                   <input
                     type="email"
-                    placeholder="Enter your email"
+                    placeholder={ft.emailPlaceholder}
                     className="flex-1 px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                   />
                   <motion.button
@@ -92,7 +87,7 @@ export default function Footer() {
                     whileTap={{ scale: 0.95 }}
                     className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg font-semibold transition-colors flex items-center gap-2"
                   >
-                    Subscribe
+                    {ft.subscribeCta}
                     <ArrowRightIcon size={16} />
                   </motion.button>
                 </form>
@@ -127,7 +122,7 @@ export default function Footer() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="space-y-4"
             >
-              <h3 className="text-lg font-bold mb-6 text-white">Quick Links</h3>
+              <h3 className="text-lg font-bold mb-6 text-white">{ft.quickLinksTitle}</h3>
               <ul className="space-y-3">
                 {quickLinks.map((link, index) => (
                   <motion.li
@@ -155,7 +150,7 @@ export default function Footer() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="space-y-4"
             >
-              <h3 className="text-lg font-bold mb-6 text-white">Company</h3>
+              <h3 className="text-lg font-bold mb-6 text-white">{ft.companyTitle}</h3>
               <ul className="space-y-3">
                 {companyLinks.map((link, index) => (
                   <motion.li
@@ -183,7 +178,7 @@ export default function Footer() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="space-y-4"
             >
-              <h3 className="text-lg font-bold mb-6 text-white">Contact Us</h3>
+              <h3 className="text-lg font-bold mb-6 text-white">{ft.contactTitle}</h3>
               <ul className="space-y-4 text-gray-400 text-sm sm:text-base">
                 <motion.li
                   initial={{ opacity: 0, x: -20 }}
@@ -192,8 +187,8 @@ export default function Footer() {
                   className="flex items-start gap-3 group hover:text-white transition-colors"
                 >
                   <MailIcon className="w-5 h-5 mt-0.5 text-blue-400 group-hover:scale-110 transition-transform" />
-                  <a href="mailto:pixalbotics@gmail.com" className="hover:underline">
-                    pixalbotics@gmail.com
+                  <a href={ft.contactEmailHref} className="hover:underline">
+                    {ft.contactEmailDisplay}
                   </a>
                 </motion.li>
                 <motion.li
@@ -204,7 +199,7 @@ export default function Footer() {
                 >
                   <PhoneIcon className="w-5 h-5 mt-0.5 text-purple-400 group-hover:scale-110 transition-transform shrink-0" />
                   <div className="space-y-2">
-                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide block">Phone</span>
+                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide block">{ft.phoneLabel}</span>
                     <a href={`tel:${UK_PHONE_E164.replace(/\s/g, '')}`} className="hover:underline block">
                       UK: {UK_PHONE_DISPLAY}
                     </a>
@@ -221,7 +216,7 @@ export default function Footer() {
                 >
                   <WhatsAppIcon className="w-5 h-5 mt-0.5 text-green-400 group-hover:scale-110 transition-transform shrink-0" />
                   <div className="space-y-2">
-                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide block">WhatsApp</span>
+                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide block">{ft.whatsappLabel}</span>
                     <a
                       href={`https://wa.me/${UK_PHONE_WA_DIGITS}`}
                       target="_blank"
@@ -239,7 +234,7 @@ export default function Footer() {
                       Pakistan: {PK_SALES_PHONE_DISPLAY}
                     </a>
                     <span className="text-xs text-gray-500 block">
-                      Pakistan — urgent &amp; estimates
+                      {ft.whatsappPkNote}
                     </span>
                   </div>
                 </motion.li>
@@ -252,7 +247,7 @@ export default function Footer() {
                   <div className="w-5 h-5 mt-0.5 flex items-center justify-center">
                     <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                   </div>
-                  <span>Mon - Fri: 9AM - 6PM</span>
+                  <span>{ft.hoursLine}</span>
                 </motion.li>
               </ul>
             </motion.div>
@@ -268,7 +263,7 @@ export default function Footer() {
               transition={{ delay: 0.7 }}
               className="text-gray-400 text-sm text-center md:text-left"
             >
-              © {new Date().getFullYear()} pixalbotics. All rights reserved.
+              © {new Date().getFullYear()} {ft.copyrightBrand}. All rights reserved.
             </motion.p>
             <motion.div
               initial={{ opacity: 0 }}
@@ -276,17 +271,14 @@ export default function Footer() {
               transition={{ delay: 0.8 }}
               className="flex items-center gap-6 text-sm text-gray-400"
             >
-              <a href="/privacy" className="hover:text-white transition-colors">
-                Privacy
-              </a>
-              <span className="text-gray-600">•</span>
-              <a href="/terms" className="hover:text-white transition-colors">
-                Terms
-              </a>
-              <span className="text-gray-600">•</span>
-              <a href="/cookies" className="hover:text-white transition-colors">
-                Cookies
-              </a>
+              {ft.bottomLinks.map((link, i) => (
+                <React.Fragment key={link.href}>
+                  {i > 0 ? <span className="text-gray-600 select-none">&bull;</span> : null}
+                  <a href={link.href} className="hover:text-white transition-colors">
+                    {link.label}
+                  </a>
+                </React.Fragment>
+              ))}
             </motion.div>
           </div>
         </div>

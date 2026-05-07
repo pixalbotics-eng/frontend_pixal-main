@@ -7,6 +7,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Logo from './Logo';
 import Button from './ui/Button';
 import { MenuIcon, CloseIcon } from './ui/Icons';
+import siteContent from '@/data/site-content.json';
+
+const nav = siteContent.navigation;
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,13 +24,7 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
-    { label: 'Home', href: '/' },
-    { label: 'Projects', href: '/projects' },
-    { label: 'Team', href: '/team' },
-    { label: 'Blogs', href: '/blogs' },
-    { label: 'Contact', href: '/contact' },
-  ];
+  const navLinks = nav.headerLinks;
 
   return (
     <motion.header
@@ -95,9 +92,9 @@ export default function Header() {
                     whileTap={{ scale: 0.95 }}
                     className="hidden lg:block flex-shrink-0"
                   >
-                    <Link href="/booking">
+                    <Link href={nav.cta.href}>
                       <Button>
-                        Get Started
+                        {nav.cta.label}
                       </Button>
                     </Link>
                   </motion.div>
@@ -170,9 +167,9 @@ export default function Header() {
                           transition={{ delay: 0.3 }}
                           className="pt-2"
                         >
-                          <Link href="/booking" className="block w-full" onClick={() => setIsMenuOpen(false)}>
+                          <Link href={nav.cta.href} className="block w-full" onClick={() => setIsMenuOpen(false)}>
                             <Button className="w-full">
-                              Get Started
+                              {nav.cta.label}
                             </Button>
                           </Link>
                         </motion.div>
