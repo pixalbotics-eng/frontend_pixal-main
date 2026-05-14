@@ -13,9 +13,13 @@ import EmptyState from './ui/EmptyState';
 import { blogsApi, type Blog } from '@/api';
 import { getDisplayImageUrl } from '@/api/config';
 import { useRefetchOnWindowFocus } from '@/hooks';
+import ListPagination from './ui/ListPagination';
+import { type PaginationMeta } from '@/lib/pagination';
 
 const GRADIENTS = ['from-blue-500 to-cyan-500', 'from-purple-500 to-pink-500', 'from-indigo-500 to-blue-500'] as const;
 const ICONS = [SparklesIcon, RocketIcon, BookIcon];
+
+const HOME_PAGE_SIZE = 3;
 
 function getBlogImage(blog: Blog, index: number) {
   const url = getDisplayImageUrl(blog);
@@ -35,16 +39,30 @@ function formatDate(s: string) {
 export default function BlogSection() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState<PaginationMeta | null>(null);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   const fetchBlogs = useCallback(() => {
     setLoading(true);
-    blogsApi.getAll({ limit: 3 })
-      .then((res) => setBlogs(res.data?.blogs ?? []))
-      .catch(() => setBlogs([]))
+    blogsApi
+      .getAll({ page, limit: HOME_PAGE_SIZE, sortBy: '-createdAt' })
+      .then((res) => {
+        const list = res.data?.blogs ?? [];
+        if (list.length === 0 && page > 1) {
+          setPage(1);
+          return;
+        }
+        setBlogs(list);
+        setPagination(res.pagination ?? null);
+      })
+      .catch(() => {
+        setBlogs([]);
+        setPagination(null);
+      })
       .finally(() => setLoading(false));
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     fetchBlogs();
@@ -157,6 +175,12 @@ export default function BlogSection() {
             })
           )}
         </div>
+
+        <ListPagination
+          meta={pagination}
+          onPageChange={setPage}
+          isLoading={loading}
+        />
 
         {/* View All Button */}
         <motion.div

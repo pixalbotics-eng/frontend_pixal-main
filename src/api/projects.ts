@@ -1,5 +1,6 @@
 import { api } from './client';
 import { API_ENDPOINTS, getAssetUrl, getDisplayImageUrl } from './config';
+import { normalizeBackendPagination, pickRawPagination } from '@/lib/pagination';
 
 /**
  * Card / hero image: API coverImageUrl (or legacy cover fields), else first gallery URL.
@@ -58,13 +59,6 @@ export interface ProjectListParams {
   sortBy?: string;
 }
 
-type PaginationMeta = {
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-};
-
 function appendGalleryFiles(formData: FormData, files: File[] | undefined) {
   if (!files?.length) return;
   for (const file of files) {
@@ -84,14 +78,15 @@ export const projectsApi = {
     const queryString = queryParams.toString();
     const endpoint = queryString ? `${API_ENDPOINTS.PROJECTS}?${queryString}` : API_ENDPOINTS.PROJECTS;
 
-    const response = await api.get<{
-      projects?: Project[];
-      pagination?: PaginationMeta;
-    }>(endpoint);
+    const response = await api.get<{ projects?: Project[] }>(endpoint);
+    const data = (response.data ?? {}) as Record<string, unknown>;
+    const projects = Array.isArray(data.projects) ? (data.projects as Project[]) : [];
+    const raw = pickRawPagination(response, data);
+    const pagination = normalizeBackendPagination(raw, params?.limit);
     return {
       ...response,
-      data: { projects: response.data?.projects ?? [] },
-      pagination: response.data?.pagination ?? response.pagination,
+      data: { projects },
+      pagination,
     };
   },
 

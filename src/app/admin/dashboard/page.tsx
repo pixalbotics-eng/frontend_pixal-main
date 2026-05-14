@@ -27,8 +27,8 @@ export default function AdminDashboard() {
       try {
         const [usersRes, blogsRes, projectsRes, teamRes, testimonialsRes] = await Promise.all([
           usersApi.getAll(token).catch(() => ({ data: { users: [] } })),
-          blogsApi.getAll().catch(() => ({ data: { blogs: [] } })),
-          projectsApi.getAll().catch(() => ({ data: { projects: [] } })),
+          blogsApi.getAll({ limit: 500 }).catch(() => ({ data: { blogs: [] } })),
+          projectsApi.getAll({ limit: 500 }).catch(() => ({ data: { projects: [] } })),
           teamApi.getAll().catch(() => ({ data: { team: [] } })),
           testimonialsApi.getAll().catch(() => ({ data: { testimonials: [] } })),
         ]);

@@ -1,5 +1,6 @@
 import { api } from './client';
 import { API_ENDPOINTS } from './config';
+import { normalizeBackendPagination, pickRawPagination } from '@/lib/pagination';
 
 export interface Blog {
   _id: string;
@@ -34,14 +35,6 @@ export interface BlogListParams {
   sortBy?: string;
 }
 
-type PaginationMeta = {
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-};
-
-// Blogs API functions
 export const blogsApi = {
   getAll: async (params?: BlogListParams) => {
     const queryParams = new URLSearchParams();
@@ -49,18 +42,19 @@ export const blogsApi = {
     if (params?.limit) queryParams.append('limit', params.limit.toString());
     if (params?.search) queryParams.append('search', params.search);
     if (params?.sortBy) queryParams.append('sortBy', params.sortBy);
-    
+
     const queryString = queryParams.toString();
     const endpoint = queryString ? `${API_ENDPOINTS.BLOGS}?${queryString}` : API_ENDPOINTS.BLOGS;
-    
-    const response = await api.get<{
-      blogs?: Blog[];
-      pagination?: PaginationMeta;
-    }>(endpoint);
+
+    const response = await api.get<{ blogs?: Blog[] }>(endpoint);
+    const data = (response.data ?? {}) as Record<string, unknown>;
+    const blogs = Array.isArray(data.blogs) ? (data.blogs as Blog[]) : [];
+    const raw = pickRawPagination(response, data);
+    const pagination = normalizeBackendPagination(raw, params?.limit);
     return {
       ...response,
-      data: { blogs: response.data?.blogs ?? [] },
-      pagination: response.data?.pagination ?? response.pagination,
+      data: { blogs },
+      pagination,
     };
   },
 

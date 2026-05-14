@@ -11,10 +11,14 @@ import Button from './ui/Button';
 import { ArrowRightIcon, RocketIcon, SparklesIcon, ZapIcon } from './ui/Icons';
 import { projectsApi, type Project, getProjectDisplayImage } from '@/api';
 import EmptyState from './ui/EmptyState';
+import ListPagination from './ui/ListPagination';
 import { useRefetchOnWindowFocus } from '@/hooks';
+import { type PaginationMeta } from '@/lib/pagination';
 
 const GRADIENTS = ['from-blue-500 to-cyan-500', 'from-purple-500 to-pink-500', 'from-indigo-500 to-blue-500', 'from-green-500 to-emerald-500', 'from-orange-500 to-red-500', 'from-violet-500 to-purple-500'] as const;
 const ICONS = [RocketIcon, SparklesIcon, ZapIcon];
+
+const HOME_PAGE_SIZE = 6;
 
 function getProjectImage(project: Project, index: number) {
   const url = getProjectDisplayImage(project);
@@ -26,16 +30,30 @@ function getProjectImage(project: Project, index: number) {
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState<PaginationMeta | null>(null);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   const fetchProjects = useCallback(() => {
     setLoading(true);
-    projectsApi.getAll({ limit: 6 })
-      .then((res) => setProjects(res.data?.projects ?? []))
-      .catch(() => setProjects([]))
+    projectsApi
+      .getAll({ page, limit: HOME_PAGE_SIZE, sortBy: '-createdAt' })
+      .then((res) => {
+        const list = res.data?.projects ?? [];
+        if (list.length === 0 && page > 1) {
+          setPage(1);
+          return;
+        }
+        setProjects(list);
+        setPagination(res.pagination ?? null);
+      })
+      .catch(() => {
+        setProjects([]);
+        setPagination(null);
+      })
       .finally(() => setLoading(false));
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     fetchProjects();
@@ -102,6 +120,12 @@ export default function Projects() {
             })
           )}
         </div>
+
+        <ListPagination
+          meta={pagination}
+          onPageChange={setPage}
+          isLoading={loading}
+        />
 
         <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.8 }} className="text-center mt-12 lg:mt-16">
           <Link href="/projects">
