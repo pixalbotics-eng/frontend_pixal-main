@@ -184,10 +184,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   data-app-origin="https://theconverge.netlify.app"
   defer
 ></script>
-
-
-        
-      </body>
+</body>
     </html>
   );
 }
