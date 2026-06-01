@@ -178,8 +178,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           </ToastProvider>
         </AuthProvider>
         <Analytics />
-
-<!-- Converge widget — iframe loader; /embed/widget calls API for config/session -->
 <script
   src="https://theconverge.netlify.app/widget.js"
   data-widget-key="wgt_bVSttJaXsF5EbPC44bKpUw"
