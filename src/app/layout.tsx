@@ -178,12 +178,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           </ToastProvider>
         </AuthProvider>
         <Analytics />
- <script
-  src="https://convergit-saas.onrender.com/widget.js"
-  data-widget-key="wgt_gQ-xN5KBcHChtgirgc0G4w"
-  data-app-origin="https://convergit-saas.onrender.com"
+
+<!-- Converge widget — iframe loader; /embed/widget calls API for config/session -->
+<script
+  src="https://theconverge.netlify.app/widget.js"
+  data-widget-key="wgt_bVSttJaXsF5EbPC44bKpUw"
+  data-app-origin="https://theconverge.netlify.app"
   defer
 ></script>
+
+
+        
       </body>
     </html>
   );
