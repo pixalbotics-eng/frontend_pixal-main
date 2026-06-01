@@ -181,7 +181,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script
   src="https://theconverge.netlify.app/widget.js"
   data-widget-key="wgt_bVSttJaXsF5EbPC44bKpUw"
-  data-app-origin="https://theconverge.netlify.app"
+  data-app-origin="https://convergit-saas.onrender.com"
   defer
 ></script>
 </body>
