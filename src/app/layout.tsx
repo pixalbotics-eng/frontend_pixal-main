@@ -183,7 +183,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   data-widget-key="wgt_3yW2Z__ZbVV7VbnSFmZc-w"
   data-app-origin="theconverge.netlify.app"
   defer
-></script>
+/>
 </body>
     </html>
   );
