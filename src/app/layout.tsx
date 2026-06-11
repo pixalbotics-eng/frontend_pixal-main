@@ -179,9 +179,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </AuthProvider>
         <Analytics />
 <script
-  src="https://theconverge.netlify.app/widget.js"
+  src="https://theconvergeit.netlify.app/widget.js"
   data-widget-key="wgt_3yW2Z__ZbVV7VbnSFmZc-w"
-  data-app-origin="https://theconverge.netlify.app"
+  data-app-origin="https://theconvergeit.netlify.app"
+  data-api-origin="https://convergit-saas.onrender.com"
   defer
 ></script>
 </body>
