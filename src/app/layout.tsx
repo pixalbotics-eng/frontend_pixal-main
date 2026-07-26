@@ -179,11 +179,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </AuthProvider>
         <Analytics />
 
-<script
-  src="https://d16o8s09pifhtc.cloudfront.net/widget/pixalbotics-dev-test/pixalbotic.js"
-  defer
-  data-api-origin="https://api.convergeit.app"
-></script>
+<script src="https://cdn.convergeit.app/widget/pixalbotics/pixal-tech/pixalbotics/assetsloader.js" defer></script>
+
       </body>
     </html>
   );
