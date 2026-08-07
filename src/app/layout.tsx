@@ -179,7 +179,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </AuthProvider>
         <Analytics />
 
-<script src="https://cdn.convergeit.app/widget/pixalbotics/pixal-tech/pixalbotics/assetsloader.js" defer></script>
+<script src="https://convergit-saas.onrender.com/widget/pixalbotics/pixal-sols/pixalbotics/assetsloader.js" defer></script>
 
       </body>
     </html>
