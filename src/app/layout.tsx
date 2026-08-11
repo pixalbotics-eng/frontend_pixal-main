@@ -178,7 +178,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           </ToastProvider>
         </AuthProvider>
         <Analytics />
-<script src="https://converge-saas-backend.onrender.com/widget/pixalbotics/pixal-sols/pixalbotics.com/assetsloader.js" defer></script>
+
+<script src="https://cdn.convergeit.app/widget/developer-test/pixalbotics-dev-test/pixalbotics.com/assetsloader.js" defer></script>
       </body>
     </html>
   );
