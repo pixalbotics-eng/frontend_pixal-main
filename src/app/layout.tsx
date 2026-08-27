@@ -13,6 +13,7 @@ import {
   CORE_KEYWORDS,
   GLOBAL_DESCRIPTION,
   GLOBAL_TITLE,
+  HOME_FAQS,
   SITE_URL,
 } from "@/lib/seo";
 
@@ -130,6 +131,20 @@ export default function RootLayout({
         name: BRAND_NAME,
         description: FULL_DESCRIPTION,
         publisher: { "@id": `${siteUrl}/#organization` },
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${siteUrl}/#faq`,
+        // Mirrors the FAQ section actually rendered on the homepage/about page -
+        // structured data should always match visible on-page content.
+        mainEntity: HOME_FAQS.map((faq: { question: string; answer: string }) => ({
+          "@type": "Question",
+          name: faq.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: faq.answer,
+          },
+        })),
       },
     ],
   };
