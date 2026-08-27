@@ -18,8 +18,6 @@ export const CORE_KEYWORDS = seoContent.seo.coreKeywords;
 
 export const SERVICE_PAGES = seoContent.seo.servicePages;
 
-export const PACKAGING_PAGES = seoContent.seo.packagingPages;
-
 export const SEO_BLOG_POSTS = seoContent.seo.seoBlogPosts;
 
 export const HOME_FAQS = seoContent.seo.homeFaqs;

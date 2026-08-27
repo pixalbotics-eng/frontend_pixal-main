@@ -6,7 +6,13 @@ export const metadata: Metadata = {
   title: "Web Development Services | Pixalbotic",
   description:
     "Pixalbotic is a web development company providing high-performance websites, MERN stack developers, and scalable platforms for global businesses.",
-  keywords: [...CORE_KEYWORDS, "web development services", "custom web app development"],
+  keywords: [
+    ...CORE_KEYWORDS,
+    "web development services",
+    "custom web app development",
+    "landing page design",
+    "funnel builds",
+  ],
   alternates: { canonical: `${SITE_URL}/services/web-development` },
 };
 
@@ -15,7 +21,7 @@ export default function WebDevelopmentPage() {
     <SeoPage
       title="Web Development Services"
       intro={`${BRAND_NAME} builds conversion-focused websites and custom web applications with clean architecture, strong SEO foundations, and measurable performance improvements.`}
-      imageAlt="product packaging design"
+      imageAlt="modern website and web application interface"
       sections={[
         {
           heading: "Full-Stack Delivery",
@@ -26,6 +32,11 @@ export default function WebDevelopmentPage() {
           heading: "MERN Stack Developers",
           content:
             "We provide MERN stack developers for startups and enterprise teams that need rapid feature development with maintainable code. Engagements can be project-based or long-term dedicated support.",
+        },
+        {
+          heading: "Landing Pages & Funnel Builds",
+          content:
+            "We design and build high-converting landing pages and multi-step funnels on WordPress and modern page builders, tuned for speed, mobile responsiveness, and clear calls to action. Each build includes conversion-focused copy structure, A/B-test-ready layouts, and clean tracking so paid and organic campaigns can be measured and optimized from day one — with a direct handoff into CRM and GoHighLevel pipelines when a funnel needs to feed automated follow-up.",
         },
         {
           heading: "SEO and Core Web Vitals",

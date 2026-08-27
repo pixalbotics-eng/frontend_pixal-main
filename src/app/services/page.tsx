@@ -7,8 +7,8 @@ import { CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
 export const metadata: Metadata = {
   title: "Services | Pixalbotic",
   description:
-    "Explore Pixalbotic software and packaging services, including web development, AI solutions, and custom packaging support.",
-  keywords: [...CORE_KEYWORDS, "software services", "packaging services"],
+    "Explore Pixalbotic software services, including web development, mobile app development, AI solutions, CRM & GoHighLevel, and digital marketing.",
+  keywords: [...CORE_KEYWORDS, "software services"],
   alternates: { canonical: `${SITE_URL}/services` },
 };
 
@@ -17,7 +17,7 @@ export default function ServicesPage() {
     <>
       <PageHero
         title="Our Services"
-        description="Software and packaging solutions tailored for growth-focused brands."
+        description="Software development and growth solutions tailored for growth-focused brands."
         badge="Expert Solutions"
         topic="backend"
       />
@@ -29,11 +29,17 @@ export default function ServicesPage() {
             <Link href="/services/web-development" className="rounded-lg border border-gray-200 p-4 font-medium text-gray-800 hover:border-blue-500 hover:text-blue-600">
               Web Development Services
             </Link>
+            <Link href="/services/mobile-app-development" className="rounded-lg border border-gray-200 p-4 font-medium text-gray-800 hover:border-blue-500 hover:text-blue-600">
+              Mobile App Development
+            </Link>
             <Link href="/services/ai-solutions" className="rounded-lg border border-gray-200 p-4 font-medium text-gray-800 hover:border-blue-500 hover:text-blue-600">
               AI Solutions
             </Link>
-            <Link href="/services/packaging" className="rounded-lg border border-gray-200 p-4 font-medium text-gray-800 hover:border-blue-500 hover:text-blue-600 sm:col-span-2">
-              Custom Packaging Solutions
+            <Link href="/services/crm-gohighlevel" className="rounded-lg border border-gray-200 p-4 font-medium text-gray-800 hover:border-blue-500 hover:text-blue-600">
+              CRM & GoHighLevel
+            </Link>
+            <Link href="/services/digital-marketing" className="rounded-lg border border-gray-200 p-4 font-medium text-gray-800 hover:border-blue-500 hover:text-blue-600 sm:col-span-2">
+              Digital Marketing & Design
             </Link>
           </div>
         </div>

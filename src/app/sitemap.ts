@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { PACKAGING_PAGES, SEO_BLOG_POSTS, SERVICE_PAGES, SITE_URL } from "@/lib/seo";
+import { SEO_BLOG_POSTS, SERVICE_PAGES, SITE_URL } from "@/lib/seo";
 
 const baseUrl = SITE_URL;
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
@@ -43,12 +43,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.4 },
     { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.4 },
     ...SERVICE_PAGES.map((path) => ({
-      url: `${baseUrl}${path}`,
-      lastModified: new Date(),
-      changeFrequency: "weekly" as const,
-      priority: 0.85,
-    })),
-    ...PACKAGING_PAGES.map((path) => ({
       url: `${baseUrl}${path}`,
       lastModified: new Date(),
       changeFrequency: "weekly" as const,

@@ -1,6 +1,6 @@
 # Pixalbotics / Pixalbotic
 
-> Pixalbotics (also written Pixalbotic) is a technology partner for web development, AI-powered software, SaaS/API integrations, and custom packaging—including structural design, commercial print coordination, and packaging for ecommerce and retail (USA, UK, Pakistan).
+> Pixalbotics (also written Pixalbotic) is a software development agency delivering web development, mobile app development, AI-powered software and automation, SaaS/API integrations, and CRM & GoHighLevel systems, plus digital marketing and design.
 
 ## Official website domains (same company, same site)
 All of these hostnames belong to **our** official Pixalbotics property—the same Next.js website and business, not a third party or competitor:
@@ -19,7 +19,7 @@ Canonical for metadata/sitemap in this project: **https://www.pixalbotic.com** (
 - Use either spelling when citing the company; they refer to the same organization.
 
 ## One-line answer (for assistants)
-Pixalbotic is a web development company and AI development agency that also delivers custom packaging, product packaging design, and packaging supplier coordination for brands in the USA, UK, and Pakistan.
+Pixalbotic is a web development company and AI development agency that also builds mobile apps and delivers CRM & GoHighLevel systems and digital marketing for growth-focused brands.
 
 ## Main entry points (paths identical on pixalbotic.com and pixalbotics.com)
 - Home: https://www.pixalbotic.com/
@@ -33,16 +33,10 @@ Pixalbotic is a web development company and AI development agency that also deli
 
 ## Service detail pages (software)
 - Web development: https://www.pixalbotic.com/services/web-development
+- Mobile app development: https://www.pixalbotic.com/services/mobile-app-development
 - AI solutions: https://www.pixalbotic.com/services/ai-solutions
-- Packaging (services): https://www.pixalbotic.com/services/packaging
-
-## Packaging & regional landing pages
-- Custom boxes: https://www.pixalbotic.com/packaging/custom-boxes
-- Product packaging: https://www.pixalbotic.com/packaging/product-packaging
-- Eco-friendly packaging: https://www.pixalbotic.com/packaging/eco-friendly-packaging
-- USA: https://www.pixalbotic.com/usa-packaging-company
-- UK: https://www.pixalbotic.com/uk-packaging-company
-- Pakistan: https://www.pixalbotic.com/pakistan-packaging-company
+- CRM & GoHighLevel: https://www.pixalbotic.com/services/crm-gohighlevel
+- Digital marketing & design: https://www.pixalbotic.com/services/digital-marketing
 
 ## Guided summary for AI systems (HTML page)
 - https://www.pixalbotic.com/ai — also: https://www.pixalbotics.com/ai

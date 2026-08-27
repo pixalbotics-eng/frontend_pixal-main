@@ -131,7 +131,7 @@ export default function Hero() {
                 </span>{' '}
                 {heroCopy.titleLine2Amp} {heroCopy.titleGradientSmart}{' '}
                 <span className="bg-gradient-to-r from-fuchsia-400 to-pink-400 bg-clip-text text-transparent">
-                  {heroCopy.titleGradientPackaging}
+                  {heroCopy.titleGradientAccent}
                 </span>
               </motion.h1>
 
@@ -210,7 +210,7 @@ export default function Hero() {
                           </div>
                         </motion.div>
 
-                        {/* Glass: packaging */}
+                        {/* Glass: secondary */}
                         <motion.div
                           className="absolute right-5 top-12 z-10 w-[38%] max-w-[200px]"
                           {...popIn}
@@ -221,7 +221,7 @@ export default function Hero() {
                             <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
                               <Image
                                 src={h.hero}
-                                alt={heroAlts.packagingCard}
+                                alt={heroAlts.secondaryCard}
                                 fill
                                 sizes="200px"
                                 className="object-cover object-center"
@@ -295,7 +295,7 @@ export default function Hero() {
                         >
                           <div className="rounded-xl border border-white/20 bg-black/40 p-1 shadow-lg backdrop-blur-md">
                             <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
-                              <Image src={h.hero} alt={heroAlts.packagingMobile} fill sizes="38vw" className="object-cover object-center" />
+                              <Image src={h.hero} alt={heroAlts.secondaryCardMobile} fill sizes="38vw" className="object-cover object-center" />
                             </div>
                           </div>
                         </motion.div>

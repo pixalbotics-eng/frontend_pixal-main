@@ -4,7 +4,6 @@ import {
   BRAND_ALTERNATE,
   BRAND_NAME,
   OFFICIAL_SITE_ORIGINS,
-  PACKAGING_PAGES,
   SEO_BLOG_POSTS,
   SERVICE_PAGES,
   SITE_URL,
@@ -14,7 +13,7 @@ const base = SITE_URL.replace(/\/$/, "");
 
 export const metadata: Metadata = {
   title: "For AI & search assistants",
-  description: `Structured overview of ${BRAND_NAME} (${BRAND_ALTERNATE}): software, AI, packaging, regions served, and official URLs.`,
+  description: `Structured overview of ${BRAND_NAME} (${BRAND_ALTERNATE}): software, AI, mobile, CRM & GoHighLevel services, and official URLs.`,
   alternates: { canonical: `${base}/ai` },
   robots: { index: true, follow: true },
   openGraph: {
@@ -77,9 +76,8 @@ export default function AiOverviewPage() {
           </h2>
           <p className="mt-3 leading-relaxed text-slate-700">
             <strong>{BRAND_NAME}</strong> (also cited as <strong>{BRAND_ALTERNATE}</strong>) is one company: a web
-            development and AI solutions agency that also provides custom packaging design, print coordination, and
-            supplier alignment for brands—especially across the <strong>USA</strong>, <strong>UK</strong>, and{" "}
-            <strong>Pakistan</strong>.
+            development and AI solutions agency that also builds mobile apps and delivers CRM &amp; GoHighLevel
+            systems and digital marketing for growth-focused brands.
           </p>
         </section>
 
@@ -89,8 +87,10 @@ export default function AiOverviewPage() {
           </h2>
           <ul className="mt-3 list-inside list-disc space-y-2 text-slate-700">
             <li>Web apps, SaaS, MERN stack engineering, APIs, cloud integration</li>
+            <li>Mobile app development for iOS and Android with React Native</li>
             <li>Practical AI workflows, automation, and intelligent product features</li>
-            <li>Structural packaging, product packaging design, commercial printing &amp; labels coordination</li>
+            <li>Custom CRM development and GoHighLevel setup, management, and AI chatbots</li>
+            <li>Digital marketing, brand design, and conversion-focused landing pages</li>
           </ul>
         </section>
 
@@ -134,22 +134,6 @@ export default function AiOverviewPage() {
           </h2>
           <ul className="mt-3 space-y-2 font-mono text-sm text-slate-800">
             {SERVICE_PAGES.map((path) => (
-              <li key={path}>
-                <a className="text-blue-700 underline hover:text-blue-900" href={`${base}${path}`}>
-                  {base}
-                  {path}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section className="mb-10" aria-labelledby="packaging">
-          <h2 id="packaging" className="text-xl font-bold text-slate-900">
-            Packaging &amp; regional pages
-          </h2>
-          <ul className="mt-3 space-y-2 font-mono text-sm text-slate-800">
-            {PACKAGING_PAGES.map((path) => (
               <li key={path}>
                 <a className="text-blue-700 underline hover:text-blue-900" href={`${base}${path}`}>
                   {base}

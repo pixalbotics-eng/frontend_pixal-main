@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "AI Solutions | Pixalbotic",
   description:
     "Pixalbotic is an AI development agency delivering practical AI automation, workflow optimization, and custom intelligent systems for modern companies.",
-  keywords: [...CORE_KEYWORDS, "AI solutions", "AI automation services", "AI integration"],
+  keywords: [...CORE_KEYWORDS, "AI solutions", "AI automation services", "AI workflow automation", "AI integration"],
   alternates: { canonical: `${SITE_URL}/services/ai-solutions` },
 };
 
@@ -15,12 +15,17 @@ export default function AISolutionsPage() {
     <SeoPage
       title="AI Solutions"
       intro={`${BRAND_NAME} delivers AI solutions that improve speed, decision quality, and team productivity through practical, measurable implementations.`}
-      imageAlt="custom packaging boxes"
+      imageAlt="AI automation and workflow dashboard"
       sections={[
         {
           heading: "Business-First AI Strategy",
           content:
             "We begin by mapping your goals and existing workflows, then design AI systems that solve real bottlenecks such as repetitive tasks, slow support cycles, and fragmented knowledge access.",
+        },
+        {
+          heading: "AI Automations & Workflows",
+          content:
+            "We design and deploy AI-driven automation pipelines that eliminate manual busywork — lead routing, follow-up sequences, document processing, data entry, and multi-step approvals. Each workflow is built with clear triggers, guardrails, and human-review checkpoints so automation accelerates your team instead of creating blind spots. Common wins include automated intake and qualification, AI-assisted reporting, and background jobs that keep CRM and support data in sync across your stack.",
         },
         {
           heading: "Automation and Integration",
