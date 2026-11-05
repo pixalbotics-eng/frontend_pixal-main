@@ -63,6 +63,9 @@ const nextConfig: NextConfig = {
       { source: '/blogs/best-packaging-company-in-usa', destination: '/blogs', permanent: true },
       { source: '/blogs/custom-box-packaging-trends-2026', destination: '/blogs', permanent: true },
       { source: '/blogs/how-to-choose-packaging-supplier', destination: '/blogs', permanent: true },
+      // AI discovery: some crawlers probe /.well-known/llms.txt
+      { source: '/.well-known/llms.txt', destination: '/llms.txt', permanent: false },
+      { source: '/.well-known/llms-full.txt', destination: '/llms-full.txt', permanent: false },
     ];
   },
 };

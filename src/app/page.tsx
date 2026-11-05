@@ -15,6 +15,12 @@ export const metadata: Metadata = {
   title: GLOBAL_TITLE,
   description: GLOBAL_DESCRIPTION,
   keywords: CORE_KEYWORDS,
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: GLOBAL_TITLE,
+    description: GLOBAL_DESCRIPTION,
+    type: "website",
+  },
 };
 
 export default function Home() {

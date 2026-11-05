@@ -39,14 +39,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/services`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/careers`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/booking`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/ai`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.75 },
+    { url: `${baseUrl}/ai`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.95 },
     { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.4 },
     { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.4 },
     ...SERVICE_PAGES.map((path) => ({
       url: `${baseUrl}${path}`,
       lastModified: new Date(),
       changeFrequency: "weekly" as const,
-      priority: 0.85,
+      // AI solutions is the primary commercial / AI-SEO landing page.
+      priority: path.includes("ai-solutions") ? 0.95 : 0.85,
     })),
     ...SEO_BLOG_POSTS.map((post) => ({
       url: `${baseUrl}/blogs/${post.slug}`,

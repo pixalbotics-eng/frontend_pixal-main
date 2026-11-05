@@ -30,6 +30,12 @@ function getSeoEnv() {
   };
 }
 
+const DEFAULT_SAME_AS = [
+  "https://www.linkedin.com/company/pixalbotics",
+  "https://www.instagram.com/Pixal_Botics",
+  "https://www.facebook.com/share/1CaExqPQG4",
+];
+
 export async function generateMetadata(): Promise<Metadata> {
   const { siteUrl, googleVerification } = getSeoEnv();
   return {
@@ -43,7 +49,15 @@ export async function generateMetadata(): Promise<Metadata> {
     authors: [{ name: BRAND_NAME, url: siteUrl }],
     creator: BRAND_NAME,
     publisher: BRAND_NAME,
+    category: "technology",
+    applicationName: BRAND_NAME,
     formatDetection: { email: false, address: false, telephone: false },
+    alternates: {
+      canonical: siteUrl,
+      types: {
+        "text/plain": [`${siteUrl}/llms.txt`, `${siteUrl}/llms-full.txt`],
+      },
+    },
     openGraph: {
       type: "website",
       locale: "en_US",
@@ -78,7 +92,13 @@ export async function generateMetadata(): Promise<Metadata> {
     robots: {
       index: true,
       follow: true,
-      googleBot: { index: true, follow: true },
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
     },
     verification: googleVerification ? { google: googleVerification } : undefined,
   };
@@ -90,37 +110,108 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const { siteUrl, sameAs } = getSeoEnv();
+  const socialProfiles = [...new Set([...DEFAULT_SAME_AS, ...sameAs])];
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "Organization",
+        "@type": ["Organization", "ProfessionalService"],
         "@id": `${siteUrl}/#organization`,
         name: BRAND_NAME,
-        alternateName: BRAND_ALTERNATE,
+        alternateName: [BRAND_ALTERNATE, "Pixal Botics"],
         url: siteUrl,
         logo: { "@type": "ImageObject", url: `${siteUrl}/pixalbotics-logo.png` },
+        image: `${siteUrl}/pixalbotics-logo.png`,
         description: FULL_DESCRIPTION,
-        sameAs,
-        areaServed: ["USA", "UK", "Pakistan"],
+        slogan: "Software Development Agency & AI Company",
+        email: "pixalbotics@gmail.com",
+        sameAs: socialProfiles,
+        areaServed: [
+          { "@type": "Country", name: "United States" },
+          { "@type": "Country", name: "United Kingdom" },
+          { "@type": "Country", name: "Pakistan" },
+          "Worldwide",
+        ],
+        contactPoint: [
+          {
+            "@type": "ContactPoint",
+            contactType: "sales",
+            email: "pixalbotics@gmail.com",
+            telephone: "+44-7769-649531",
+            areaServed: ["GB", "US", "PK", "Worldwide"],
+            availableLanguage: ["English", "Urdu"],
+          },
+          {
+            "@type": "ContactPoint",
+            contactType: "customer support",
+            telephone: "+92-343-1743916",
+            areaServed: ["PK", "Worldwide"],
+            availableLanguage: ["English", "Urdu"],
+          },
+        ],
         knowsAbout: [
+          "Software Development",
+          "AI Software",
+          "AI Development",
+          "AI Automation",
           "Web Development Services",
           "Mobile App Development",
-          "AI Solutions",
+          "React Native",
           "MERN Stack Development",
+          "SaaS Development",
           "CRM Development",
           "GoHighLevel Setup and Management",
           "Digital Marketing and Design",
         ],
         hasOfferCatalog: {
           "@type": "OfferCatalog",
-          name: "Software Development Services",
+          name: "Software & AI Development Services",
           itemListElement: [
-            { "@type": "Offer", itemOffered: { "@type": "Service", name: "Web Development Services" } },
-            { "@type": "Offer", itemOffered: { "@type": "Service", name: "Mobile App Development" } },
-            { "@type": "Offer", itemOffered: { "@type": "Service", name: "AI Solutions" } },
-            { "@type": "Offer", itemOffered: { "@type": "Service", name: "CRM & GoHighLevel" } },
-            { "@type": "Offer", itemOffered: { "@type": "Service", name: "Digital Marketing & Design" } },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "AI Solutions & Automation",
+                url: `${siteUrl}/services/ai-solutions`,
+                provider: { "@id": `${siteUrl}/#organization` },
+              },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "Web Development Services",
+                url: `${siteUrl}/services/web-development`,
+                provider: { "@id": `${siteUrl}/#organization` },
+              },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "Mobile App Development",
+                url: `${siteUrl}/services/mobile-app-development`,
+                provider: { "@id": `${siteUrl}/#organization` },
+              },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "CRM & GoHighLevel",
+                url: `${siteUrl}/services/crm-gohighlevel`,
+                provider: { "@id": `${siteUrl}/#organization` },
+              },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "Digital Marketing & Design",
+                url: `${siteUrl}/services/digital-marketing`,
+                provider: { "@id": `${siteUrl}/#organization` },
+              },
+            },
           ],
         },
       },
@@ -129,13 +220,29 @@ export default function RootLayout({
         "@id": `${siteUrl}/#website`,
         url: siteUrl,
         name: BRAND_NAME,
+        alternateName: BRAND_ALTERNATE,
         description: FULL_DESCRIPTION,
+        inLanguage: "en-US",
         publisher: { "@id": `${siteUrl}/#organization` },
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${siteUrl}/#webpage`,
+        url: siteUrl,
+        name: GLOBAL_TITLE,
+        isPartOf: { "@id": `${siteUrl}/#website` },
+        about: { "@id": `${siteUrl}/#organization` },
+        description: FULL_DESCRIPTION,
+        inLanguage: "en-US",
+        speakable: {
+          "@type": "SpeakableSpecification",
+          cssSelector: ["h1", "h2", "[data-speakable]"],
+        },
       },
       {
         "@type": "FAQPage",
         "@id": `${siteUrl}/#faq`,
-        // Mirrors the FAQ section actually rendered on the homepage/about page -
+        // Mirrors the FAQ section actually rendered on the homepage -
         // structured data should always match visible on-page content.
         mainEntity: HOME_FAQS.map((faq: { question: string; answer: string }) => ({
           "@type": "Question",
@@ -151,6 +258,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs.txt" />
+        <link rel="alternate" type="text/plain" href="/llms-full.txt" title="LLMs full context" />
+        <link rel="describedby" href="/ai" title="AI assistant overview" />
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

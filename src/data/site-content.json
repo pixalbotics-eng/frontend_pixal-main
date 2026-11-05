@@ -537,6 +537,10 @@
         "href": "/services"
       },
       {
+        "label": "AI Solutions",
+        "href": "/services/ai-solutions"
+      },
+      {
         "label": "Projects",
         "href": "/projects"
       },
@@ -553,6 +557,10 @@
       {
         "label": "About Us",
         "href": "/about"
+      },
+      {
+        "label": "For AI Assistants",
+        "href": "/ai"
       },
       {
         "label": "Privacy Policy",

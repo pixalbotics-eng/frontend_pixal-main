@@ -1,13 +1,23 @@
-# Pixalbotics – SEO & Social
+# Pixalbotic / Pixalbotics – SEO, AI & Social
 
-Pixalbotics – AI & Technology Solutions. Smart Solutions for Digital Evolution.
+Pixalbotic (Pixalbotics) – Software Development Agency · AI & Technology Solutions.
+Smart software, AI automation, mobile apps, CRM/GoHighLevel, and digital growth.
 
-Official domains (same site): https://pixalbotics.com · https://www.pixalbotics.com · https://www.pixalbotic.com · https://pixalbotic.com
+Official domains (same site): https://www.pixalbotic.com · https://pixalbotic.com · https://www.pixalbotics.com · https://pixalbotics.com
 
-Website (example): https://pixalbotics.com
+## AI discovery (for ChatGPT, Claude, Gemini, Perplexity, and other assistants)
+- llms.txt: https://www.pixalbotic.com/llms.txt
+- llms-full.txt: https://www.pixalbotic.com/llms-full.txt
+- Structured facts page: https://www.pixalbotic.com/ai
+- Also mirrored on pixalbotics.com hostnames (same paths).
 
-AI / assistants index (llms): https://pixalbotics.com/llms.txt · https://www.pixalbotic.com/llms.txt
-Structured facts page: https://pixalbotics.com/ai · https://www.pixalbotic.com/ai
+## Priority commercial pages
+- AI solutions: https://www.pixalbotic.com/services/ai-solutions
+- Web development: https://www.pixalbotic.com/services/web-development
+- Mobile apps: https://www.pixalbotic.com/services/mobile-app-development
+- CRM & GoHighLevel: https://www.pixalbotic.com/services/crm-gohighlevel
+- Services hub: https://www.pixalbotic.com/services
+- Contact / book: https://www.pixalbotic.com/contact · https://www.pixalbotic.com/booking
 
 ## Social
 Instagram: https://www.instagram.com/Pixal_Botics

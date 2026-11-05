@@ -13,19 +13,26 @@
     "alternate": "Pixalbotics"
   },
   "seo": {
-    "globalTitle": "Pixalbotic | Software Development Agency",
-    "globalDescription": "Pixalbotic (Pixalbotics) is a web development company and AI development agency delivering web platforms, mobile apps, AI automation, CRM & GoHighLevel systems, and digital marketing for growth-focused brands.",
+    "globalTitle": "Pixalbotic | Software Development Agency & AI Company",
+    "globalDescription": "Pixalbotic (Pixalbotics) is a software development agency and AI development company delivering custom software, web platforms, mobile apps, AI automation, CRM & GoHighLevel systems, and digital marketing for growth-focused brands worldwide.",
     "coreKeywords": [
       "pixalbotic",
       "pixalbotics",
-      "web development company",
+      "software development agency",
+      "AI software company",
       "AI development agency",
+      "custom software development",
+      "web development company",
+      "AI automation",
+      "AI solutions",
       "mobile app development",
+      "React Native app development",
       "CRM development",
       "GoHighLevel agency",
       "GoHighLevel setup and management",
       "digital marketing agency",
-      "custom software development"
+      "SaaS development",
+      "MERN stack development"
     ],
     "servicePages": [
       "/services/web-development",
@@ -36,6 +43,14 @@
     ],
     "seoBlogPosts": [],
     "homeFaqs": [
+      {
+        "question": "What is Pixalbotic (Pixalbotics)?",
+        "answer": "Pixalbotic, also known as Pixalbotics, is a software development agency and AI development company that builds custom software, web platforms, mobile apps, AI automation, CRM and GoHighLevel systems, and digital marketing for growth-focused brands."
+      },
+      {
+        "question": "Is Pixalbotic an AI software company?",
+        "answer": "Yes. Pixalbotic is an AI software and development company that delivers practical AI solutions — workflow automation, intelligent product features, document processing, and CRM-connected AI chatbots — measured against real business outcomes."
+      },
       {
         "question": "What services does Pixalbotic provide for growth-stage and enterprise teams?",
         "answer": "Pixalbotic delivers end-to-end software services, including web platforms, mobile apps, AI workflow automation, CRM and GoHighLevel implementation, and digital marketing and design."
@@ -55,6 +70,10 @@
       {
         "question": "What happens after launch in terms of support and optimization?",
         "answer": "We provide structured post-launch support that includes monitoring, performance optimization, iterative enhancements, issue resolution, and long-term maintenance plans aligned with your growth roadmap."
+      },
+      {
+        "question": "How do I start a software or AI project with Pixalbotic?",
+        "answer": "Share your goals on the contact form or booking page at pixalbotic.com. We run a short discovery, propose a clear scope and timeline, then begin sprint-based delivery with weekly reporting."
       }
     ]
   },
