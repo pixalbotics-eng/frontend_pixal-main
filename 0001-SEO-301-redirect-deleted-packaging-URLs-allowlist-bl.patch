@@ -1,0 +1,58 @@
+From 1ff68151661dd67e16716a3343c984e02bf6423f Mon Sep 17 00:00:00 2001
+From: Pixalbotic Automation <info@pixalbotic.com>
+Date: Thu, 27 Aug 2026 23:40:06 +0000
+Subject: [PATCH] SEO: 301-redirect deleted packaging URLs, allowlist blog
+ image host
+
+- Old packaging pages were previously indexed by Google; without a
+  redirect they'd now 404, which can hurt overall site rankings.
+  Redirect each to the closest relevant page on the new site
+  structure so any existing search equity carries over.
+- Add picsum.photos to next/image's allowed remote hosts, needed for
+  the cover images used by the automated daily blog posts.
+---
+ next.config.ts | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/next.config.ts b/next.config.ts
+index e266a6a..b04502a 100644
+--- a/next.config.ts
++++ b/next.config.ts
+@@ -34,6 +34,12 @@ const nextConfig: NextConfig = {
+         hostname: 'pixal-fe5o.onrender.com',
+         pathname: '/**',
+       },
++      {
++        // Cover images used by the automated daily blog posts
++        protocol: 'https',
++        hostname: 'picsum.photos',
++        pathname: '/**',
++      },
+     ],
+     // For static export, images need to be unoptimized
+     unoptimized: process.env.NEXT_OUTPUT === 'export',
+@@ -44,6 +50,21 @@ const nextConfig: NextConfig = {
+   async rewrites() {
+     return [];
+   },
++  // SEO: 301-redirect old packaging URLs (previously indexed by Google) to
++  // the closest relevant page on the new software-agency site structure,
++  // instead of letting them 404 and lose their existing search equity.
++  async redirects() {
++    return [
++      { source: '/services/packaging', destination: '/services', permanent: true },
++      { source: '/packaging/:path*', destination: '/services', permanent: true },
++      { source: '/usa-packaging-company', destination: '/services/crm-gohighlevel', permanent: true },
++      { source: '/uk-packaging-company', destination: '/services/crm-gohighlevel', permanent: true },
++      { source: '/pakistan-packaging-company', destination: '/services/crm-gohighlevel', permanent: true },
++      { source: '/blogs/best-packaging-company-in-usa', destination: '/blogs', permanent: true },
++      { source: '/blogs/custom-box-packaging-trends-2026', destination: '/blogs', permanent: true },
++      { source: '/blogs/how-to-choose-packaging-supplier', destination: '/blogs', permanent: true },
++    ];
++  },
+ };
+ 
+ export default nextConfig;
+-- 
+2.43.0
+

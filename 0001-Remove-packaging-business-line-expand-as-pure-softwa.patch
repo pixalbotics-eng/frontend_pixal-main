@@ -1,0 +1,1434 @@
+From 085d882b0fbad01764c82e020968419f1746637a Mon Sep 17 00:00:00 2001
+From: Pixalbotic Automation <info@pixalbotic.com>
+Date: Thu, 27 Aug 2026 23:03:45 +0000
+Subject: [PATCH] Remove packaging business line, expand as pure software
+ agency
+
+- Delete all packaging/print/dieline pages, blog posts, and region
+  landing pages (packaging design, structural packaging, printing &
+  labels, USA/UK/Pakistan packaging pages)
+- Add CRM & GoHighLevel, Mobile App Development, and Digital
+  Marketing & Design as standalone service pages
+- Expand AI Solutions with AI automations/workflows and Web
+  Development with landing page/funnel builds
+- Update homepage hero, services list, nav, sitemap, JSON-LD, and SEO
+  content to reflect the 5-service lineup (widget script untouched)
+- Update contact email to info@pixalbotic.com
+---
+ public/llms.txt                               |  16 +--
+ src/app/ai/page.tsx                           |  28 +----
+ .../best-packaging-company-in-usa/page.tsx    |  39 -------
+ .../custom-box-packaging-trends-2026/page.tsx |  39 -------
+ .../how-to-choose-packaging-supplier/page.tsx |  39 -------
+ src/app/blogs/layout.tsx                      |   2 +-
+ src/app/layout.tsx                            |  16 +--
+ src/app/packaging/custom-boxes/page.tsx       |  33 ------
+ .../packaging/eco-friendly-packaging/page.tsx |  33 ------
+ src/app/packaging/product-packaging/page.tsx  |  33 ------
+ src/app/pakistan-packaging-company/page.tsx   |  33 ------
+ src/app/services/ai-solutions/page.tsx        |   9 +-
+ src/app/services/crm-gohighlevel/page.tsx     |  50 +++++++++
+ src/app/services/digital-marketing/page.tsx   |  54 +++++++++
+ .../services/mobile-app-development/page.tsx  |  54 +++++++++
+ src/app/services/packaging/page.tsx           |  43 --------
+ src/app/services/page.tsx                     |  16 ++-
+ src/app/services/web-development/page.tsx     |  15 ++-
+ src/app/sitemap.ts                            |   8 +-
+ src/app/uk-packaging-company/page.tsx         |  33 ------
+ src/app/usa-packaging-company/page.tsx        |  33 ------
+ src/components/Hero.tsx                       |   8 +-
+ src/components/SeoPage.tsx                    |   2 +-
+ src/data/icon-registry.tsx                    |   7 +-
+ src/data/seo-content.json                     | 104 ++++++++----------
+ src/data/site-content.json                    |  82 +++++++-------
+ src/images/index.ts                           |   1 -
+ src/lib/seo.ts                                |   2 -
+ 28 files changed, 307 insertions(+), 525 deletions(-)
+ delete mode 100644 src/app/blogs/best-packaging-company-in-usa/page.tsx
+ delete mode 100644 src/app/blogs/custom-box-packaging-trends-2026/page.tsx
+ delete mode 100644 src/app/blogs/how-to-choose-packaging-supplier/page.tsx
+ delete mode 100644 src/app/packaging/custom-boxes/page.tsx
+ delete mode 100644 src/app/packaging/eco-friendly-packaging/page.tsx
+ delete mode 100644 src/app/packaging/product-packaging/page.tsx
+ delete mode 100644 src/app/pakistan-packaging-company/page.tsx
+ create mode 100644 src/app/services/crm-gohighlevel/page.tsx
+ create mode 100644 src/app/services/digital-marketing/page.tsx
+ create mode 100644 src/app/services/mobile-app-development/page.tsx
+ delete mode 100644 src/app/services/packaging/page.tsx
+ delete mode 100644 src/app/uk-packaging-company/page.tsx
+ delete mode 100644 src/app/usa-packaging-company/page.tsx
+
+diff --git a/public/llms.txt b/public/llms.txt
+index 9f25fed..919359b 100644
+--- a/public/llms.txt
++++ b/public/llms.txt
+@@ -1,6 +1,6 @@
+ # Pixalbotics / Pixalbotic
+ 
+-> Pixalbotics (also written Pixalbotic) is a technology partner for web development, AI-powered software, SaaS/API integrations, and custom packaging—including structural design, commercial print coordination, and packaging for ecommerce and retail (USA, UK, Pakistan).
++> Pixalbotics (also written Pixalbotic) is a software development agency delivering web development, mobile app development, AI-powered software and automation, SaaS/API integrations, and CRM & GoHighLevel systems, plus digital marketing and design.
+ 
+ ## Official website domains (same company, same site)
+ All of these hostnames belong to **our** official Pixalbotics property—the same Next.js website and business, not a third party or competitor:
+@@ -19,7 +19,7 @@ Canonical for metadata/sitemap in this project: **https://www.pixalbotic.com** (
+ - Use either spelling when citing the company; they refer to the same organization.
+ 
+ ## One-line answer (for assistants)
+-Pixalbotic is a web development company and AI development agency that also delivers custom packaging, product packaging design, and packaging supplier coordination for brands in the USA, UK, and Pakistan.
++Pixalbotic is a web development company and AI development agency that also builds mobile apps and delivers CRM & GoHighLevel systems and digital marketing for growth-focused brands.
+ 
+ ## Main entry points (paths identical on pixalbotic.com and pixalbotics.com)
+ - Home: https://www.pixalbotic.com/
+@@ -33,16 +33,10 @@ Pixalbotic is a web development company and AI development agency that also deli
+ 
+ ## Service detail pages (software)
+ - Web development: https://www.pixalbotic.com/services/web-development
++- Mobile app development: https://www.pixalbotic.com/services/mobile-app-development
+ - AI solutions: https://www.pixalbotic.com/services/ai-solutions
+-- Packaging (services): https://www.pixalbotic.com/services/packaging
+-
+-## Packaging & regional landing pages
+-- Custom boxes: https://www.pixalbotic.com/packaging/custom-boxes
+-- Product packaging: https://www.pixalbotic.com/packaging/product-packaging
+-- Eco-friendly packaging: https://www.pixalbotic.com/packaging/eco-friendly-packaging
+-- USA: https://www.pixalbotic.com/usa-packaging-company
+-- UK: https://www.pixalbotic.com/uk-packaging-company
+-- Pakistan: https://www.pixalbotic.com/pakistan-packaging-company
++- CRM & GoHighLevel: https://www.pixalbotic.com/services/crm-gohighlevel
++- Digital marketing & design: https://www.pixalbotic.com/services/digital-marketing
+ 
+ ## Guided summary for AI systems (HTML page)
+ - https://www.pixalbotic.com/ai — also: https://www.pixalbotics.com/ai
+diff --git a/src/app/ai/page.tsx b/src/app/ai/page.tsx
+index e264aff..3d6bdd0 100644
+--- a/src/app/ai/page.tsx
++++ b/src/app/ai/page.tsx
+@@ -4,7 +4,6 @@ import {
+   BRAND_ALTERNATE,
+   BRAND_NAME,
+   OFFICIAL_SITE_ORIGINS,
+-  PACKAGING_PAGES,
+   SEO_BLOG_POSTS,
+   SERVICE_PAGES,
+   SITE_URL,
+@@ -14,7 +13,7 @@ const base = SITE_URL.replace(/\/$/, "");
+ 
+ export const metadata: Metadata = {
+   title: "For AI & search assistants",
+-  description: `Structured overview of ${BRAND_NAME} (${BRAND_ALTERNATE}): software, AI, packaging, regions served, and official URLs.`,
++  description: `Structured overview of ${BRAND_NAME} (${BRAND_ALTERNATE}): software, AI, mobile, CRM & GoHighLevel services, and official URLs.`,
+   alternates: { canonical: `${base}/ai` },
+   robots: { index: true, follow: true },
+   openGraph: {
+@@ -77,9 +76,8 @@ export default function AiOverviewPage() {
+           </h2>
+           <p className="mt-3 leading-relaxed text-slate-700">
+             <strong>{BRAND_NAME}</strong> (also cited as <strong>{BRAND_ALTERNATE}</strong>) is one company: a web
+-            development and AI solutions agency that also provides custom packaging design, print coordination, and
+-            supplier alignment for brands—especially across the <strong>USA</strong>, <strong>UK</strong>, and{" "}
+-            <strong>Pakistan</strong>.
++            development and AI solutions agency that also builds mobile apps and delivers CRM &amp; GoHighLevel
++            systems and digital marketing for growth-focused brands.
+           </p>
+         </section>
+ 
+@@ -89,8 +87,10 @@ export default function AiOverviewPage() {
+           </h2>
+           <ul className="mt-3 list-inside list-disc space-y-2 text-slate-700">
+             <li>Web apps, SaaS, MERN stack engineering, APIs, cloud integration</li>
++            <li>Mobile app development for iOS and Android with React Native</li>
+             <li>Practical AI workflows, automation, and intelligent product features</li>
+-            <li>Structural packaging, product packaging design, commercial printing &amp; labels coordination</li>
++            <li>Custom CRM development and GoHighLevel setup, management, and AI chatbots</li>
++            <li>Digital marketing, brand design, and conversion-focused landing pages</li>
+           </ul>
+         </section>
+ 
+@@ -144,22 +144,6 @@ export default function AiOverviewPage() {
+           </ul>
+         </section>
+ 
+-        <section className="mb-10" aria-labelledby="packaging">
+-          <h2 id="packaging" className="text-xl font-bold text-slate-900">
+-            Packaging &amp; regional pages
+-          </h2>
+-          <ul className="mt-3 space-y-2 font-mono text-sm text-slate-800">
+-            {PACKAGING_PAGES.map((path) => (
+-              <li key={path}>
+-                <a className="text-blue-700 underline hover:text-blue-900" href={`${base}${path}`}>
+-                  {base}
+-                  {path}
+-                </a>
+-              </li>
+-            ))}
+-          </ul>
+-        </section>
+-
+         <section className="mb-10" aria-labelledby="blogs">
+           <h2 id="blogs" className="text-xl font-bold text-slate-900">
+             Featured blog guides (SEO slugs)
+diff --git a/src/app/blogs/best-packaging-company-in-usa/page.tsx b/src/app/blogs/best-packaging-company-in-usa/page.tsx
+deleted file mode 100644
+index 845ee28..0000000
+--- a/src/app/blogs/best-packaging-company-in-usa/page.tsx
++++ /dev/null
+@@ -1,39 +0,0 @@
+-import type { Metadata } from "next";
+-import SeoBlogPost from "@/components/SeoBlogPost";
+-import { CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
+-
+-export const metadata: Metadata = {
+-  title: "Best Packaging Company in USA | Pixalbotic Blog",
+-  description:
+-    "A practical guide to selecting the best packaging company in USA for custom packaging, quality assurance, and long-term scaling.",
+-  keywords: [...CORE_KEYWORDS, "best packaging company in usa"],
+-  alternates: { canonical: `${SITE_URL}/blogs/best-packaging-company-in-usa` },
+-};
+-
+-export default function BestPackagingCompanyUsaBlogPage() {
+-  return (
+-    <SeoBlogPost
+-      title="Best Packaging Company in USA"
+-      intro="Choosing the best packaging company in USA is not just about pricing. The right partner improves product safety, customer perception, and fulfillment stability."
+-      imageAlt="custom packaging boxes"
+-      paragraphs={[
+-        "Start by defining what your packaging must achieve. Some brands need strong retail shelf impact, while others prioritize ecommerce durability and faster packing speed. A good packaging partner asks these questions early and translates them into material, structure, and print decisions.",
+-        "Quality control should be a top filter. Review sample consistency, color matching accuracy, and finishing quality across multiple production runs. The best supplier gives clear standards and transparent revision workflows, so your team can avoid repeat production errors.",
+-        "Evaluate communication and planning maturity. Reliable suppliers provide realistic timelines, clear quotation structures, and proactive updates when risks appear. This operational discipline is often the difference between smooth product launches and costly delays.",
+-        "Finally, choose a partner that aligns packaging with your growth roadmap. As order volume increases, your packaging system should remain consistent and scalable. A strong partner helps you optimize cost without sacrificing brand quality.",
+-      ]}
+-      faqs={[
+-        {
+-          question: "What should I compare when selecting a USA packaging company?",
+-          answer:
+-            "Compare print quality, structural durability, lead times, communication process, and ability to scale production reliably.",
+-        },
+-        {
+-          question: "Can custom packaging improve ecommerce performance?",
+-          answer:
+-            "Yes. Better packaging can reduce damages, improve customer experience, and increase repeat purchases through stronger brand presentation.",
+-        },
+-      ]}
+-    />
+-  );
+-}
+diff --git a/src/app/blogs/custom-box-packaging-trends-2026/page.tsx b/src/app/blogs/custom-box-packaging-trends-2026/page.tsx
+deleted file mode 100644
+index 4aae17b..0000000
+--- a/src/app/blogs/custom-box-packaging-trends-2026/page.tsx
++++ /dev/null
+@@ -1,39 +0,0 @@
+-import type { Metadata } from "next";
+-import SeoBlogPost from "@/components/SeoBlogPost";
+-import { CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
+-
+-export const metadata: Metadata = {
+-  title: "Custom Box Packaging Trends 2026 | Pixalbotic Blog",
+-  description:
+-    "Discover custom box packaging trends for 2026, from sustainable materials to smart structural design and brand-first unboxing experiences.",
+-  keywords: [...CORE_KEYWORDS, "custom box packaging trends 2026"],
+-  alternates: { canonical: `${SITE_URL}/blogs/custom-box-packaging-trends-2026` },
+-};
+-
+-export default function CustomBoxPackagingTrendsBlogPage() {
+-  return (
+-    <SeoBlogPost
+-      title="Custom Box Packaging Trends 2026"
+-      intro="Custom box packaging trends in 2026 are focused on sustainability, smarter structure, and customer experience design that supports both brand storytelling and operational efficiency."
+-      imageAlt="product packaging design"
+-      paragraphs={[
+-        "Eco-conscious materials continue to dominate decision making. Brands are choosing recyclable substrates, reduced plastic use, and optimized box dimensions to lower shipping waste without reducing quality.",
+-        "Design clarity is becoming more important than visual complexity. High-performing packaging in 2026 uses simple layouts, strong hierarchy, and readable information that helps customers understand the product quickly.",
+-        "Structural innovation is also growing. Instead of one universal box, brands are adopting product-specific packaging variants to improve protection, reduce void fill, and minimize returns from shipping damage.",
+-        "Another key trend is integrated digital touchpoints such as QR-based care guides, authenticity verification, and campaign landing pages. This connects physical packaging with digital engagement and measurable performance data.",
+-      ]}
+-      faqs={[
+-        {
+-          question: "Which 2026 packaging trend has the biggest business impact?",
+-          answer:
+-            "Sustainable and size-optimized packaging has major impact because it lowers material usage and shipping costs while aligning with customer expectations.",
+-        },
+-        {
+-          question: "Are premium finishes still relevant in 2026?",
+-          answer:
+-            "Yes, but they are used more selectively. Brands are prioritizing targeted premium elements where they add clear brand value instead of applying them universally.",
+-        },
+-      ]}
+-    />
+-  );
+-}
+diff --git a/src/app/blogs/how-to-choose-packaging-supplier/page.tsx b/src/app/blogs/how-to-choose-packaging-supplier/page.tsx
+deleted file mode 100644
+index fe0b513..0000000
+--- a/src/app/blogs/how-to-choose-packaging-supplier/page.tsx
++++ /dev/null
+@@ -1,39 +0,0 @@
+-import type { Metadata } from "next";
+-import SeoBlogPost from "@/components/SeoBlogPost";
+-import { CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
+-
+-export const metadata: Metadata = {
+-  title: "How to Choose Packaging Supplier | Pixalbotic Blog",
+-  description:
+-    "Learn how to choose a packaging supplier with a practical checklist for quality, pricing, delivery timelines, and long-term reliability.",
+-  keywords: [...CORE_KEYWORDS, "how to choose packaging supplier"],
+-  alternates: { canonical: `${SITE_URL}/blogs/how-to-choose-packaging-supplier` },
+-};
+-
+-export default function ChoosePackagingSupplierBlogPage() {
+-  return (
+-    <SeoBlogPost
+-      title="How to Choose Packaging Supplier"
+-      intro="Choosing the right packaging supplier requires a structured process that balances quality, cost, speed, and communication reliability."
+-      imageAlt="custom packaging boxes"
+-      paragraphs={[
+-        "Begin with a clear specification sheet for your packaging needs: dimensions, material preference, print finishes, and expected monthly volume. Without this baseline, supplier comparisons become inconsistent and misleading.",
+-        "Request physical samples and evaluate them under real conditions. Test durability, color consistency, and print alignment. Good suppliers welcome this process because it prevents production surprises later.",
+-        "Review commercial terms carefully. A low unit cost may hide setup fees, revision costs, or unpredictable lead times. Reliable partners provide transparent pricing and realistic production schedules.",
+-        "Assess responsiveness and process maturity. The best suppliers provide clear points of contact, structured approvals, and proactive risk communication. This operational behavior is essential for stable long-term packaging programs.",
+-      ]}
+-      faqs={[
+-        {
+-          question: "How many suppliers should I evaluate before selecting one?",
+-          answer:
+-            "A shortlist of three to five qualified suppliers is usually enough to compare quality, communication, cost structure, and timeline reliability.",
+-        },
+-        {
+-          question: "Should I select the lowest-cost packaging supplier?",
+-          answer:
+-            "Not always. The best decision balances cost with consistency, delivery accuracy, and quality controls that protect your brand and reduce hidden operational losses.",
+-        },
+-      ]}
+-    />
+-  );
+-}
+diff --git a/src/app/blogs/layout.tsx b/src/app/blogs/layout.tsx
+index 3952e21..512dac3 100644
+--- a/src/app/blogs/layout.tsx
++++ b/src/app/blogs/layout.tsx
+@@ -7,7 +7,7 @@ const siteName = BRAND_NAME;
+ export const metadata: Metadata = {
+   title: "Our Blog | " + siteName,
+   description:
+-    `Stay updated with software and packaging insights from ${siteName} (${BRAND_ALTERNATE}), including AI development, web delivery, and packaging strategy.`,
++    `Stay updated with software insights from ${siteName} (${BRAND_ALTERNATE}), including AI development, web delivery, and CRM & marketing strategy.`,
+   openGraph: {
+     title: "Our Blog | " + siteName,
+     description: "Latest insights on AI, technology, and software development.",
+diff --git a/src/app/layout.tsx b/src/app/layout.tsx
+index a54f4bd..3e9ecd4 100644
+--- a/src/app/layout.tsx
++++ b/src/app/layout.tsx
+@@ -104,22 +104,22 @@ export default function RootLayout({
+         areaServed: ["USA", "UK", "Pakistan"],
+         knowsAbout: [
+           "Web Development Services",
++          "Mobile App Development",
+           "AI Solutions",
+           "MERN Stack Development",
+-          "Custom Packaging",
+-          "Product Packaging Design",
+-          "Box Packaging Supplier Services",
++          "CRM Development",
++          "GoHighLevel Setup and Management",
++          "Digital Marketing and Design",
+         ],
+         hasOfferCatalog: {
+           "@type": "OfferCatalog",
+-          name: "Software and Packaging Services",
++          name: "Software Development Services",
+           itemListElement: [
+             { "@type": "Offer", itemOffered: { "@type": "Service", name: "Web Development Services" } },
++            { "@type": "Offer", itemOffered: { "@type": "Service", name: "Mobile App Development" } },
+             { "@type": "Offer", itemOffered: { "@type": "Service", name: "AI Solutions" } },
+-            { "@type": "Offer", itemOffered: { "@type": "Service", name: "MERN Stack Developers" } },
+-            { "@type": "Offer", itemOffered: { "@type": "Service", name: "Custom Packaging Solutions" } },
+-            { "@type": "Offer", itemOffered: { "@type": "Service", name: "Product Packaging Design" } },
+-            { "@type": "Offer", itemOffered: { "@type": "Service", name: "Box Packaging Supplier" } },
++            { "@type": "Offer", itemOffered: { "@type": "Service", name: "CRM & GoHighLevel" } },
++            { "@type": "Offer", itemOffered: { "@type": "Service", name: "Digital Marketing & Design" } },
+           ],
+         },
+       },
+diff --git a/src/app/packaging/custom-boxes/page.tsx b/src/app/packaging/custom-boxes/page.tsx
+deleted file mode 100644
+index 6a8ed17..0000000
+--- a/src/app/packaging/custom-boxes/page.tsx
++++ /dev/null
+@@ -1,33 +0,0 @@
+-import type { Metadata } from "next";
+-import SeoPage from "@/components/SeoPage";
+-import { CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
+-
+-export const metadata: Metadata = {
+-  title: "Custom Boxes | Pixalbotic Packaging",
+-  description:
+-    "Explore custom packaging boxes by Pixalbotic with structural planning, print quality control, and scalable production support.",
+-  keywords: [...CORE_KEYWORDS, "custom boxes", "custom packaging boxes"],
+-  alternates: { canonical: `${SITE_URL}/packaging/custom-boxes` },
+-};
+-
+-export default function CustomBoxesPage() {
+-  return (
+-    <SeoPage
+-      title="Custom Boxes"
+-      intro="Our custom boxes are designed to protect products, improve unboxing experience, and strengthen brand recall across retail and ecommerce channels."
+-      imageAlt="custom packaging boxes"
+-      sections={[
+-        {
+-          heading: "Structure and Durability",
+-          content:
+-            "We select board types, thickness, and closure formats based on product dimensions and transit conditions so your packaging remains reliable during shipping and handling.",
+-        },
+-        {
+-          heading: "Brand-Led Visual Design",
+-          content:
+-            "Color systems, typography, and print finishes are applied with consistency to maintain brand quality from first order to scaled production.",
+-        },
+-      ]}
+-    />
+-  );
+-}
+diff --git a/src/app/packaging/eco-friendly-packaging/page.tsx b/src/app/packaging/eco-friendly-packaging/page.tsx
+deleted file mode 100644
+index 8666523..0000000
+--- a/src/app/packaging/eco-friendly-packaging/page.tsx
++++ /dev/null
+@@ -1,33 +0,0 @@
+-import type { Metadata } from "next";
+-import SeoPage from "@/components/SeoPage";
+-import { CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
+-
+-export const metadata: Metadata = {
+-  title: "Eco-Friendly Packaging | Pixalbotic",
+-  description:
+-    "Build eco-friendly packaging systems with Pixalbotic using recyclable materials, optimized structures, and brand-safe print strategies.",
+-  keywords: [...CORE_KEYWORDS, "eco friendly packaging", "sustainable packaging"],
+-  alternates: { canonical: `${SITE_URL}/packaging/eco-friendly-packaging` },
+-};
+-
+-export default function EcoFriendlyPackagingPage() {
+-  return (
+-    <SeoPage
+-      title="Eco-Friendly Packaging"
+-      intro="Eco-friendly packaging solutions help brands reduce waste while maintaining visual quality, functionality, and customer satisfaction."
+-      imageAlt="custom packaging boxes"
+-      sections={[
+-        {
+-          heading: "Material Recommendations",
+-          content:
+-            "We evaluate recycled and recyclable material options based on your product requirements, shipping profile, and target market expectations.",
+-        },
+-        {
+-          heading: "Sustainable Production Planning",
+-          content:
+-            "Our team helps optimize pack size, reduce excess material, and improve production consistency so sustainability goals align with commercial realities.",
+-        },
+-      ]}
+-    />
+-  );
+-}
+diff --git a/src/app/packaging/product-packaging/page.tsx b/src/app/packaging/product-packaging/page.tsx
+deleted file mode 100644
+index d74abec..0000000
+--- a/src/app/packaging/product-packaging/page.tsx
++++ /dev/null
+@@ -1,33 +0,0 @@
+-import type { Metadata } from "next";
+-import SeoPage from "@/components/SeoPage";
+-import { CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
+-
+-export const metadata: Metadata = {
+-  title: "Product Packaging Design | Pixalbotic",
+-  description:
+-    "Pixalbotic delivers product packaging design services for shelf impact, compliance clarity, and logistics-ready performance.",
+-  keywords: [...CORE_KEYWORDS, "product packaging", "product packaging design"],
+-  alternates: { canonical: `${SITE_URL}/packaging/product-packaging` },
+-};
+-
+-export default function ProductPackagingPage() {
+-  return (
+-    <SeoPage
+-      title="Product Packaging Design"
+-      intro="Product packaging design at Pixalbotic combines creative direction with technical production planning so your final output looks premium and performs reliably."
+-      imageAlt="product packaging design"
+-      sections={[
+-        {
+-          heading: "Creative and Commercial Balance",
+-          content:
+-            "We design packaging that stands out visually while meeting practical needs such as barcodes, legal text placement, and printing tolerances.",
+-        },
+-        {
+-          heading: "Ready for Manufacturing",
+-          content:
+-            "Our deliverables include print-ready files and production specifications so suppliers can execute accurately and reduce revision cycles.",
+-        },
+-      ]}
+-    />
+-  );
+-}
+diff --git a/src/app/pakistan-packaging-company/page.tsx b/src/app/pakistan-packaging-company/page.tsx
+deleted file mode 100644
+index 2138315..0000000
+--- a/src/app/pakistan-packaging-company/page.tsx
++++ /dev/null
+@@ -1,33 +0,0 @@
+-import type { Metadata } from "next";
+-import SeoPage from "@/components/SeoPage";
+-import { CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
+-
+-export const metadata: Metadata = {
+-  title: "Packaging Company Pakistan | Pixalbotic",
+-  description:
+-    "Pixalbotic is a packaging company in Pakistan offering custom boxes, product packaging design, and end-to-end supplier support.",
+-  keywords: [...CORE_KEYWORDS, "packaging company pakistan", "box packaging supplier pakistan"],
+-  alternates: { canonical: `${SITE_URL}/pakistan-packaging-company` },
+-};
+-
+-export default function PakistanPackagingCompanyPage() {
+-  return (
+-    <SeoPage
+-      title="Packaging Company Pakistan"
+-      intro="We help Pakistan-based and Pakistan-focused brands deliver reliable custom packaging with strong design quality and production coordination."
+-      imageAlt="custom packaging boxes"
+-      sections={[
+-        {
+-          heading: "Local and Export Packaging Support",
+-          content:
+-            "Our team supports packaging workflows for domestic distribution and export-aligned quality requirements, including structural and visual consistency.",
+-        },
+-        {
+-          heading: "Cost and Timeline Optimization",
+-          content:
+-            "We help balance packaging cost, quality, and delivery speed so your packaging operation remains efficient as order volume grows.",
+-        },
+-      ]}
+-    />
+-  );
+-}
+diff --git a/src/app/services/ai-solutions/page.tsx b/src/app/services/ai-solutions/page.tsx
+index 6df0c7b..b04adad 100644
+--- a/src/app/services/ai-solutions/page.tsx
++++ b/src/app/services/ai-solutions/page.tsx
+@@ -6,7 +6,7 @@ export const metadata: Metadata = {
+   title: "AI Solutions | Pixalbotic",
+   description:
+     "Pixalbotic is an AI development agency delivering practical AI automation, workflow optimization, and custom intelligent systems for modern companies.",
+-  keywords: [...CORE_KEYWORDS, "AI solutions", "AI automation services", "AI integration"],
++  keywords: [...CORE_KEYWORDS, "AI solutions", "AI automation services", "AI workflow automation", "AI integration"],
+   alternates: { canonical: `${SITE_URL}/services/ai-solutions` },
+ };
+ 
+@@ -15,13 +15,18 @@ export default function AISolutionsPage() {
+     <SeoPage
+       title="AI Solutions"
+       intro={`${BRAND_NAME} delivers AI solutions that improve speed, decision quality, and team productivity through practical, measurable implementations.`}
+-      imageAlt="custom packaging boxes"
++      imageAlt="AI automation and workflow dashboard"
+       sections={[
+         {
+           heading: "Business-First AI Strategy",
+           content:
+             "We begin by mapping your goals and existing workflows, then design AI systems that solve real bottlenecks such as repetitive tasks, slow support cycles, and fragmented knowledge access.",
+         },
++        {
++          heading: "AI Automations & Workflows",
++          content:
++            "We design and deploy AI-driven automation pipelines that eliminate manual busywork — lead routing, follow-up sequences, document processing, data entry, and multi-step approvals. Each workflow is built with clear triggers, guardrails, and human-review checkpoints so automation accelerates your team instead of creating blind spots. Common wins include automated intake and qualification, AI-assisted reporting, and background jobs that keep CRM and support data in sync across your stack.",
++        },
+         {
+           heading: "Automation and Integration",
+           content:
+diff --git a/src/app/services/crm-gohighlevel/page.tsx b/src/app/services/crm-gohighlevel/page.tsx
+new file mode 100644
+index 0000000..c1b6dc5
+--- /dev/null
++++ b/src/app/services/crm-gohighlevel/page.tsx
+@@ -0,0 +1,50 @@
++import type { Metadata } from "next";
++import SeoPage from "@/components/SeoPage";
++import { BRAND_NAME, CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
++
++export const metadata: Metadata = {
++  title: "CRM & GoHighLevel Services | Pixalbotic",
++  description:
++    "Pixalbotic delivers custom CRM development, GoHighLevel setup and management, GHL AI assistants and chatbots, and software for signage and connected hardware.",
++  keywords: [
++    ...CORE_KEYWORDS,
++    "CRM development",
++    "GoHighLevel setup and management",
++    "GoHighLevel agency",
++    "GHL AI chatbot",
++    "signage software",
++  ],
++  alternates: { canonical: `${SITE_URL}/services/crm-gohighlevel` },
++};
++
++export default function CrmGoHighLevelPage() {
++  return (
++    <SeoPage
++      title="CRM & GoHighLevel"
++      intro={`${BRAND_NAME} builds and manages the CRM and GoHighLevel systems that turn leads into booked revenue — configured around how your team actually sells.`}
++      imageAlt="CRM and GoHighLevel dashboard"
++      sections={[
++        {
++          heading: "Custom CRM Development",
++          content:
++            "For teams that have outgrown off-the-shelf tools, we design and build custom CRM systems tailored to your sales process — pipeline stages, custom fields, reporting, and integrations with the rest of your stack. You get exactly the workflow your team needs, without paying for or working around features you don't.",
++        },
++        {
++          heading: "GoHighLevel Setup & Management",
++          content:
++            "We handle full GoHighLevel implementation: account setup, pipeline and funnel configuration, automations, calendars, and reputation management. For teams already on GoHighLevel, we take over day-to-day management and continuous optimization so your pipeline stays clean and your automations keep working as your business grows.",
++        },
++        {
++          heading: "GHL AI Assistant & Chatbot Configuration",
++          content:
++            "We configure GoHighLevel's AI assistant and chatbot tools to qualify leads, answer common questions, and route conversations to the right person automatically — tuned with your business's voice, offers, and escalation rules so automation feels helpful, not robotic.",
++        },
++        {
++          heading: "Software for Signage & Connected Hardware",
++          content:
++            "We build custom software for digital signage and connected hardware devices that need to sync with your CRM in real time — think in-store displays, kiosks, and IoT devices that pull live data and trigger workflows back into GoHighLevel or your CRM.",
++        },
++      ]}
++    />
++  );
++}
+diff --git a/src/app/services/digital-marketing/page.tsx b/src/app/services/digital-marketing/page.tsx
+new file mode 100644
+index 0000000..80bd6d6
+--- /dev/null
++++ b/src/app/services/digital-marketing/page.tsx
+@@ -0,0 +1,54 @@
++import type { Metadata } from "next";
++import SeoPage from "@/components/SeoPage";
++import { BRAND_NAME, CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
++
++export const metadata: Metadata = {
++  title: "Digital Marketing & Design | Pixalbotic",
++  description:
++    "Pixalbotic delivers digital marketing and design services — brand identity, creative assets, SEO, and campaign strategy that turn traffic into pipeline.",
++  keywords: [
++    ...CORE_KEYWORDS,
++    "digital marketing agency",
++    "brand design",
++    "SEO services",
++    "campaign strategy",
++  ],
++  alternates: { canonical: `${SITE_URL}/services/digital-marketing` },
++};
++
++export default function DigitalMarketingPage() {
++  return (
++    <SeoPage
++      title="Digital Marketing & Design"
++      intro={`${BRAND_NAME} pairs brand-quality design with growth marketing so every campaign, page, and asset works toward a measurable business outcome.`}
++      imageAlt="digital marketing and brand design"
++      sections={[
++        {
++          heading: "Brand Identity & Creative",
++          content:
++            "We develop brand identities, visual systems, and creative assets — logos, style guides, social templates, and ad creative — that stay consistent across every channel and touchpoint.",
++        },
++        {
++          heading: "SEO & Content Strategy",
++          content:
++            "We structure on-page content, technical SEO, and keyword strategy to improve organic visibility across both traditional search and AI-powered discovery, backed by clear reporting on what's moving the needle.",
++        },
++        {
++          heading: "Paid Campaign Support",
++          content:
++            "From audience targeting to creative testing, we support paid campaigns across search and social with a focus on cost-efficient lead generation and measurable return on ad spend.",
++        },
++        {
++          heading: "Conversion-Focused Design",
++          content:
++            "Every landing page, funnel, and email we design is built around a single job: moving the visitor to the next step. We use clear hierarchy, fast load times, and tested layouts to lift conversion rates.",
++        },
++        {
++          heading: "Marketing & Sales Alignment",
++          content:
++            "We connect marketing output directly to CRM and GoHighLevel pipelines, so leads generated from campaigns flow into automated follow-up and your sales team sees results in real time.",
++        },
++      ]}
++    />
++  );
++}
+diff --git a/src/app/services/mobile-app-development/page.tsx b/src/app/services/mobile-app-development/page.tsx
+new file mode 100644
+index 0000000..92abcaf
+--- /dev/null
++++ b/src/app/services/mobile-app-development/page.tsx
+@@ -0,0 +1,54 @@
++import type { Metadata } from "next";
++import SeoPage from "@/components/SeoPage";
++import { BRAND_NAME, CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
++
++export const metadata: Metadata = {
++  title: "Mobile App Development | Pixalbotic",
++  description:
++    "Pixalbotic builds native-quality iOS and Android apps with React Native, from product strategy through App Store and Play Store launch.",
++  keywords: [
++    ...CORE_KEYWORDS,
++    "mobile app development",
++    "React Native developers",
++    "iOS app development",
++    "Android app development",
++  ],
++  alternates: { canonical: `${SITE_URL}/services/mobile-app-development` },
++};
++
++export default function MobileAppDevelopmentPage() {
++  return (
++    <SeoPage
++      title="Mobile App Development"
++      intro={`${BRAND_NAME} designs and ships cross-platform mobile apps that feel native, perform reliably, and scale alongside your product roadmap.`}
++      imageAlt="mobile app development on iOS and Android"
++      sections={[
++        {
++          heading: "Cross-Platform React Native Apps",
++          content:
++            "We build iOS and Android apps from a single React Native codebase, cutting development time without compromising on native performance or platform-specific polish. This means one team, one codebase, and consistent feature parity across both platforms — ideal for startups that need to launch fast and enterprises that need to maintain efficiently.",
++        },
++        {
++          heading: "Product Strategy & UX",
++          content:
++            "Every engagement starts with mapping user journeys, core flows, and business goals before a single screen is designed. We prioritize features that drive activation and retention, and design interfaces that feel intuitive on both iOS and Android conventions.",
++        },
++        {
++          heading: "Backend, APIs & Integrations",
++          content:
++            "Our apps connect cleanly to your existing backend, third-party APIs, push notification services, and analytics — including CRM and GoHighLevel integrations when mobile needs to feed your sales and support pipelines in real time.",
++        },
++        {
++          heading: "App Store & Play Store Launch",
++          content:
++            "We manage the full release process: store listings, compliance review, versioning, and staged rollouts. Post-launch, we monitor crash reports and performance metrics so issues get caught and fixed quickly.",
++        },
++        {
++          heading: "Ongoing Support & Iteration",
++          content:
++            "Mobile products evolve fast. We offer dedicated support and iteration cycles to ship new features, keep pace with OS updates, and continuously improve performance based on real usage data.",
++        },
++      ]}
++    />
++  );
++}
+diff --git a/src/app/services/packaging/page.tsx b/src/app/services/packaging/page.tsx
+deleted file mode 100644
+index 4ac175c..0000000
+--- a/src/app/services/packaging/page.tsx
++++ /dev/null
+@@ -1,43 +0,0 @@
+-import type { Metadata } from "next";
+-import SeoPage from "@/components/SeoPage";
+-import { BRAND_NAME, CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
+-
+-export const metadata: Metadata = {
+-  title: "Packaging Services | Pixalbotic",
+-  description:
+-    "Pixalbotic provides custom packaging, product packaging design, and box packaging supplier services for brands in the USA, UK, and Pakistan.",
+-  keywords: [
+-    ...CORE_KEYWORDS,
+-    "packaging services",
+-    "custom packaging company",
+-    "product packaging design agency",
+-  ],
+-  alternates: { canonical: `${SITE_URL}/services/packaging` },
+-};
+-
+-export default function PackagingServicePage() {
+-  return (
+-    <SeoPage
+-      title="Packaging Services"
+-      intro={`${BRAND_NAME} supports brands with custom packaging strategy, design execution, and supplier coordination for high-quality and scalable packaging delivery.`}
+-      imageAlt="product packaging design"
+-      sections={[
+-        {
+-          heading: "Custom Packaging Solutions",
+-          content:
+-            "We create packaging systems tailored to product type, fulfillment requirements, and customer experience goals. Our solutions are designed for both brand impact and shipping durability.",
+-        },
+-        {
+-          heading: "Product Packaging Design",
+-          content:
+-            "From dielines to final print-ready artwork, we guide packaging design with a focus on clarity, shelf appeal, and functional usability across channels.",
+-        },
+-        {
+-          heading: "Box Packaging Supplier Support",
+-          content:
+-            "We help evaluate and manage supplier relationships by comparing quality control, pricing models, lead times, and scaling capacity for USA, UK, and Pakistan operations.",
+-        },
+-      ]}
+-    />
+-  );
+-}
+diff --git a/src/app/services/page.tsx b/src/app/services/page.tsx
+index dbb7e06..d2f2c32 100644
+--- a/src/app/services/page.tsx
++++ b/src/app/services/page.tsx
+@@ -7,8 +7,8 @@ import { CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
+ export const metadata: Metadata = {
+   title: "Services | Pixalbotic",
+   description:
+-    "Explore Pixalbotic software and packaging services, including web development, AI solutions, and custom packaging support.",
+-  keywords: [...CORE_KEYWORDS, "software services", "packaging services"],
++    "Explore Pixalbotic software services, including web development, mobile app development, AI solutions, CRM & GoHighLevel, and digital marketing.",
++  keywords: [...CORE_KEYWORDS, "software services"],
+   alternates: { canonical: `${SITE_URL}/services` },
+ };
+ 
+@@ -17,7 +17,7 @@ export default function ServicesPage() {
+     <>
+       <PageHero
+         title="Our Services"
+-        description="Software and packaging solutions tailored for growth-focused brands."
++        description="Software development and growth solutions tailored for growth-focused brands."
+         badge="Expert Solutions"
+         topic="backend"
+       />
+@@ -29,11 +29,17 @@ export default function ServicesPage() {
+             <Link href="/services/web-development" className="rounded-lg border border-gray-200 p-4 font-medium text-gray-800 hover:border-blue-500 hover:text-blue-600">
+               Web Development Services
+             </Link>
++            <Link href="/services/mobile-app-development" className="rounded-lg border border-gray-200 p-4 font-medium text-gray-800 hover:border-blue-500 hover:text-blue-600">
++              Mobile App Development
++            </Link>
+             <Link href="/services/ai-solutions" className="rounded-lg border border-gray-200 p-4 font-medium text-gray-800 hover:border-blue-500 hover:text-blue-600">
+               AI Solutions
+             </Link>
+-            <Link href="/services/packaging" className="rounded-lg border border-gray-200 p-4 font-medium text-gray-800 hover:border-blue-500 hover:text-blue-600 sm:col-span-2">
+-              Custom Packaging Solutions
++            <Link href="/services/crm-gohighlevel" className="rounded-lg border border-gray-200 p-4 font-medium text-gray-800 hover:border-blue-500 hover:text-blue-600">
++              CRM & GoHighLevel
++            </Link>
++            <Link href="/services/digital-marketing" className="rounded-lg border border-gray-200 p-4 font-medium text-gray-800 hover:border-blue-500 hover:text-blue-600 sm:col-span-2">
++              Digital Marketing & Design
+             </Link>
+           </div>
+         </div>
+diff --git a/src/app/services/web-development/page.tsx b/src/app/services/web-development/page.tsx
+index 84ccc9e..6230dc1 100644
+--- a/src/app/services/web-development/page.tsx
++++ b/src/app/services/web-development/page.tsx
+@@ -6,7 +6,13 @@ export const metadata: Metadata = {
+   title: "Web Development Services | Pixalbotic",
+   description:
+     "Pixalbotic is a web development company providing high-performance websites, MERN stack developers, and scalable platforms for global businesses.",
+-  keywords: [...CORE_KEYWORDS, "web development services", "custom web app development"],
++  keywords: [
++    ...CORE_KEYWORDS,
++    "web development services",
++    "custom web app development",
++    "landing page design",
++    "funnel builds",
++  ],
+   alternates: { canonical: `${SITE_URL}/services/web-development` },
+ };
+ 
+@@ -15,7 +21,7 @@ export default function WebDevelopmentPage() {
+     <SeoPage
+       title="Web Development Services"
+       intro={`${BRAND_NAME} builds conversion-focused websites and custom web applications with clean architecture, strong SEO foundations, and measurable performance improvements.`}
+-      imageAlt="product packaging design"
++      imageAlt="modern website and web application interface"
+       sections={[
+         {
+           heading: "Full-Stack Delivery",
+@@ -27,6 +33,11 @@ export default function WebDevelopmentPage() {
+           content:
+             "We provide MERN stack developers for startups and enterprise teams that need rapid feature development with maintainable code. Engagements can be project-based or long-term dedicated support.",
+         },
++        {
++          heading: "Landing Pages & Funnel Builds",
++          content:
++            "We design and build high-converting landing pages and multi-step funnels on WordPress and modern page builders, tuned for speed, mobile responsiveness, and clear calls to action. Each build includes conversion-focused copy structure, A/B-test-ready layouts, and clean tracking so paid and organic campaigns can be measured and optimized from day one — with a direct handoff into CRM and GoHighLevel pipelines when a funnel needs to feed automated follow-up.",
++        },
+         {
+           heading: "SEO and Core Web Vitals",
+           content:
+diff --git a/src/app/sitemap.ts b/src/app/sitemap.ts
+index 986b27e..7cf8bfd 100644
+--- a/src/app/sitemap.ts
++++ b/src/app/sitemap.ts
+@@ -1,5 +1,5 @@
+ import type { MetadataRoute } from "next";
+-import { PACKAGING_PAGES, SEO_BLOG_POSTS, SERVICE_PAGES, SITE_URL } from "@/lib/seo";
++import { SEO_BLOG_POSTS, SERVICE_PAGES, SITE_URL } from "@/lib/seo";
+ 
+ const baseUrl = SITE_URL;
+ const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+@@ -48,12 +48,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+       changeFrequency: "weekly" as const,
+       priority: 0.85,
+     })),
+-    ...PACKAGING_PAGES.map((path) => ({
+-      url: `${baseUrl}${path}`,
+-      lastModified: new Date(),
+-      changeFrequency: "weekly" as const,
+-      priority: 0.85,
+-    })),
+     ...SEO_BLOG_POSTS.map((post) => ({
+       url: `${baseUrl}/blogs/${post.slug}`,
+       lastModified: new Date(),
+diff --git a/src/app/uk-packaging-company/page.tsx b/src/app/uk-packaging-company/page.tsx
+deleted file mode 100644
+index 5db29d1..0000000
+--- a/src/app/uk-packaging-company/page.tsx
++++ /dev/null
+@@ -1,33 +0,0 @@
+-import type { Metadata } from "next";
+-import SeoPage from "@/components/SeoPage";
+-import { CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
+-
+-export const metadata: Metadata = {
+-  title: "Packaging Company UK | Pixalbotic",
+-  description:
+-    "Pixalbotic supports UK packaging needs with custom packaging, product packaging design, and dependable supplier coordination.",
+-  keywords: [...CORE_KEYWORDS, "packaging company uk", "uk packaging supplier"],
+-  alternates: { canonical: `${SITE_URL}/uk-packaging-company` },
+-};
+-
+-export default function UKPackagingCompanyPage() {
+-  return (
+-    <SeoPage
+-      title="Packaging Company UK"
+-      intro="Our UK packaging support helps brands ship with confidence using practical design standards, clear artwork systems, and scalable supplier operations."
+-      imageAlt="product packaging design"
+-      sections={[
+-        {
+-          heading: "Quality and Brand Consistency",
+-          content:
+-            "We maintain consistent packaging output through repeatable design controls, print checks, and structured revision workflows.",
+-        },
+-        {
+-          heading: "Operational Reliability",
+-          content:
+-            "Teams get predictable timelines and communication frameworks that reduce delays and keep campaign launches aligned.",
+-        },
+-      ]}
+-    />
+-  );
+-}
+diff --git a/src/app/usa-packaging-company/page.tsx b/src/app/usa-packaging-company/page.tsx
+deleted file mode 100644
+index 06feaae..0000000
+--- a/src/app/usa-packaging-company/page.tsx
++++ /dev/null
+@@ -1,33 +0,0 @@
+-import type { Metadata } from "next";
+-import SeoPage from "@/components/SeoPage";
+-import { CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
+-
+-export const metadata: Metadata = {
+-  title: "Packaging Company USA | Pixalbotic",
+-  description:
+-    "Pixalbotic is a packaging company for USA-focused brands needing custom boxes, product packaging design, and reliable supplier workflows.",
+-  keywords: [...CORE_KEYWORDS, "packaging company usa", "usa packaging supplier"],
+-  alternates: { canonical: `${SITE_URL}/usa-packaging-company` },
+-};
+-
+-export default function USAPackagingCompanyPage() {
+-  return (
+-    <SeoPage
+-      title="Packaging Company USA"
+-      intro="We support USA brands with scalable packaging workflows, quality-focused design, and supplier coordination for ecommerce and retail operations."
+-      imageAlt="custom packaging boxes"
+-      sections={[
+-        {
+-          heading: "USA Market Packaging Requirements",
+-          content:
+-            "Our approach considers shipping conditions, customer expectations, and labeling needs common across USA fulfillment and retail channels.",
+-        },
+-        {
+-          heading: "Fast Iteration and Scale",
+-          content:
+-            "From pilot runs to volume production, we help teams test packaging concepts quickly and move into stable recurring supply.",
+-        },
+-      ]}
+-    />
+-  );
+-}
+diff --git a/src/components/Hero.tsx b/src/components/Hero.tsx
+index 25ebe72..db800a5 100644
+--- a/src/components/Hero.tsx
++++ b/src/components/Hero.tsx
+@@ -131,7 +131,7 @@ export default function Hero() {
+                 </span>{' '}
+                 {heroCopy.titleLine2Amp} {heroCopy.titleGradientSmart}{' '}
+                 <span className="bg-gradient-to-r from-fuchsia-400 to-pink-400 bg-clip-text text-transparent">
+-                  {heroCopy.titleGradientPackaging}
++                  {heroCopy.titleGradientAccent}
+                 </span>
+               </motion.h1>
+ 
+@@ -210,7 +210,7 @@ export default function Hero() {
+                           </div>
+                         </motion.div>
+ 
+-                        {/* Glass: packaging */}
++                        {/* Glass: secondary */}
+                         <motion.div
+                           className="absolute right-5 top-12 z-10 w-[38%] max-w-[200px]"
+                           {...popIn}
+@@ -221,7 +221,7 @@ export default function Hero() {
+                             <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
+                               <Image
+                                 src={h.hero}
+-                                alt={heroAlts.packagingCard}
++                                alt={heroAlts.secondaryCard}
+                                 fill
+                                 sizes="200px"
+                                 className="object-cover object-center"
+@@ -295,7 +295,7 @@ export default function Hero() {
+                         >
+                           <div className="rounded-xl border border-white/20 bg-black/40 p-1 shadow-lg backdrop-blur-md">
+                             <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
+-                              <Image src={h.hero} alt={heroAlts.packagingMobile} fill sizes="38vw" className="object-cover object-center" />
++                              <Image src={h.hero} alt={heroAlts.secondaryCardMobile} fill sizes="38vw" className="object-cover object-center" />
+                             </div>
+                           </div>
+                         </motion.div>
+diff --git a/src/components/SeoPage.tsx b/src/components/SeoPage.tsx
+index 6fbfa9a..bd2d231 100644
+--- a/src/components/SeoPage.tsx
++++ b/src/components/SeoPage.tsx
+@@ -18,7 +18,7 @@ export default function SeoPage({
+   ctaHref = "/contact",
+   ctaText = "Request a consultation",
+   imageSrc = "/pixalbotics-logo.png",
+-  imageAlt = "custom packaging boxes",
++  imageAlt = "software development illustration",
+ }: SeoPageProps) {
+   return (
+     <section className="w-full bg-white py-16 sm:py-20 lg:py-24">
+diff --git a/src/data/icon-registry.tsx b/src/data/icon-registry.tsx
+index 129bf08..207e211 100644
+--- a/src/data/icon-registry.tsx
++++ b/src/data/icon-registry.tsx
+@@ -1,6 +1,6 @@
+ 'use client';
+ 
+-import { FiCode, FiCpu, FiLayers, FiPackage, FiPrinter, FiZap } from 'react-icons/fi';
++import { FiCode, FiCpu, FiSmartphone, FiTrendingUp, FiZap } from 'react-icons/fi';
+ import {
+   RocketIcon,
+   ZapIcon,
+@@ -14,9 +14,8 @@ import {
+ export const contentIcons = {
+   FiCode,
+   FiCpu,
+-  FiLayers,
+-  FiPackage,
+-  FiPrinter,
++  FiSmartphone,
++  FiTrendingUp,
+   FiZap,
+   RocketIcon,
+   ZapIcon,
+diff --git a/src/data/seo-content.json b/src/data/seo-content.json
+index 76be023..38ba080 100644
+--- a/src/data/seo-content.json
++++ b/src/data/seo-content.json
+@@ -13,67 +13,44 @@
+     "alternate": "Pixalbotics"
+   },
+   "seo": {
+-    "globalTitle": "Pixalbotic | Software & Packaging Solutions",
+-    "globalDescription": "Pixalbotic (Pixalbotics) is a web development company and AI development agency delivering MERN stack developers, custom packaging, product packaging design, and box packaging supplier services for brands in the USA, UK, and Pakistan.",
++    "globalTitle": "Pixalbotic | Software Development Agency",
++    "globalDescription": "Pixalbotic (Pixalbotics) is a web development company and AI development agency delivering web platforms, mobile apps, AI automation, CRM & GoHighLevel systems, and digital marketing for growth-focused brands.",
+     "coreKeywords": [
+       "pixalbotic",
+       "pixalbotics",
+       "web development company",
+       "AI development agency",
+-      "MERN stack developers",
+-      "custom packaging",
+-      "product packaging design",
+-      "box packaging supplier",
+-      "packaging company USA",
+-      "packaging company UK",
+-      "packaging company Pakistan"
++      "mobile app development",
++      "CRM development",
++      "GoHighLevel agency",
++      "GoHighLevel setup and management",
++      "digital marketing agency",
++      "custom software development"
+     ],
+     "servicePages": [
+       "/services/web-development",
++      "/services/mobile-app-development",
+       "/services/ai-solutions",
+-      "/services/packaging"
+-    ],
+-    "packagingPages": [
+-      "/packaging/custom-boxes",
+-      "/packaging/product-packaging",
+-      "/packaging/eco-friendly-packaging",
+-      "/usa-packaging-company",
+-      "/uk-packaging-company",
+-      "/pakistan-packaging-company"
+-    ],
+-    "seoBlogPosts": [
+-      {
+-        "slug": "best-packaging-company-in-usa",
+-        "title": "Best Packaging Company in USA",
+-        "description": "How to evaluate and choose the best packaging company in USA for custom boxes, brand consistency, and scalable fulfillment."
+-      },
+-      {
+-        "slug": "custom-box-packaging-trends-2026",
+-        "title": "Custom Box Packaging Trends 2026",
+-        "description": "A practical look at custom box packaging trends in 2026, including eco-friendly materials, smart printing, and UX-focused design."
+-      },
+-      {
+-        "slug": "how-to-choose-packaging-supplier",
+-        "title": "How to Choose Packaging Supplier",
+-        "description": "A structured framework to choose a reliable packaging supplier for quality control, pricing, timelines, and global logistics."
+-      }
++      "/services/crm-gohighlevel",
++      "/services/digital-marketing"
+     ],
++    "seoBlogPosts": [],
+     "homeFaqs": [
+       {
+         "question": "What services does Pixalbotic provide for growth-stage and enterprise teams?",
+-        "answer": "Pixalbotic delivers end-to-end software and packaging services, including web platforms, AI workflow automation, API and cloud integration, MERN engineering, custom packaging systems, and production-ready design support."
++        "answer": "Pixalbotic delivers end-to-end software services, including web platforms, mobile apps, AI workflow automation, CRM and GoHighLevel implementation, and digital marketing and design."
+       },
+       {
+-        "question": "Can you manage both software and packaging under one delivery model?",
+-        "answer": "Yes. We run a unified delivery model where product, engineering, and packaging specialists collaborate through one roadmap, one communication channel, and clear milestones to reduce execution gaps."
++        "question": "Can you manage web, mobile, AI, and CRM under one delivery model?",
++        "answer": "Yes. We run a unified delivery model where product, engineering, and marketing specialists collaborate through one roadmap, one communication channel, and clear milestones to reduce execution gaps."
+       },
+       {
+         "question": "How do you structure timelines, reporting, and project governance?",
+         "answer": "Each engagement starts with discovery and scope definition, followed by sprint-based execution, weekly progress reporting, and milestone reviews. Typical timelines range from 4 to 16 weeks based on scope and complexity."
+       },
+       {
+-        "question": "Do you support regional delivery requirements for USA, UK, and Pakistan?",
+-        "answer": "Absolutely. We support clients across USA, UK, and Pakistan with region-aware recommendations for compliance, packaging specifications, fulfillment realities, and go-to-market execution."
++        "question": "Do you support GoHighLevel setup and AI chatbot configuration?",
++        "answer": "Yes. We handle full GoHighLevel setup and management, including pipelines, automations, and AI assistant / chatbot configuration tailored to your sales and support workflows."
+       },
+       {
+         "question": "What happens after launch in terms of support and optimization?",
+@@ -83,10 +60,10 @@
+   },
+   "homeArticle": {
+     "badge": "Pixalbotic · Software Agency",
+-    "title": "Pixalbotic: Software and Packaging Partner for Growth",
++    "title": "Pixalbotic: Your Software Development Partner for Growth",
+     "paragraphs": [
+-      "Pixalbotic, also recognized as Pixalbotics, helps businesses build better products through software engineering and custom packaging. Many companies only solve one side of growth: either the digital experience or the physical customer experience. Our model is different. We support both. If you need a web platform, AI workflow, and packaging system that works together, our team can design, build, and scale the complete workflow from idea to delivery.",
+-      "We work with startups, scaling ecommerce brands, and established companies in the USA, UK, and Pakistan. On the software side, clients choose us as a web development company and AI development agency because we build practical systems that are reliable, measurable, and easy to maintain. On the packaging side, clients choose us for custom packaging, product packaging design, and supplier coordination because packaging quality has direct impact on brand trust, fulfillment performance, and repeat purchases.",
++      "Pixalbotic, also recognized as Pixalbotics, helps businesses build better products through modern software engineering. From web platforms and mobile apps to AI automation and CRM systems, our team can design, build, and scale the complete workflow from idea to delivery under one roof.",
++      "We work with startups, scaling ecommerce brands, and established companies. Clients choose us as a web development company and AI development agency because we build practical systems that are reliable, measurable, and easy to maintain — and because we pair that engineering depth with GoHighLevel expertise and digital marketing that actually moves pipeline.",
+       "Our process begins with clarity. We map business goals, customer behavior, product constraints, and launch timelines. Then we define the solution in simple language so stakeholders can align quickly. This approach improves execution quality and reduces delays. It also creates content clarity for modern search systems, because clear structure and direct answers help both users and AI assistants understand what your company does."
+     ],
+     "pillarCards": [
+@@ -96,7 +73,15 @@
+         "title": "Web Development Services",
+         "paragraphs": [
+           "As a web development company, Pixalbotic builds websites and web applications that prioritize performance, SEO, accessibility, and conversion. We design architecture for long-term growth, not only short-term launch. Our team handles discovery, UI engineering, backend integration, API orchestration, analytics setup, and ongoing optimization. For organizations that need rapid product output, we provide MERN stack developers who can ship new features with clear documentation and stable code practices.",
+-          "We build with measurable objectives: faster load speed, lower bounce rates, stronger lead quality, and better operational visibility. Whether the requirement is a corporate website, ecommerce storefront, admin dashboard, or custom business portal, we focus on maintainable systems that can evolve as your market changes. This is critical for brands operating across multiple countries where customer expectations, compliance needs, and content strategy vary by region."
++          "We build with measurable objectives: faster load speed, lower bounce rates, stronger lead quality, and better operational visibility. Whether the requirement is a corporate website, ecommerce storefront, admin dashboard, custom business portal, or a landing page and funnel build on WordPress or a page builder, we focus on maintainable systems that can evolve as your market changes."
++        ]
++      },
++      {
++        "id": "mobile-app-development",
++        "title": "Mobile App Development",
++        "paragraphs": [
++          "Pixalbotic designs and ships native-quality iOS and Android apps using React Native, giving startups and enterprise teams one codebase, faster releases, and a consistent user experience across platforms.",
++          "From product strategy and UX to App Store / Play Store launch and post-launch iteration, we build apps that are fast, stable, and built to scale alongside your backend and APIs."
+         ]
+       },
+       {
+@@ -104,32 +89,39 @@
+         "title": "AI Solutions",
+         "paragraphs": [
+           "As an AI development agency, we implement AI solutions that create real operational value. Instead of deploying AI for hype, we align each workflow to a business metric such as reduced response time, improved forecast accuracy, or better customer support consistency. We design AI-driven content operations, intelligent document processing, recommendation systems, and automation pipelines that integrate with your existing stack.",
+-          "Our implementation method is practical and transparent. We identify where AI can improve decision speed, where human review is required, and how results will be measured over time. We also create clear, structured prompts and knowledge flows so AI search engines and answer assistants can interpret business information accurately. When your website content is organized into meaningful sections, concise definitions, and relevant FAQs, your visibility improves across traditional search and AI-powered discovery channels."
++          "Our implementation method is practical and transparent. We identify where AI can improve decision speed, where human review is required, and how results will be measured over time. We also create clear, structured prompts and knowledge flows so AI search engines and answer assistants can interpret business information accurately."
++        ]
++      },
++      {
++        "id": "crm-gohighlevel",
++        "title": "CRM & GoHighLevel",
++        "paragraphs": [
++          "Pixalbotic builds custom CRM systems and delivers full GoHighLevel setup and management — pipelines, automations, funnels, and reporting configured around how your sales team actually works.",
++          "We also configure GoHighLevel AI assistants and chatbots for lead qualification and support, and develop software for signage and connected hardware devices that need to talk to your CRM in real time."
+         ]
+       },
+       {
+-        "id": "custom-packaging",
+-        "title": "Custom Packaging Solutions",
++        "id": "digital-marketing",
++        "title": "Digital Marketing & Design",
+         "paragraphs": [
+-          "Packaging is not only visual branding. It is a product experience and a logistics system. Pixalbotic provides custom packaging services for brands that need structural design, print quality, compliance clarity, and dependable production coordination. We support product packaging design for retail shelves, ecommerce shipments, and specialty launches where unboxing quality directly affects customer perception and social sharing.",
+-          "If you are searching for a box packaging supplier, we help you evaluate options based on material standards, durability, finishing methods, lead times, and region-specific fulfillment constraints. Our teams coordinate with packaging partners and quality checkpoints so your packaging output remains consistent at scale. This reduces costly reprints and keeps launch windows on track for campaigns in the USA, UK, and Pakistan.",
+-          "Our packaging strategy is tightly connected to software systems. For example, product metadata, SKU logic, and campaign planning can be synchronized with packaging variants. This helps marketing and operations teams make faster decisions and avoids communication gaps between digital and physical workflows."
++          "Our digital marketing and design team builds brand identity, creative assets, and campaign strategy that turns traffic into pipeline — paired with the engineering to make funnels and landing pages actually convert.",
++          "We combine SEO, paid campaign support, and conversion-focused design with the technical execution to launch and iterate quickly."
+         ]
+       }
+     ],
+     "closing": {
+-      "title": "Why Global Brands Choose Pixalbotic",
++      "title": "Why Growing Brands Choose Pixalbotic",
+       "paragraphs": [
+-        "Companies choose Pixalbotic because we combine technical depth with business clarity. Instead of treating web, AI, and packaging as separate projects, we build connected systems that improve speed and consistency across departments. This unified approach is especially useful for cross-border businesses that manage distributed teams and complex delivery timelines.",
+-        "Every engagement is built around transparency, documentation, and measurable outcomes. You always know what is being built, why it matters, and what success looks like. That reliability supports stronger rankings for brand searches like Pixalbotic and Pixalbotics while also improving discoverability for commercial queries such as web development company, AI development agency, custom packaging, and product packaging design.",
+-        "If your business needs an execution partner for software and packaging, our team is ready to help. Explore our service pages, review market-specific packaging solutions, and read our practical blog guides for decision support. You can also contact us directly to plan a roadmap tailored to your region, product category, and growth goals. Learn more at {{SITE_URL}}."
++        "Companies choose Pixalbotic because we combine technical depth with business clarity. Instead of treating web, mobile, AI, and marketing as separate projects, we build connected systems that improve speed and consistency across departments.",
++        "Every engagement is built around transparency, documentation, and measurable outcomes. You always know what is being built, why it matters, and what success looks like. That reliability supports stronger rankings for brand searches like Pixalbotic and Pixalbotics while also improving discoverability for commercial queries such as web development company, AI development agency, mobile app development, and GoHighLevel agency.",
++        "If your business needs an execution partner for software, AI, and growth marketing, our team is ready to help. Explore our service pages and read our practical blog guides for decision support. You can also contact us directly to plan a roadmap tailored to your product, region, and growth goals. Learn more at {{SITE_URL}}."
+       ]
+     }
+   },
+   "pages": {
+     "about": {
+-      "metadataTitle": "About Us | Pixalbotics — Software House & Packaging Design",
+-      "metadataDescription": "Pixalbotics is a software house for SaaS, AI integration, and cloud apps—plus packaging design and commercial printing. Meet the team behind your digital and physical brand."
++      "metadataTitle": "About Us | Pixalbotics — Software Development Agency",
++      "metadataDescription": "Pixalbotics is a software development agency for web, mobile, AI, and CRM/GoHighLevel solutions. Meet the team behind your digital growth."
+     }
+   }
+ }
+\ No newline at end of file
+diff --git a/src/data/site-content.json b/src/data/site-content.json
+index 7c12657..c3702fe 100644
+--- a/src/data/site-content.json
++++ b/src/data/site-content.json
+@@ -33,8 +33,8 @@
+     "titleGradientSoftware": "Software",
+     "titleLine2Amp": "&",
+     "titleGradientSmart": "Smart",
+-    "titleGradientPackaging": "Packaging",
+-    "subtitle": "From custom SaaS platforms and AI-powered products to structural packaging design and commercial print—we are your full-service technology partner. One team, every deliverable.",
++    "titleGradientAccent": "Solutions",
++    "subtitle": "From custom SaaS platforms and AI-powered products to mobile apps, CRM & GoHighLevel, and digital marketing—we are your full-service software development partner. One team, every deliverable.",
+     "primaryCta": {
+       "label": "Start Your Project",
+       "href": "/booking"
+@@ -55,34 +55,34 @@
+         "icon": "FiZap"
+       },
+       {
+-        "id": "api",
+-        "label": "API & Cloud Integration",
+-        "icon": "FiCpu"
++        "id": "mobile",
++        "label": "Mobile App Development",
++        "icon": "FiSmartphone"
+       },
+       {
+-        "id": "pack",
+-        "label": "Packaging Design",
+-        "icon": "FiPackage"
++        "id": "crm",
++        "label": "CRM & GoHighLevel",
++        "icon": "UsersIcon"
+       },
+       {
+-        "id": "struct",
+-        "label": "Structural Packaging",
+-        "icon": "FiLayers"
++        "id": "marketing",
++        "label": "Digital Marketing & Design",
++        "icon": "FiTrendingUp"
+       },
+       {
+-        "id": "print",
+-        "label": "Printing & Labels",
+-        "icon": "FiPrinter"
++        "id": "api",
++        "label": "API & Cloud Integration",
++        "icon": "FiCpu"
+       }
+     ],
+     "stats": [
+       {
+         "value": "200+",
+-        "label": "AI Software Projects"
++        "label": "Software Projects Delivered"
+       },
+       {
+-        "value": "150+",
+-        "label": "Packaging Designs Delivered"
++        "value": "80+",
++        "label": "GoHighLevel & CRM Builds"
+       },
+       {
+         "value": "50+",
+@@ -96,9 +96,9 @@
+     "imageAlts": {
+       "workspace": "Developer workspace with pixelbolts branding and neon city view",
+       "saasCard": "SaaS dashboards and analytics interfaces",
+-      "packagingCard": "Packaging design and print production graphics",
++      "secondaryCard": "Mobile app and CRM dashboard interfaces",
+       "saasCardMobile": "SaaS and analytics dashboard visual",
+-      "packagingMobile": "Packaging and print design visual",
++      "secondaryCardMobile": "Mobile app and CRM dashboard visual",
+       "logoCenter": "Pixalbotics logo",
+       "mascotDesktop": "Pixalbotics hero logo with robot mascot",
+       "mascotMobile": "Pixalbotics hero brand visual"
+@@ -107,8 +107,8 @@
+   "aboutSection": {
+     "badge": "About Us",
+     "headlineLead": "Software Agency + ",
+-    "headlineAccent": "packaging partner",
+-    "paragraph2": "Designers and engineers work together under one roof: discovery, UX, build, launch, and ongoing support—with optional print-ready assets when you ship physical goods.",
++    "headlineAccent": "growth partner",
++    "paragraph2": "Designers and engineers work together under one roof: discovery, UX, build, launch, and ongoing support—plus the CRM, automation, and marketing to turn it into revenue.",
+     "ctas": {
+       "exploreServices": {
+         "label": "Explore our services",
+@@ -119,9 +119,9 @@
+         "href": "/projects"
+       }
+     },
+-    "panelLead": "Software + packaging — ",
++    "panelLead": "Software + growth — ",
+     "panelAccent": "one partner",
+-    "panelSubtext": "Digital craft · Physical brand delivery",
++    "panelSubtext": "Digital craft · Measurable growth delivery",
+     "imageAlts": {
+       "wordmark": "Pixalbotics — PIXALBOTICS wordmark and World of AI identity",
+       "cube": "Pixalbotics — gradient cube brand mark"
+@@ -141,8 +141,8 @@
+       },
+       {
+         "icon": "ZapIcon",
+-        "title": "Packaging & print",
+-        "description": "Structural packaging design plus commercial printing and labels.",
++        "title": "CRM & GoHighLevel",
++        "description": "Custom CRM builds plus GoHighLevel setup, automation, and AI chatbots.",
+         "color": "from-pink-500 to-orange-500"
+       },
+       {
+@@ -163,7 +163,7 @@
+       },
+       {
+         "type": "mutedPink",
+-        "text": "packaging design"
++        "text": "CRM & GoHighLevel systems"
+       },
+       {
+         "type": "text",
+@@ -171,18 +171,18 @@
+       },
+       {
+         "type": "mutedCyan",
+-        "text": "commercial printing"
++        "text": "digital marketing"
+       },
+       {
+         "type": "text",
+-        "text": "—so your product story stays consistent from code to carton."
++        "text": "—so your product story stays consistent from code to customer."
+       }
+     ]
+   },
+   "servicesSection": {
+     "headerBadge": "Our Services",
+     "title": "Complete Technology Solutions",
+-    "subtitle": "From SaaS and AI software to packaging design, printing, and modern web apps — we deliver end-to-end solutions that drive growth online and on the shelf",
++    "subtitle": "From SaaS and AI software to mobile apps, CRM & GoHighLevel, and digital marketing — we deliver end-to-end solutions that drive real growth",
+     "summaryTitle": "Your Complete Technology Partner",
+     "summarySubtitle": "We specialize in building modern, scalable solutions across all technology domains. Whether you need a SaaS product, mobile app, e-commerce platform, or custom software — we deliver excellence.",
+     "techBadges": [
+@@ -264,17 +264,17 @@
+         "hoverGradient": "from-cyan-500/10 to-blue-500/10"
+       },
+       {
+-        "icon": "FiPackage",
+-        "title": "Packaging Design",
+-        "description": "Structural packaging, dielines, and retail-ready artwork—from concept sketches to production files that match your brand and fulfilment workflow.",
++        "icon": "FiSmartphone",
++        "title": "Mobile App Development",
++        "description": "Native-quality iOS and Android apps built with React Native—from product strategy through App Store and Play Store launch.",
+         "gradient": "from-fuchsia-500 via-purple-500 to-violet-600",
+         "iconBg": "from-fuchsia-500 to-purple-500",
+         "hoverGradient": "from-fuchsia-500/10 to-purple-500/10"
+       },
+       {
+-        "icon": "FiPrinter",
+-        "title": "Printing & Labels",
+-        "description": "High-quality commercial printing, labels, and finishing—colour-accurate proofs, consistent runs, and materials suited for shelf-ready packaging.",
++        "icon": "FiTrendingUp",
++        "title": "Digital Marketing & Design",
++        "description": "Brand identity, creative assets, and campaign strategy paired with conversion-focused landing pages and funnel builds.",
+         "gradient": "from-amber-500 via-orange-500 to-rose-600",
+         "iconBg": "from-amber-500 to-orange-500",
+         "hoverGradient": "from-amber-500/10 to-orange-500/10"
+@@ -423,14 +423,14 @@
+   "faqSection": {
+     "badge": "FAQ · Pixalbotic",
+     "title": "Clear Answers, Faster Decisions",
+-    "subtitle": "Get straightforward guidance on software, AI, and custom packaging so your team can plan and execute with confidence.",
++    "subtitle": "Get straightforward guidance on software, AI, and CRM & marketing so your team can plan and execute with confidence.",
+     "sideBadge": "Quick Support",
+     "sideTitle": "Still have questions?",
+-    "sideBody": "Talk to Pixalbotic experts for software strategy, AI implementation, and custom packaging planning tailored to your business goals.",
++    "sideBody": "Talk to Pixalbotic experts for software strategy, AI implementation, and CRM & marketing planning tailored to your business goals.",
+     "sideChipLabels": [
+       "Software",
+       "AI",
+-      "Packaging",
++      "CRM",
+       "Support"
+     ],
+     "contactCta": {
+@@ -483,8 +483,8 @@
+     "infoCard": {
+       "title": "Contact Information",
+       "emailHeading": "Email",
+-      "emailDisplay": "info@pixalbotics.com",
+-      "emailHref": "mailto:info@pixalbotics.com",
++      "emailDisplay": "info@pixalbotic.com",
++      "emailHref": "mailto:info@pixalbotic.com",
+       "phoneHeading": "Phone",
+       "ukBranch": "UK branch",
+       "pkBranch": "Pakistan branch",
+@@ -596,7 +596,7 @@
+     "about": {
+       "pageHero": {
+         "title": "About Pixalbotics",
+-        "description": "We build intelligent software and ship beautiful packaging—one partner for SaaS, AI, APIs, design, and print.",
++        "description": "We build intelligent software and drive real growth—one partner for SaaS, AI, mobile apps, CRM & GoHighLevel, and digital marketing.",
+         "badge": "About Us",
+         "topic": "cloud"
+       }
+diff --git a/src/images/index.ts b/src/images/index.ts
+index 099def1..2982f0e 100644
+--- a/src/images/index.ts
++++ b/src/images/index.ts
+@@ -21,7 +21,6 @@ export const images = {
+     /** Aliases for older keys */
+     branding: pixal1,
+     softwareScene: pixal4,
+-    packagingScene: heroScene,
+     splash: pixal2,
+     cube: pixal3,
+   },
+diff --git a/src/lib/seo.ts b/src/lib/seo.ts
+index 9b88af5..6eeb99f 100644
+--- a/src/lib/seo.ts
++++ b/src/lib/seo.ts
+@@ -18,8 +18,6 @@ export const CORE_KEYWORDS = seoContent.seo.coreKeywords;
+ 
+ export const SERVICE_PAGES = seoContent.seo.servicePages;
+ 
+-export const PACKAGING_PAGES = seoContent.seo.packagingPages;
+-
+ export const SEO_BLOG_POSTS = seoContent.seo.seoBlogPosts;
+ 
+ export const HOME_FAQS = seoContent.seo.homeFaqs;
+-- 
+2.43.0
+

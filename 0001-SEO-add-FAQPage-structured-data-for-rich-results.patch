@@ -1,0 +1,49 @@
+From f2f15ea0c1be1e57a480919b216bafef97c0b626 Mon Sep 17 00:00:00 2001
+From: Pixalbotic Automation <info@pixalbotic.com>
+Date: Thu, 27 Aug 2026 23:38:57 +0000
+Subject: [PATCH] SEO: add FAQPage structured data for rich results
+
+Adds an FAQPage JSON-LD block (mirroring the homepage FAQ content
+already shown to visitors) so Google can show FAQ rich results/dropdowns
+directly in search listings, which improves click-through and visual
+prominence versus a plain blue-link result.
+---
+ src/app/layout.tsx | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/src/app/layout.tsx b/src/app/layout.tsx
+index 3e9ecd4..e5a67b8 100644
+--- a/src/app/layout.tsx
++++ b/src/app/layout.tsx
+@@ -13,6 +13,7 @@ import {
+   CORE_KEYWORDS,
+   GLOBAL_DESCRIPTION,
+   GLOBAL_TITLE,
++  HOME_FAQS,
+   SITE_URL,
+ } from "@/lib/seo";
+ 
+@@ -131,6 +132,20 @@ export default function RootLayout({
+         description: FULL_DESCRIPTION,
+         publisher: { "@id": `${siteUrl}/#organization` },
+       },
++      {
++        "@type": "FAQPage",
++        "@id": `${siteUrl}/#faq`,
++        // Mirrors the FAQ section actually rendered on the homepage/about page -
++        // structured data should always match visible on-page content.
++        mainEntity: HOME_FAQS.map((faq: { question: string; answer: string }) => ({
++          "@type": "Question",
++          name: faq.question,
++          acceptedAnswer: {
++            "@type": "Answer",
++            text: faq.answer,
++          },
++        })),
++      },
+     ],
+   };
+   return (
+-- 
+2.43.0
+
