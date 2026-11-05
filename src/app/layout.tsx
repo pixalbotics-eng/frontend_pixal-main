@@ -54,9 +54,6 @@ export async function generateMetadata(): Promise<Metadata> {
     formatDetection: { email: false, address: false, telephone: false },
     alternates: {
       canonical: siteUrl,
-      types: {
-        "text/plain": [`${siteUrl}/llms.txt`, `${siteUrl}/llms-full.txt`],
-      },
     },
     openGraph: {
       type: "website",
