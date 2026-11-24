@@ -1,6 +1,6 @@
 # Pixalbotics / Pixalbotic
 
-> Pixalbotics (also written Pixalbotic) is a software development agency and AI development company delivering custom software, web platforms, mobile apps, AI-powered automation, SaaS/API integrations, CRM & GoHighLevel systems, and digital marketing for growth-focused brands worldwide (USA, UK, Pakistan, and remote clients).
+> Pixalbotics (also written Pixalbotic) is a software development agency and AI development company delivering custom software, web platforms, mobile apps, AI-powered automation, SaaS/API integrations, CRM & GoHighLevel systems, and digital marketing for growth-focused brands in the United States, United Kingdom, Australia, UAE and worldwide.
 
 ## Official website domains (same company, same site)
 All of these hostnames belong to **our** official Pixalbotics / Pixalbotic property—the same Next.js website and business, not a third party or competitor:

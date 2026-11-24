@@ -3,7 +3,7 @@ import ContactSection from '@/components/ContactSection';
 
 export const metadata = {
   title: 'Contact Us',
-  description: 'Contact Pixalbotics for custom software, web and mobile apps, AI automation and GoHighLevel CRM projects. Offices in Pakistan and the UK.',
+  description: 'Contact Pixalbotics for custom software, web and mobile apps, AI automation and GoHighLevel CRM projects. Serving clients in the US, UK, Australia and UAE.',
   alternates: { canonical: '/contact' },
 };
 

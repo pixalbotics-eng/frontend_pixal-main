@@ -137,7 +137,8 @@ export default function RootLayout({
         areaServed: [
           { "@type": "Country", name: "United States" },
           { "@type": "Country", name: "United Kingdom" },
-          { "@type": "Country", name: "Pakistan" },
+          { "@type": "Country", name: "Australia" },
+          { "@type": "Country", name: "United Arab Emirates" },
           "Worldwide",
         ],
         contactPoint: [
@@ -146,14 +147,14 @@ export default function RootLayout({
             contactType: "sales",
             email: "info@pixalbotic.com",
             telephone: "+44-7769-649531",
-            areaServed: ["GB", "US", "PK", "Worldwide"],
+            areaServed: ["US", "GB", "AU", "AE", "Worldwide"],
             availableLanguage: ["English", "Urdu"],
           },
           {
             "@type": "ContactPoint",
             contactType: "customer support",
             telephone: "+92-343-1743916",
-            areaServed: ["PK", "Worldwide"],
+            areaServed: ["US", "GB", "AU", "AE", "Worldwide"],
             availableLanguage: ["English", "Urdu"],
           },
         ],

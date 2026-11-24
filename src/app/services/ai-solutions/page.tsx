@@ -38,7 +38,7 @@ export default function AISolutionsPage() {
       alternateName: "Pixalbotics",
       url: SITE_URL,
     },
-    areaServed: ["USA", "UK", "Pakistan", "Worldwide"],
+    areaServed: ["United States", "United Kingdom", "Australia", "United Arab Emirates", "Worldwide"],
     url: `${SITE_URL}/services/ai-solutions`,
     description:
       "Practical AI software, automation pipelines, intelligent product features, and CRM-connected AI chatbots from Pixalbotics.",
