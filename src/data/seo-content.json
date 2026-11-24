@@ -1,11 +1,11 @@
 {
   "site": {
-    "defaultUrl": "https://www.pixalbotics.com",
+    "defaultUrl": "https://www.pixalbotic.com",
     "officialDomains": [
-      "https://www.pixalbotics.com",
-      "https://pixalbotics.com",
       "https://www.pixalbotic.com",
-      "https://pixalbotic.com"
+      "https://pixalbotic.com",
+      "https://www.pixalbotics.com",
+      "https://pixalbotics.com"
     ]
   },
   "brand": {
@@ -73,7 +73,7 @@
       },
       {
         "question": "How do I start a software or AI project with Pixalbotics?",
-        "answer": "Share your goals on the contact form or booking page at pixalbotics.com. We run a short discovery, propose a clear scope and timeline, then begin sprint-based delivery with weekly reporting."
+        "answer": "Share your goals on the contact form or booking page at pixalbotic.com. We run a short discovery, propose a clear scope and timeline, then begin sprint-based delivery with weekly reporting."
       }
     ]
   },

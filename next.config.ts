@@ -31,6 +31,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'www.pixalbotic.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'pixal-fe5o.onrender.com',
         pathname: '/**',
       },
@@ -55,17 +60,17 @@ const nextConfig: NextConfig = {
   // instead of letting them 404 and lose their existing search equity.
   async redirects() {
     return [
-      // Consolidate the legacy pixalbotic.com hostnames onto the canonical domain.
+      // Consolidate the pixalbotics.com hostnames onto the canonical domain www.pixalbotic.com.
       {
         source: '/:path*',
-        has: [{ type: 'host', value: 'pixalbotic.com' }],
-        destination: 'https://www.pixalbotics.com/:path*',
+        has: [{ type: 'host', value: 'pixalbotics.com' }],
+        destination: 'https://www.pixalbotic.com/:path*',
         permanent: true,
       },
       {
         source: '/:path*',
-        has: [{ type: 'host', value: 'www.pixalbotic.com' }],
-        destination: 'https://www.pixalbotics.com/:path*',
+        has: [{ type: 'host', value: 'www.pixalbotics.com' }],
+        destination: 'https://www.pixalbotic.com/:path*',
         permanent: true,
       },
       { source: '/services/packaging', destination: '/services', permanent: true },
