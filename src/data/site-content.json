@@ -94,7 +94,7 @@
       }
     ],
     "imageAlts": {
-      "workspace": "Developer workspace with pixelbolts branding and neon city view",
+      "workspace": "Pixalbotics developer workspace with neon city view",
       "saasCard": "SaaS dashboards and analytics interfaces",
       "secondaryCard": "Mobile app and CRM dashboard interfaces",
       "saasCardMobile": "SaaS and analytics dashboard visual",
@@ -421,12 +421,12 @@
     ]
   },
   "faqSection": {
-    "badge": "FAQ · Pixalbotic",
+    "badge": "FAQ · Pixalbotics",
     "title": "Clear Answers, Faster Decisions",
     "subtitle": "Get straightforward guidance on software, AI, and CRM & marketing so your team can plan and execute with confidence.",
     "sideBadge": "Quick Support",
     "sideTitle": "Still have questions?",
-    "sideBody": "Talk to Pixalbotic experts for software strategy, AI implementation, and CRM & marketing planning tailored to your business goals.",
+    "sideBody": "Talk to Pixalbotics experts for software strategy, AI implementation, and CRM & marketing planning tailored to your business goals.",
     "sideChipLabels": [
       "Software",
       "AI",
@@ -441,7 +441,7 @@
       "label": "Book a session",
       "href": "/booking"
     },
-    "imageAlt": "Pixalbotic support assistant"
+    "imageAlt": "Pixalbotics support assistant"
   },
   "contactSection": {
     "badge": "Get In Touch",
@@ -501,7 +501,7 @@
     }
   },
   "footer": {
-    "tagline": "Empowering businesses with smart agency software and professional courses. Your complete growth ecosystem for success.",
+    "tagline": "Pixalbotics is a software development and AI agency building custom software, web and mobile apps, AI automation and CRM systems for growing brands.",
     "newsletterTitle": "Subscribe to Newsletter",
     "emailPlaceholder": "Enter your email",
     "subscribeCta": "Subscribe",
@@ -578,7 +578,7 @@
     "socialLinks": [
       {
         "name": "Email",
-        "href": "mailto:pixalbotics@gmail.com",
+        "href": "mailto:info@pixalbotic.com",
         "color": "hover:text-blue-400"
       },
       {
@@ -597,8 +597,8 @@
         "color": "hover:text-blue-400"
       }
     ],
-    "contactEmailDisplay": "pixalbotics@gmail.com",
-    "contactEmailHref": "mailto:pixalbotics@gmail.com"
+    "contactEmailDisplay": "info@pixalbotic.com",
+    "contactEmailHref": "mailto:info@pixalbotic.com"
   },
   "pages": {
     "about": {

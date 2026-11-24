@@ -35,8 +35,9 @@ export default function Logo({ className = '', showText = true }: LogoProps) {
         <div className="relative w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16">
           <Image
             src={images.logo}
-            alt="pixalbotics Logo"
+            alt="Pixalbotics logo"
             fill
+            sizes="64px"
             className="object-contain drop-shadow-lg"
             priority
           />

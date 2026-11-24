@@ -184,7 +184,7 @@ export default function TeamSection() {
                       )}
                     </div>
                     <div className="flex items-center justify-center gap-3 pt-5 border-t border-gray-100">
-                      <motion.a href="mailto:pixalbotics@gmail.com" whileHover={{ scale: 1.1, y: -2 }} whileTap={{ scale: 0.95 }} className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 hover:bg-blue-100 transition-colors shadow-sm" aria-label="Email">
+                      <motion.a href="mailto:info@pixalbotic.com" whileHover={{ scale: 1.1, y: -2 }} whileTap={{ scale: 0.95 }} className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 hover:bg-blue-100 transition-colors shadow-sm" aria-label="Email">
                         <MailIcon size={18} />
                       </motion.a>
                       <motion.a href="https://www.instagram.com/Pixal_Botics" target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.1, y: -2 }} whileTap={{ scale: 0.95 }} className="w-9 h-9 rounded-lg bg-pink-50 flex items-center justify-center text-pink-600 hover:bg-pink-100 transition-colors shadow-sm" aria-label="Instagram">

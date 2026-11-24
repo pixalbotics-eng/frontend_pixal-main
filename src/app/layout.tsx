@@ -13,7 +13,6 @@ import {
   CORE_KEYWORDS,
   GLOBAL_DESCRIPTION,
   GLOBAL_TITLE,
-  HOME_FAQS,
   SITE_URL,
 } from "@/lib/seo";
 
@@ -34,6 +33,9 @@ const DEFAULT_SAME_AS = [
   "https://www.linkedin.com/company/pixalbotics",
   "https://www.instagram.com/Pixal_Botics",
   "https://www.facebook.com/share/1CaExqPQG4",
+  "https://clutch.co/profile/pixalbotics",
+  "https://themanifest.com/company/pixalbotics",
+  "https://www.trustpilot.com/review/pixalbotics.com",
 ];
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -121,7 +123,19 @@ export default function RootLayout({
         image: `${siteUrl}/pixalbotics-logo.png`,
         description: FULL_DESCRIPTION,
         slogan: "Software Development Agency & AI Company",
-        email: "pixalbotics@gmail.com",
+        email: "info@pixalbotic.com",
+        foundingDate: "2023",
+        founder: [
+          { "@type": "Person", name: "Ali Hasan", sameAs: "https://www.linkedin.com/in/ali-hasan-programer/" },
+          { "@type": "Person", name: "Nabeel Hussain" },
+          { "@type": "Person", name: "Ramish Munawar", sameAs: "https://www.linkedin.com/in/ramish-munawar/" },
+        ],
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Lahore",
+          addressRegion: "Punjab",
+          addressCountry: "PK",
+        },
         sameAs: socialProfiles,
         areaServed: [
           { "@type": "Country", name: "United States" },
@@ -133,7 +147,7 @@ export default function RootLayout({
           {
             "@type": "ContactPoint",
             contactType: "sales",
-            email: "pixalbotics@gmail.com",
+            email: "info@pixalbotic.com",
             telephone: "+44-7769-649531",
             areaServed: ["GB", "US", "PK", "Worldwide"],
             availableLanguage: ["English", "Urdu"],
@@ -221,34 +235,6 @@ export default function RootLayout({
         description: FULL_DESCRIPTION,
         inLanguage: "en-US",
         publisher: { "@id": `${siteUrl}/#organization` },
-      },
-      {
-        "@type": "WebPage",
-        "@id": `${siteUrl}/#webpage`,
-        url: siteUrl,
-        name: GLOBAL_TITLE,
-        isPartOf: { "@id": `${siteUrl}/#website` },
-        about: { "@id": `${siteUrl}/#organization` },
-        description: FULL_DESCRIPTION,
-        inLanguage: "en-US",
-        speakable: {
-          "@type": "SpeakableSpecification",
-          cssSelector: ["h1", "h2", "[data-speakable]"],
-        },
-      },
-      {
-        "@type": "FAQPage",
-        "@id": `${siteUrl}/#faq`,
-        // Mirrors the FAQ section actually rendered on the homepage -
-        // structured data should always match visible on-page content.
-        mainEntity: HOME_FAQS.map((faq: { question: string; answer: string }) => ({
-          "@type": "Question",
-          name: faq.question,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: faq.answer,
-          },
-        })),
       },
     ],
   };

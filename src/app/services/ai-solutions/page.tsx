@@ -3,9 +3,9 @@ import SeoPage from "@/components/SeoPage";
 import { BRAND_NAME, CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "AI Solutions & AI Software Company | Pixalbotic",
+  title: "AI Solutions & AI Software Company | Pixalbotics",
   description:
-    "Pixalbotic is an AI software company and AI development agency delivering practical AI automation, custom intelligent systems, chatbots, and workflow optimization for modern companies worldwide.",
+    "Pixalbotics is an AI software company and AI development agency delivering practical AI automation, custom intelligent systems, chatbots, and workflow optimization for modern companies worldwide.",
   keywords: [
     ...CORE_KEYWORDS,
     "AI software company",
@@ -17,9 +17,9 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: `${SITE_URL}/services/ai-solutions` },
   openGraph: {
-    title: "AI Solutions | Pixalbotic — AI Software Company",
+    title: "AI Solutions | Pixalbotics — AI Software Company",
     description:
-      "Practical AI software, automation, and intelligent systems from Pixalbotic (Pixalbotics).",
+      "Practical AI software, automation, and intelligent systems from Pixalbotics (also written Pixalbotic).",
     url: `${SITE_URL}/services/ai-solutions`,
     siteName: BRAND_NAME,
     type: "website",
@@ -41,7 +41,7 @@ export default function AISolutionsPage() {
     areaServed: ["USA", "UK", "Pakistan", "Worldwide"],
     url: `${SITE_URL}/services/ai-solutions`,
     description:
-      "Practical AI software, automation pipelines, intelligent product features, and CRM-connected AI chatbots from Pixalbotic.",
+      "Practical AI software, automation pipelines, intelligent product features, and CRM-connected AI chatbots from Pixalbotics.",
   };
 
   return (
@@ -70,7 +70,7 @@ export default function AISolutionsPage() {
           {
             heading: "AI Search & Assistant Readiness",
             content:
-              "We structure content and product data with FAQs, schema, and llms.txt-style clarity so AI search systems (ChatGPT, Claude, Gemini, Perplexity, Google AI Overviews) can understand and cite your business accurately — the same approach we use for Pixalbotic itself at /ai and /llms.txt.",
+              "We structure content and product data with FAQs, schema, and llms.txt-style clarity so AI search systems (ChatGPT, Claude, Gemini, Perplexity, Google AI Overviews) can understand and cite your business accurately — the same approach we use for Pixalbotics itself at /ai and /llms.txt.",
           },
         ]}
       />

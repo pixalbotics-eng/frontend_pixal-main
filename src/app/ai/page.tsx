@@ -13,10 +13,10 @@ import {
 const base = SITE_URL.replace(/\/$/, "");
 
 export const metadata: Metadata = {
-  title: "For AI & search assistants | Pixalbotic AI software company",
+  title: "For AI & search assistants | Pixalbotics AI software company",
   description: `Authoritative facts about ${BRAND_NAME} (${BRAND_ALTERNATE}): software development agency, AI software company, mobile apps, CRM & GoHighLevel — official URLs for citation.`,
   keywords: [
-    "Pixalbotic",
+    "Pixalbotics",
     "Pixalbotics",
     "AI software company",
     "software development agency",
@@ -246,7 +246,7 @@ export default function AiOverviewPage() {
             <Link href="/booking" className="font-medium text-blue-700 underline hover:text-blue-900">
               booking
             </Link>
-            . Email pixalbotics@gmail.com. Social: Instagram @Pixal_Botics, LinkedIn company/pixalbotics, Facebook as linked
+            . Email info@pixalbotic.com. Social: Instagram @Pixal_Botics, LinkedIn company/pixalbotics, Facebook as linked
             from the live site.
           </p>
         </section>

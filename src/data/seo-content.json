@@ -1,20 +1,20 @@
 {
   "site": {
-    "defaultUrl": "https://www.pixalbotic.com",
+    "defaultUrl": "https://www.pixalbotics.com",
     "officialDomains": [
-      "https://www.pixalbotic.com",
-      "https://pixalbotic.com",
       "https://www.pixalbotics.com",
-      "https://pixalbotics.com"
+      "https://pixalbotics.com",
+      "https://www.pixalbotic.com",
+      "https://pixalbotic.com"
     ]
   },
   "brand": {
-    "primary": "Pixalbotic",
-    "alternate": "Pixalbotics"
+    "primary": "Pixalbotics",
+    "alternate": "Pixalbotic"
   },
   "seo": {
-    "globalTitle": "Pixalbotic | Software Development Agency & AI Company",
-    "globalDescription": "Pixalbotic (Pixalbotics) is a software development agency and AI development company delivering custom software, web platforms, mobile apps, AI automation, CRM & GoHighLevel systems, and digital marketing for growth-focused brands worldwide.",
+    "globalTitle": "Pixalbotics | Software Development & AI Agency in Pakistan",
+    "globalDescription": "Pixalbotics is a software development and AI agency (Pakistan & UK) building custom software, web and mobile apps, AI automation and GoHighLevel CRMs.",
     "coreKeywords": [
       "pixalbotic",
       "pixalbotics",
@@ -44,16 +44,16 @@
     "seoBlogPosts": [],
     "homeFaqs": [
       {
-        "question": "What is Pixalbotic (Pixalbotics)?",
-        "answer": "Pixalbotic, also known as Pixalbotics, is a software development agency and AI development company that builds custom software, web platforms, mobile apps, AI automation, CRM and GoHighLevel systems, and digital marketing for growth-focused brands."
+        "question": "What is Pixalbotics (also written Pixalbotic)?",
+        "answer": "Pixalbotics, also written Pixalbotic, is a software development agency and AI development company that builds custom software, web platforms, mobile apps, AI automation, CRM and GoHighLevel systems, and digital marketing for growth-focused brands."
       },
       {
-        "question": "Is Pixalbotic an AI software company?",
-        "answer": "Yes. Pixalbotic is an AI software and development company that delivers practical AI solutions — workflow automation, intelligent product features, document processing, and CRM-connected AI chatbots — measured against real business outcomes."
+        "question": "Is Pixalbotics an AI software company?",
+        "answer": "Yes. Pixalbotics is an AI software and development company that delivers practical AI solutions — workflow automation, intelligent product features, document processing, and CRM-connected AI chatbots — measured against real business outcomes."
       },
       {
-        "question": "What services does Pixalbotic provide for growth-stage and enterprise teams?",
-        "answer": "Pixalbotic delivers end-to-end software services, including web platforms, mobile apps, AI workflow automation, CRM and GoHighLevel implementation, and digital marketing and design."
+        "question": "What services does Pixalbotics provide for growth-stage and enterprise teams?",
+        "answer": "Pixalbotics delivers end-to-end software services, including web platforms, mobile apps, AI workflow automation, CRM and GoHighLevel implementation, and digital marketing and design."
       },
       {
         "question": "Can you manage web, mobile, AI, and CRM under one delivery model?",
@@ -72,18 +72,18 @@
         "answer": "We provide structured post-launch support that includes monitoring, performance optimization, iterative enhancements, issue resolution, and long-term maintenance plans aligned with your growth roadmap."
       },
       {
-        "question": "How do I start a software or AI project with Pixalbotic?",
-        "answer": "Share your goals on the contact form or booking page at pixalbotic.com. We run a short discovery, propose a clear scope and timeline, then begin sprint-based delivery with weekly reporting."
+        "question": "How do I start a software or AI project with Pixalbotics?",
+        "answer": "Share your goals on the contact form or booking page at pixalbotics.com. We run a short discovery, propose a clear scope and timeline, then begin sprint-based delivery with weekly reporting."
       }
     ]
   },
   "homeArticle": {
-    "badge": "Pixalbotic · Software Agency",
-    "title": "Pixalbotic: Your Software Development Partner for Growth",
+    "badge": "Pixalbotics · Software Agency",
+    "title": "Pixalbotics: Your Software Development Partner for Growth",
     "paragraphs": [
-      "Pixalbotic, also recognized as Pixalbotics, helps businesses build better products through modern software engineering. From web platforms and mobile apps to AI automation and CRM systems, our team can design, build, and scale the complete workflow from idea to delivery under one roof.",
+      "Pixalbotics, also written Pixalbotic, helps businesses build better products through modern software engineering. From web platforms and mobile apps to AI automation and CRM systems, our team can design, build, and scale the complete workflow from idea to delivery under one roof.",
       "We work with startups, scaling ecommerce brands, and established companies. Clients choose us as a web development company and AI development agency because we build practical systems that are reliable, measurable, and easy to maintain — and because we pair that engineering depth with GoHighLevel expertise and digital marketing that actually moves pipeline.",
-      "Our process begins with clarity. We map business goals, customer behavior, product constraints, and launch timelines. Then we define the solution in simple language so stakeholders can align quickly. This approach improves execution quality and reduces delays. It also creates content clarity for modern search systems, because clear structure and direct answers help both users and AI assistants understand what your company does."
+      "Our process begins with clarity. We map business goals, customer behavior, product constraints, and launch timelines. Then we define the solution in simple language so stakeholders can align quickly, which improves execution quality and reduces delays."
     ],
     "pillarCards": [
       {
@@ -91,7 +91,7 @@
         "colSpanWide": true,
         "title": "Web Development Services",
         "paragraphs": [
-          "As a web development company, Pixalbotic builds websites and web applications that prioritize performance, SEO, accessibility, and conversion. We design architecture for long-term growth, not only short-term launch. Our team handles discovery, UI engineering, backend integration, API orchestration, analytics setup, and ongoing optimization. For organizations that need rapid product output, we provide MERN stack developers who can ship new features with clear documentation and stable code practices.",
+          "As a web development company, Pixalbotics builds websites and web applications that prioritize performance, SEO, accessibility, and conversion. We design architecture for long-term growth, not only short-term launch. Our team handles discovery, UI engineering, backend integration, API orchestration, analytics setup, and ongoing optimization. For organizations that need rapid product output, we provide MERN stack developers who can ship new features with clear documentation and stable code practices.",
           "We build with measurable objectives: faster load speed, lower bounce rates, stronger lead quality, and better operational visibility. Whether the requirement is a corporate website, ecommerce storefront, admin dashboard, custom business portal, or a landing page and funnel build on WordPress or a page builder, we focus on maintainable systems that can evolve as your market changes."
         ]
       },
@@ -99,7 +99,7 @@
         "id": "mobile-app-development",
         "title": "Mobile App Development",
         "paragraphs": [
-          "Pixalbotic designs and ships native-quality iOS and Android apps using React Native, giving startups and enterprise teams one codebase, faster releases, and a consistent user experience across platforms.",
+          "Pixalbotics designs and ships native-quality iOS and Android apps using React Native, giving startups and enterprise teams one codebase, faster releases, and a consistent user experience across platforms.",
           "From product strategy and UX to App Store / Play Store launch and post-launch iteration, we build apps that are fast, stable, and built to scale alongside your backend and APIs."
         ]
       },
@@ -115,7 +115,7 @@
         "id": "crm-gohighlevel",
         "title": "CRM & GoHighLevel",
         "paragraphs": [
-          "Pixalbotic builds custom CRM systems and delivers full GoHighLevel setup and management — pipelines, automations, funnels, and reporting configured around how your sales team actually works.",
+          "Pixalbotics builds custom CRM systems and delivers full GoHighLevel setup and management — pipelines, automations, funnels, and reporting configured around how your sales team actually works.",
           "We also configure GoHighLevel AI assistants and chatbots for lead qualification and support, and develop software for signage and connected hardware devices that need to talk to your CRM in real time."
         ]
       },
@@ -129,10 +129,10 @@
       }
     ],
     "closing": {
-      "title": "Why Growing Brands Choose Pixalbotic",
+      "title": "Why Growing Brands Choose Pixalbotics",
       "paragraphs": [
-        "Companies choose Pixalbotic because we combine technical depth with business clarity. Instead of treating web, mobile, AI, and marketing as separate projects, we build connected systems that improve speed and consistency across departments.",
-        "Every engagement is built around transparency, documentation, and measurable outcomes. You always know what is being built, why it matters, and what success looks like. That reliability supports stronger rankings for brand searches like Pixalbotic and Pixalbotics while also improving discoverability for commercial queries such as web development company, AI development agency, mobile app development, and GoHighLevel agency.",
+        "Companies choose Pixalbotics because we combine technical depth with business clarity. Instead of treating web, mobile, AI, and marketing as separate projects, we build connected systems that improve speed and consistency across departments.",
+        "Every engagement is built around transparency, documentation, and measurable outcomes. You always know what is being built, why it matters, and what success looks like — from the first discovery call to post-launch support.",
         "If your business needs an execution partner for software, AI, and growth marketing, our team is ready to help. Explore our service pages and read our practical blog guides for decision support. You can also contact us directly to plan a roadmap tailored to your product, region, and growth goals. Learn more at {{SITE_URL}}."
       ]
     }

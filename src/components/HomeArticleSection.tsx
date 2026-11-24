@@ -21,9 +21,9 @@ export default function HomeArticleSection() {
         <div className="mb-6 inline-flex rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold tracking-wide text-blue-700">
           {ha.badge}
         </div>
-        <h1 className="mb-6 max-w-4xl bg-linear-to-r from-gray-900 to-gray-700 bg-clip-text text-4xl font-extrabold text-transparent sm:text-5xl">
+        <h2 className="mb-6 max-w-4xl bg-linear-to-r from-gray-900 to-gray-700 bg-clip-text text-4xl font-extrabold text-transparent sm:text-5xl">
           {ha.title}
-        </h1>
+        </h2>
         {ha.paragraphs.map((p, i) => (
           <p key={`intro-${i}`} className="mb-6 max-w-4xl text-lg leading-8 text-gray-700">
             {p}

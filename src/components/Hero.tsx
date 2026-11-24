@@ -22,7 +22,7 @@ const heroAlts = heroCopy.imageAlts;
 /* ─── animations ──────────────────────────────────────────────────── */
 
 const stagger: Variants = {
-  hidden: { opacity: 0 },
+  hidden: { opacity: 1 },
   visible: { opacity: 1, transition: { staggerChildren: 0.07, delayChildren: 0.06 } },
 };
 const fadeUp: Variants = {
@@ -122,7 +122,7 @@ export default function Hero() {
 
               <motion.h1
                 id="hero-heading"
-                variants={fadeUp}
+                initial={false}
                 className="text-[2rem] font-extrabold leading-[1.1] tracking-tight text-white sm:text-[2.5rem] lg:text-[2.6rem] xl:text-[3rem]"
               >
                 {heroCopy.titleLine1}{' '}
