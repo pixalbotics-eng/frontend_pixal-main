@@ -10,9 +10,9 @@ export const revalidate = 3600;
 
 type Entry = { _id: string; slug?: string; updatedAt?: string; createdAt?: string };
 
-async function getList(path: string, key: string): Promise<Entry[]> {
+async function getPage(path: string, key: string, page: number): Promise<Entry[]> {
   try {
-    const res = await fetch(`${apiUrl}${path}`, {
+    const res = await fetch(`${apiUrl}${path}&page=${page}`, {
       next: { revalidate: 3600 },
       // Render free tier can cold-start slowly
       signal: AbortSignal.timeout(25000),
@@ -26,6 +26,17 @@ async function getList(path: string, key: string): Promise<Entry[]> {
   }
 }
 
+/** The API caps `limit` at 100, so walk pages until a short page comes back. */
+async function getList(path: string, key: string): Promise<Entry[]> {
+  const all: Entry[] = [];
+  for (let page = 1; page <= 20; page++) {
+    const batch = await getPage(path, key, page);
+    all.push(...batch);
+    if (batch.length < 100) break;
+  }
+  return all;
+}
+
 const lastMod = (e: Entry) => {
   const d = new Date(e.updatedAt || e.createdAt || Date.now());
   return isNaN(d.getTime()) ? new Date() : d;
@@ -33,8 +44,8 @@ const lastMod = (e: Entry) => {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [blogs, projects] = await Promise.all([
-    getList("/api/blogs?limit=500&sortBy=-createdAt", "blogs"),
-    getList("/api/projects?limit=500&sortBy=-createdAt", "projects"),
+    getList("/api/blogs?limit=100&sortBy=-createdAt", "blogs"),
+    getList("/api/projects?limit=100&sortBy=-createdAt", "projects"),
   ]);
 
   const staticPages: MetadataRoute.Sitemap = [
