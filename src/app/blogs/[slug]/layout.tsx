@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: LayoutProps): Promise<Metadat
   const { slug } = await params;
   const blog = await getBlog(slug);
   if (!blog) {
-    return { title: "Blog Not Found | " + siteName };
+    return { title: { absolute: "Blog Not Found | " + siteName } };
   }
   const title = blog.name || "Blog";
   const description = stripHtml(blog.content || "") || "Read more on " + siteName;
@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: LayoutProps): Promise<Metadat
   const imageUrl = getBlogImageUrl(blog);
 
   return {
-    title: `${title} | ${siteName}`,
+    title: { absolute: `${title} | ${siteName}` },
     description,
     openGraph: {
       title: `${title} | ${siteName}`,

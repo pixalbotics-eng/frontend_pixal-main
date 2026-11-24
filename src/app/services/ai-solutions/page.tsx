@@ -3,7 +3,7 @@ import SeoPage from "@/components/SeoPage";
 import { BRAND_NAME, CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "AI Solutions & AI Software Company | Pixalbotics",
+  title: { absolute: "AI Solutions & AI Software Company | Pixalbotics" },
   description:
     "Pixalbotics is an AI software company and AI development agency delivering practical AI automation, custom intelligent systems, chatbots, and workflow optimization for modern companies worldwide.",
   keywords: [

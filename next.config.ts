@@ -55,6 +55,19 @@ const nextConfig: NextConfig = {
   // instead of letting them 404 and lose their existing search equity.
   async redirects() {
     return [
+      // Consolidate the legacy pixalbotic.com hostnames onto the canonical domain.
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'pixalbotic.com' }],
+        destination: 'https://www.pixalbotics.com/:path*',
+        permanent: true,
+      },
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.pixalbotic.com' }],
+        destination: 'https://www.pixalbotics.com/:path*',
+        permanent: true,
+      },
       { source: '/services/packaging', destination: '/services', permanent: true },
       { source: '/packaging/:path*', destination: '/services', permanent: true },
       { source: '/usa-packaging-company', destination: '/services/crm-gohighlevel', permanent: true },

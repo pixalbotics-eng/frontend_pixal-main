@@ -9,6 +9,7 @@ const aboutSeo = seoContent.pages.about;
 export const metadata = {
   title: aboutSeo.metadataTitle,
   description: aboutSeo.metadataDescription,
+  alternates: { canonical: '/about' },
 };
 
 export default function AboutPage() {

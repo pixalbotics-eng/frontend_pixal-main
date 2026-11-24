@@ -3,7 +3,7 @@ import SeoPage from "@/components/SeoPage";
 import { BRAND_NAME, CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Mobile App Development | Pixalbotics",
+  title: { absolute: "Mobile App Development | Pixalbotics" },
   description:
     "Pixalbotics builds native-quality iOS and Android apps with React Native, from product strategy through App Store and Play Store launch.",
   keywords: [

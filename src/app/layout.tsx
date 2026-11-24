@@ -54,9 +54,6 @@ export async function generateMetadata(): Promise<Metadata> {
     category: "technology",
     applicationName: BRAND_NAME,
     formatDetection: { email: false, address: false, telephone: false },
-    alternates: {
-      canonical: siteUrl,
-    },
     openGraph: {
       type: "website",
       locale: "en_US",

@@ -3,7 +3,7 @@ import SeoPage from "@/components/SeoPage";
 import { BRAND_NAME, CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Digital Marketing & Design | Pixalbotics",
+  title: { absolute: "Digital Marketing & Design | Pixalbotics" },
   description:
     "Pixalbotics delivers digital marketing and design services — brand identity, creative assets, SEO, and campaign strategy that turn traffic into pipeline.",
   keywords: [

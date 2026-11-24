@@ -12,16 +12,17 @@ import { useRefetchOnWindowFocus } from '@/hooks';
 
 const GRADIENTS = ['from-blue-500 to-cyan-500', 'from-purple-500 to-pink-500', 'from-indigo-500 to-blue-500', 'from-green-500 to-emerald-500', 'from-orange-500 to-red-500', 'from-violet-500 to-purple-500'] as const;
 
-export default function Testimonials() {
+export default function Testimonials({ initialTestimonials = [] }: { initialTestimonials?: Testimonial[] }) {
   const [currentPage, setCurrentPage] = useState(0);
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(initialTestimonials);
+  const [loading, setLoading] = useState(initialTestimonials.length === 0);
+  const hasDataRef = useRef(initialTestimonials.length > 0);
   const testimonialsPerPage = 6;
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   const fetchTestimonials = useCallback(() => {
-    setLoading(true);
+    if (!hasDataRef.current) setLoading(true);
     testimonialsApi.getAll()
       .then((res) => setTestimonials(res.data?.testimonials ?? []))
       .catch(() => setTestimonials([]))

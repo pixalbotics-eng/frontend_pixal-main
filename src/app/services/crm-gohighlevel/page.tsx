@@ -3,7 +3,7 @@ import SeoPage from "@/components/SeoPage";
 import { BRAND_NAME, CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "CRM & GoHighLevel Services | Pixalbotics",
+  title: { absolute: "CRM & GoHighLevel Services | Pixalbotics" },
   description:
     "Pixalbotics delivers custom CRM development, GoHighLevel setup and management, GHL AI assistants and chatbots, and software for signage and connected hardware.",
   keywords: [

@@ -36,16 +36,17 @@ function formatDate(s: string) {
   }
 }
 
-export default function BlogSection() {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function BlogSection({ initialBlogs = [] }: { initialBlogs?: Blog[] }) {
+  const [blogs, setBlogs] = useState<Blog[]>(initialBlogs);
+  const [loading, setLoading] = useState(initialBlogs.length === 0);
+  const hasDataRef = useRef(initialBlogs.length > 0);
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState<PaginationMeta | null>(null);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   const fetchBlogs = useCallback(() => {
-    setLoading(true);
+    if (!hasDataRef.current) setLoading(true);
     blogsApi
       .getAll({ page, limit: HOME_PAGE_SIZE, sortBy: '-createdAt' })
       .then((res) => {

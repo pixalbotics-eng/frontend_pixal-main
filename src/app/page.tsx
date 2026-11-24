@@ -9,6 +9,7 @@ import Testimonials from "@/components/Testimonials";
 import ContactSection from "@/components/ContactSection";
 import FAQ from "@/components/FAQ";
 import HomeArticleSection from "@/components/HomeArticleSection";
+import { getHomeBlogs, getHomeProjects, getHomeTestimonials } from "@/lib/home-data";
 import { CORE_KEYWORDS, GLOBAL_DESCRIPTION, GLOBAL_TITLE, HOME_FAQS, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -26,7 +27,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
+  const [initialProjects, initialBlogs, initialTestimonials] = await Promise.all([
+    getHomeProjects(),
+    getHomeBlogs(),
+    getHomeTestimonials(),
+  ]);
   const siteUrl = SITE_URL.replace(/\/$/, "");
   const homeSchema = {
     "@context": "https://schema.org",
@@ -63,9 +69,9 @@ export default function Home() {
       <PartnersSection />
       <AboutSection />
       <Services />
-      <Projects />
-      <BlogSection />
-      <Testimonials />
+      <Projects initialProjects={initialProjects} />
+      <BlogSection initialBlogs={initialBlogs} />
+      <Testimonials initialTestimonials={initialTestimonials} />
       <HomeArticleSection />
       <FAQ />
       <ContactSection />

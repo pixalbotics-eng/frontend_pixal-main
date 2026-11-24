@@ -2,8 +2,9 @@ import PageHero from '@/components/PageHero';
 import ContactSection from '@/components/ContactSection';
 
 export const metadata = {
-  title: 'Contact Us - pixalbotics',
-  description: 'Get in touch with pixalbotics for AI and technology solutions.',
+  title: 'Contact Us',
+  description: 'Contact Pixalbotics for custom software, web and mobile apps, AI automation and GoHighLevel CRM projects. Offices in Pakistan and the UK.',
+  alternates: { canonical: '/contact' },
 };
 
 export default function ContactPage() {

@@ -5,7 +5,7 @@ const siteUrl = SITE_URL;
 const siteName = BRAND_NAME;
 
 export const metadata: Metadata = {
-  title: "Our Blog | " + siteName,
+  title: { absolute: "Our Blog | " + siteName },
   description:
     `Stay updated with software insights from ${siteName} (${BRAND_ALTERNATE}), including AI development, web delivery, and CRM & marketing strategy.`,
   openGraph: {

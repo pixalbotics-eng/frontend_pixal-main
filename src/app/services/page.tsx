@@ -5,7 +5,7 @@ import Services from "@/components/Services";
 import { CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Services | Pixalbotics",
+  title: { absolute: "Services | Pixalbotics" },
   description:
     "Explore Pixalbotics software services, including web development, mobile app development, AI solutions, CRM & GoHighLevel, and digital marketing.",
   keywords: [...CORE_KEYWORDS, "software services"],

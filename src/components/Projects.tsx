@@ -27,16 +27,17 @@ function getProjectImage(project: Project, index: number) {
   return fallbacks[index % fallbacks.length];
 }
 
-export default function Projects() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function Projects({ initialProjects = [] }: { initialProjects?: Project[] }) {
+  const [projects, setProjects] = useState<Project[]>(initialProjects);
+  const [loading, setLoading] = useState(initialProjects.length === 0);
+  const hasDataRef = useRef(initialProjects.length > 0);
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState<PaginationMeta | null>(null);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   const fetchProjects = useCallback(() => {
-    setLoading(true);
+    if (!hasDataRef.current) setLoading(true);
     projectsApi
       .getAll({ page, limit: HOME_PAGE_SIZE, sortBy: '-createdAt' })
       .then((res) => {
