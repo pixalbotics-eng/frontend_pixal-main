@@ -1,33 +1,41 @@
 import type { MetadataRoute } from "next";
 import { SEO_BLOG_POSTS, SERVICE_PAGES, SITE_URL } from "@/lib/seo";
+import { API_BASE_URL } from "@/api/config";
 
 const baseUrl = SITE_URL;
-const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const apiUrl = API_BASE_URL.replace(/\/$/, "");
 
-async function getBlogSlugs(): Promise<string[]> {
+// Rebuild the sitemap at most once an hour so new daily blog posts get listed.
+export const revalidate = 3600;
+
+type Entry = { _id: string; slug?: string; updatedAt?: string; createdAt?: string };
+
+async function getList(path: string, key: string): Promise<Entry[]> {
   try {
-    const res = await fetch(`${apiUrl}/api/blogs?limit=500`, { next: { revalidate: 3600 } });
-    const data = await res.json();
-    const blogs = data?.blogs ?? data?.data?.blogs ?? [];
-    return (Array.isArray(blogs) ? blogs : []).map((b: { _id: string; slug?: string }) => b.slug || b._id);
+    const res = await fetch(`${apiUrl}${path}`, {
+      next: { revalidate: 3600 },
+      // Render free tier can cold-start slowly
+      signal: AbortSignal.timeout(25000),
+    });
+    if (!res.ok) return [];
+    const json = await res.json();
+    const list = json?.data?.[key] ?? json?.[key];
+    return Array.isArray(list) ? list : [];
   } catch {
     return [];
   }
 }
 
-async function getProjectIds(): Promise<string[]> {
-  try {
-    const res = await fetch(`${apiUrl}/api/projects?limit=500`, { next: { revalidate: 3600 } });
-    const data = await res.json();
-    const projects = data?.projects ?? data?.data?.projects ?? [];
-    return (Array.isArray(projects) ? projects : []).map((p: { _id: string }) => p._id);
-  } catch {
-    return [];
-  }
-}
+const lastMod = (e: Entry) => {
+  const d = new Date(e.updatedAt || e.createdAt || Date.now());
+  return isNaN(d.getTime()) ? new Date() : d;
+};
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [blogSlugs, projectIds] = await Promise.all([getBlogSlugs(), getProjectIds()]);
+  const [blogs, projects] = await Promise.all([
+    getList("/api/blogs?limit=500&sortBy=-createdAt", "blogs"),
+    getList("/api/projects?limit=500&sortBy=-createdAt", "projects"),
+  ]);
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
@@ -57,16 +65,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   ];
 
-  const blogUrls: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
-    url: `${baseUrl}/blogs/${encodeURIComponent(slug)}`,
-    lastModified: new Date(),
+  const blogUrls: MetadataRoute.Sitemap = blogs.map((b) => ({
+    url: `${baseUrl}/blogs/${encodeURIComponent(b.slug || b._id)}`,
+    lastModified: lastMod(b),
     changeFrequency: "weekly" as const,
     priority: 0.8,
   }));
 
-  const projectUrls: MetadataRoute.Sitemap = projectIds.map((id) => ({
-    url: `${baseUrl}/projects/${encodeURIComponent(id)}`,
-    lastModified: new Date(),
+  const projectUrls: MetadataRoute.Sitemap = projects.map((p) => ({
+    url: `${baseUrl}/projects/${encodeURIComponent(p._id)}`,
+    lastModified: lastMod(p),
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
