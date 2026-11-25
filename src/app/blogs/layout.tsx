@@ -5,7 +5,7 @@ const siteUrl = SITE_URL;
 const siteName = BRAND_NAME;
 
 export const metadata: Metadata = {
-  title: { absolute: "Our Blog | " + siteName },
+  title: { absolute: "Software, AI & Automation Blog | " + siteName },
   description:
     `Stay updated with software insights from ${siteName} (${BRAND_ALTERNATE}), including AI development, web delivery, and CRM & marketing strategy.`,
   openGraph: {
@@ -13,6 +13,7 @@ export const metadata: Metadata = {
     description: "Latest insights on AI, technology, and software development.",
     url: `${siteUrl}/blogs`,
     siteName,
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Pixalbotics" }],
   },
   alternates: { canonical: `${siteUrl}/blogs` },
   robots: { index: true, follow: true },

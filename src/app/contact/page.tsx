@@ -2,7 +2,7 @@ import PageHero from '@/components/PageHero';
 import ContactSection from '@/components/ContactSection';
 
 export const metadata = {
-  title: 'Contact Us',
+  title: 'Contact Us — Hire a Software Development Team',
   description: 'Contact Pixalbotics for custom software, web and mobile apps, AI automation and GoHighLevel CRM projects. Serving clients in the US, UK, Australia and UAE.',
   alternates: { canonical: '/contact' },
 };

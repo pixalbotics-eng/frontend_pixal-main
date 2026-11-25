@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 export default function CrmGoHighLevelPage() {
   return (
     <SeoPage
+      path="/services/crm-gohighlevel"
       title="CRM & GoHighLevel"
       intro={`${BRAND_NAME} builds and manages the CRM and GoHighLevel systems that turn leads into booked revenue — configured around how your team actually sells.`}
       imageAlt="CRM and GoHighLevel dashboard"

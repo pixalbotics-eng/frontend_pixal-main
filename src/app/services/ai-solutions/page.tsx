@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/services/ai-solutions`,
     siteName: BRAND_NAME,
     type: "website",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Pixalbotics" }],
   },
 };
 
@@ -48,6 +49,8 @@ export default function AISolutionsPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       <SeoPage
+        path="/services/ai-solutions"
+        serviceSchema={false}
         title="AI Solutions"
         intro={`${BRAND_NAME} is an AI software company that delivers AI solutions improving speed, decision quality, and team productivity through practical, measurable implementations — not demos.`}
         imageAlt="AI automation and workflow dashboard"

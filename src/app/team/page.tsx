@@ -2,7 +2,7 @@ import PageHero from '@/components/PageHero';
 import TeamSection from '@/components/TeamSection';
 
 export const metadata = {
-  title: 'Our Team',
+  title: 'Our Team — Software Engineers & AI Specialists',
   description: 'Meet the Pixalbotics team of engineers, designers and marketers building custom software, AI automation and CRM systems.',
   alternates: { canonical: '/team' },
 };

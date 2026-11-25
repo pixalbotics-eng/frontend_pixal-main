@@ -1,33 +1,10 @@
 import type { Metadata } from "next";
 import { BRAND_NAME, SITE_URL } from "@/lib/seo";
+import { getDisplayImageUrl } from "@/api/config";
+import { getBlogServer, stripHtml } from "@/lib/server-api";
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
-const siteUrl = SITE_URL;
+const siteUrl = SITE_URL.replace(/\/$/, "");
 const siteName = BRAND_NAME;
-
-function stripHtml(html: string): string {
-  if (!html || typeof html !== "string") return "";
-  return html.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim().slice(0, 160);
-}
-
-function getBlogImageUrl(blog: { imageUrl?: string; image?: string } | null): string | undefined {
-  if (!blog) return undefined;
-  const path = blog.imageUrl || blog.image;
-  if (!path) return undefined;
-  if (path.startsWith("http")) return path;
-  const base = apiUrl.endsWith("/") ? apiUrl.slice(0, -1) : apiUrl;
-  return path.startsWith("/") ? `${base}${path}` : `${base}/${path}`;
-}
-
-async function getBlog(slug: string) {
-  try {
-    const res = await fetch(`${apiUrl}/api/blogs/${encodeURIComponent(slug)}`, { next: { revalidate: 60 } });
-    const data = await res.json();
-    return data?.blog ?? data?.data?.blog ?? null;
-  } catch {
-    return null;
-  }
-}
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -36,20 +13,21 @@ interface LayoutProps {
 
 export async function generateMetadata({ params }: LayoutProps): Promise<Metadata> {
   const { slug } = await params;
-  const blog = await getBlog(slug);
+  const blog = await getBlogServer(slug);
   if (!blog) {
-    return { title: { absolute: "Blog Not Found | " + siteName } };
+    return { title: { absolute: `Blog Not Found | ${siteName}` }, robots: { index: false, follow: true } };
   }
   const title = blog.name || "Blog";
-  const description = stripHtml(blog.content || "") || "Read more on " + siteName;
+  const description = stripHtml(blog.content, 158) || `Read more on the ${siteName} blog.`;
   const url = `${siteUrl}/blogs/${encodeURIComponent(slug)}`;
-  const imageUrl = getBlogImageUrl(blog);
+  const imageUrl = getDisplayImageUrl(blog) || undefined;
+  const fullTitle = title.length > 52 ? title : `${title} | ${siteName}`;
 
   return {
-    title: { absolute: `${title} | ${siteName}` },
+    title: { absolute: fullTitle },
     description,
     openGraph: {
-      title: `${title} | ${siteName}`,
+      title: fullTitle,
       description,
       url,
       siteName,
@@ -60,7 +38,7 @@ export async function generateMetadata({ params }: LayoutProps): Promise<Metadat
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | ${siteName}`,
+      title: fullTitle,
       description,
       ...(imageUrl && { images: [imageUrl] }),
     },
@@ -71,22 +49,41 @@ export async function generateMetadata({ params }: LayoutProps): Promise<Metadat
 
 export default async function BlogSlugLayout({ children, params }: LayoutProps) {
   const { slug } = await params;
-  const blog = await getBlog(slug);
+  const blog = await getBlogServer(slug);
   const url = `${siteUrl}/blogs/${encodeURIComponent(slug)}`;
-  const imageUrl = blog ? getBlogImageUrl(blog) : undefined;
+  const imageUrl = blog ? getDisplayImageUrl(blog) || undefined : undefined;
 
   const jsonLd = blog
     ? {
         "@context": "https://schema.org",
-        "@type": "Article",
-        headline: blog.name,
-        description: stripHtml(blog.content || "").slice(0, 200),
-        image: imageUrl,
-        datePublished: blog.createdAt,
-        dateModified: blog.updatedAt || blog.createdAt,
-        author: { "@type": "Organization", name: siteName, url: siteUrl },
-        publisher: { "@type": "Organization", name: siteName, logo: { "@type": "ImageObject", url: `${siteUrl}/icon.png` } },
-        mainEntityOfPage: { "@type": "WebPage", "@id": url },
+        "@graph": [
+          {
+            "@type": "BlogPosting",
+            "@id": `${url}#article`,
+            headline: blog.name,
+            description: stripHtml(blog.content, 200),
+            ...(imageUrl && { image: imageUrl }),
+            datePublished: blog.createdAt,
+            dateModified: blog.updatedAt || blog.createdAt,
+            inLanguage: "en-US",
+            author: { "@type": "Organization", "@id": `${siteUrl}/#organization`, name: siteName, url: siteUrl },
+            publisher: {
+              "@type": "Organization",
+              "@id": `${siteUrl}/#organization`,
+              name: siteName,
+              logo: { "@type": "ImageObject", url: `${siteUrl}/icon.png` },
+            },
+            mainEntityOfPage: { "@type": "WebPage", "@id": url },
+          },
+          {
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+              { "@type": "ListItem", position: 2, name: "Blog", item: `${siteUrl}/blogs` },
+              { "@type": "ListItem", position: 3, name: blog.name, item: url },
+            ],
+          },
+        ],
       }
     : null;
 

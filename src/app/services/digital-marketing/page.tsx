@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 export default function DigitalMarketingPage() {
   return (
     <SeoPage
+      path="/services/digital-marketing"
       title="Digital Marketing & Design"
       intro={`${BRAND_NAME} pairs brand-quality design with growth marketing so every campaign, page, and asset works toward a measurable business outcome.`}
       imageAlt="digital marketing and brand design"

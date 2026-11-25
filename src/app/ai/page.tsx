@@ -31,6 +31,7 @@ export const metadata: Metadata = {
     url: `${base}/ai`,
     siteName: BRAND_NAME,
     type: "website",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Pixalbotics" }],
   },
 };
 

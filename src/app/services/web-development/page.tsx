@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 export default function WebDevelopmentPage() {
   return (
     <SeoPage
+      path="/services/web-development"
       title="Web Development Services"
       intro={`${BRAND_NAME} builds conversion-focused websites and custom web applications with clean architecture, strong SEO foundations, and measurable performance improvements.`}
       imageAlt="modern website and web application interface"

@@ -63,10 +63,10 @@ export async function generateMetadata(): Promise<Metadata> {
       description: FULL_DESCRIPTION,
       images: [
         {
-          url: "/pixalbotics-logo.png",
-          width: 512,
-          height: 512,
-          alt: `${BRAND_NAME} logo`,
+          url: "/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: `${BRAND_NAME} — custom software & AI development company`,
         },
       ],
     },
@@ -74,7 +74,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       title: GLOBAL_TITLE,
       description: FULL_DESCRIPTION,
-      images: ["/pixalbotics-logo.png"],
+      images: ["/og-image.png"],
     },
     icons: {
       icon: [

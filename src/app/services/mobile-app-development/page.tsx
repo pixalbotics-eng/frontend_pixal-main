@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 export default function MobileAppDevelopmentPage() {
   return (
     <SeoPage
+      path="/services/mobile-app-development"
       title="Mobile App Development"
       intro={`${BRAND_NAME} designs and ships cross-platform mobile apps that feel native, perform reliably, and scale alongside your product roadmap.`}
       imageAlt="mobile app development on iOS and Android"
