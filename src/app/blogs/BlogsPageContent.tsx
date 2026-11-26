@@ -226,7 +226,7 @@ function BlogsPageInner() {
                                 variant="outline"
                                 className="w-full transition-all group-hover:border-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:text-white"
                               >
-                                <span>Read More</span>
+                                <span>Read More<span className="sr-only">: {blog.name}</span></span>
                                 <ArrowRightIcon className="ml-1" size={16} />
                               </Button>
                             </Link>
