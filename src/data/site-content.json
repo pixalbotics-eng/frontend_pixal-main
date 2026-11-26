@@ -324,7 +324,7 @@
         },
         {
           "name": "GoHighLevel",
-          "logoUrl": "https://logo.clearbit.com/gohighlevel.com",
+          "logoUrl": "/images/tech/gohighlevel.svg",
           "description": "CRM & marketing automation",
           "gradient": "from-gray-600 to-gray-800",
           "delay": 0.5
