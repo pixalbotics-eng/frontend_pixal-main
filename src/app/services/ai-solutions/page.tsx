@@ -3,7 +3,7 @@ import SeoPage from "@/components/SeoPage";
 import { BRAND_NAME, CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: { absolute: "AI Solutions & AI Software Company | Pixalbotics" },
+  title: { absolute: "AI Chatbot Development & AI Automation | Pixalbotics" },
   description:
     "Pixalbotics is an AI software company building practical AI automation, custom AI chatbots, and intelligent workflow systems for businesses worldwide.",
   keywords: [
@@ -51,7 +51,7 @@ export default function AISolutionsPage() {
       <SeoPage
         path="/services/ai-solutions"
         serviceSchema={false}
-        title="AI Solutions"
+        title="AI Chatbot Development & AI Automation Services"
         intro={`${BRAND_NAME} is an AI software company that delivers AI solutions improving speed, decision quality, and team productivity through practical, measurable implementations — not demos.`}
         imageAlt="AI automation and workflow dashboard"
         sections={[

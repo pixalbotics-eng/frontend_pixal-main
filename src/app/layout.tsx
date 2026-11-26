@@ -127,12 +127,21 @@ export default function RootLayout({
           { "@type": "Person", name: "Nabeel Hussain" },
           { "@type": "Person", name: "Ramish Munawar", sameAs: "https://www.linkedin.com/in/ramish-munawar/" },
         ],
-        address: {
-          "@type": "PostalAddress",
-          addressLocality: "Lahore",
-          addressRegion: "Punjab",
-          addressCountry: "PK",
-        },
+        // UK headquarters first; Lahore is the second (delivery) office.
+        address: [
+          {
+            "@type": "PostalAddress",
+            addressLocality: "Byfleet",
+            addressRegion: "England",
+            addressCountry: "GB",
+          },
+          {
+            "@type": "PostalAddress",
+            addressLocality: "Lahore",
+            addressRegion: "Punjab",
+            addressCountry: "PK",
+          },
+        ],
         sameAs: socialProfiles,
         areaServed: [
           { "@type": "Country", name: "United States" },

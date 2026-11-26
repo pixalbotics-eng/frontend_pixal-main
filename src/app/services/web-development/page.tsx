@@ -3,7 +3,7 @@ import SeoPage from "@/components/SeoPage";
 import { BRAND_NAME, CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: { absolute: "Web Development Services | Pixalbotics" },
+  title: { absolute: "Custom Web Application Development | Pixalbotics" },
   description:
     "Pixalbotics is a web development company providing high-performance websites, MERN stack developers, and scalable platforms for global businesses.",
   keywords: [
@@ -20,7 +20,7 @@ export default function WebDevelopmentPage() {
   return (
     <SeoPage
       path="/services/web-development"
-      title="Web Development Services"
+      title="Custom Web Application Development"
       intro={`${BRAND_NAME} builds conversion-focused websites and custom web applications with clean architecture, strong SEO foundations, and measurable performance improvements.`}
       imageAlt="modern website and web application interface"
       sections={[

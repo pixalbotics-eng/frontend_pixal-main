@@ -3,7 +3,7 @@ import SeoPage from "@/components/SeoPage";
 import { BRAND_NAME, CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: { absolute: "CRM & GoHighLevel Services | Pixalbotics" },
+  title: { absolute: "GoHighLevel Agency Services & CRM Setup | Pixalbotics" },
   description:
     "Pixalbotics delivers custom CRM development, GoHighLevel setup and management, GHL AI assistants and chatbots, and software for signage and connected hardware.",
   keywords: [
@@ -21,7 +21,7 @@ export default function CrmGoHighLevelPage() {
   return (
     <SeoPage
       path="/services/crm-gohighlevel"
-      title="CRM & GoHighLevel"
+      title="GoHighLevel Agency Services & Custom CRM"
       intro={`${BRAND_NAME} builds and manages the CRM and GoHighLevel systems that turn leads into booked revenue — configured around how your team actually sells.`}
       imageAlt="CRM and GoHighLevel dashboard"
       sections={[
