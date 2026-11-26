@@ -303,7 +303,7 @@
         },
         {
           "name": "Instagram",
-          "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png",
+          "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/330px-Instagram_icon.png",
           "description": "Social Media",
           "gradient": "from-pink-500 to-rose-500",
           "delay": 0.2

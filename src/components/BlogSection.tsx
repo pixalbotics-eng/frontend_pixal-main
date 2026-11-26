@@ -164,7 +164,7 @@ export default function BlogSection({ initialBlogs = [] }: { initialBlogs?: Blog
                             variant="outline"
                             className="group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:text-white group-hover:border-transparent transition-all"
                           >
-                            <span>Read More</span>
+                            <span>Read More<span className="sr-only">: {blog.name}</span></span>
                             <ArrowRightIcon className="ml-1" size={16} />
                           </Button>
                         </Link>
