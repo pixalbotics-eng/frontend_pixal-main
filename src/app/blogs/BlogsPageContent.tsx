@@ -17,6 +17,7 @@ import ListPagination from '@/components/ui/ListPagination';
 import { useRefetchOnWindowFocus } from '@/hooks';
 import { SEO_BLOG_POSTS } from '@/lib/seo';
 import { type PaginationMeta } from '@/lib/pagination';
+import { blogPath } from '@/lib/slug';
 
 const GRADIENTS = [
   'from-blue-500 to-cyan-500',
@@ -219,7 +220,7 @@ function BlogsPageInner() {
                             <span className="text-xs text-gray-500 sm:text-sm">{formatDate(blog.createdAt)}</span>
                           </div>
                           <div className="pt-4">
-                            <Link href={`/blogs/${blog._id}`}>
+                            <Link href={blogPath(blog)}>
                               <Button
                                 size="sm"
                                 variant="outline"

@@ -44,6 +44,21 @@ export default function WebDevelopmentPage() {
           content:
             "Each build includes technical SEO best practices, schema-ready content structure, and performance optimization to improve discoverability in search and AI answer engines.",
         },
+        {
+          heading: "Who We Build For",
+          content:
+            "We work with startups launching their first product, growing companies replacing slow or outdated websites, and agencies that need a reliable development partner behind them. We work with clients across the United States, United Kingdom, Australia and the UAE, and plan working hours to overlap with your team and keep communication in writing, on a shared board, and on regular calls.",
+        },
+        {
+          heading: "How a Web Project Runs",
+          content:
+            "Every project starts with a short discovery phase where we agree on goals, pages, features, and how success will be measured. We then share wireframes and a clickable design before writing code, build in small milestones you can review on a live staging link, and only launch once speed, mobile layout, forms, and tracking have been tested. After launch we stay on for fixes, improvements, and new features.",
+        },
+        {
+          heading: "Technology We Use",
+          content:
+            "We choose the stack that fits the job rather than forcing one tool onto every project. Typical builds use React and Next.js on the frontend, Node.js, NestJS or Express on the backend, and PostgreSQL or MongoDB for data, deployed on Vercel, AWS or similar cloud platforms. For marketing sites that your team needs to edit often, we also build on WordPress and headless CMS setups.",
+        },
       ]}
     />
   );

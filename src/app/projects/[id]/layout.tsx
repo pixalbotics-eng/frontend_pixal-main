@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { BRAND_NAME, SITE_URL } from "@/lib/seo";
 import { getProjectDisplayImage } from "@/api/projects";
 import { getProjectServer, stripHtml } from "@/lib/server-api";
+import { idFromSegment, projectPath, seoTitle } from "@/lib/slug";
 
 const siteUrl = SITE_URL.replace(/\/$/, "");
 const siteName = BRAND_NAME;
@@ -13,16 +14,17 @@ interface LayoutProps {
 
 export async function generateMetadata({ params }: LayoutProps): Promise<Metadata> {
   const { id } = await params;
-  const project = await getProjectServer(id);
+  const project = await getProjectServer(idFromSegment(id));
   if (!project) {
     return { title: { absolute: `Project Not Found | ${siteName}` }, robots: { index: false, follow: true } };
   }
   const name = project.name || "Project";
-  const title = name.length > 40 ? `${name} | ${siteName}` : `${name} — Case Study | ${siteName}`;
+  const caseStudy = `${name} — Case Study | ${siteName}`;
+  const title = caseStudy.length <= 60 ? caseStudy : seoTitle(name, siteName);
   const description =
     stripHtml(project.description, 158) ||
     `${name}: a ${siteName} case study in custom software, AI and app development.`;
-  const url = `${siteUrl}/projects/${encodeURIComponent(id)}`;
+  const url = `${siteUrl}${projectPath(project)}`;
   const imageUrl = getProjectDisplayImage(project) || undefined;
 
   return {
@@ -49,8 +51,8 @@ export async function generateMetadata({ params }: LayoutProps): Promise<Metadat
 
 export default async function ProjectLayout({ children, params }: LayoutProps) {
   const { id } = await params;
-  const project = await getProjectServer(id);
-  const url = `${siteUrl}/projects/${encodeURIComponent(id)}`;
+  const project = await getProjectServer(idFromSegment(id));
+  const url = project ? `${siteUrl}${projectPath(project)}` : `${siteUrl}/projects`;
   const imageUrl = project ? getProjectDisplayImage(project) || undefined : undefined;
 
   const jsonLd = project

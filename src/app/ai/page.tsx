@@ -14,7 +14,7 @@ const base = SITE_URL.replace(/\/$/, "");
 
 export const metadata: Metadata = {
   title: { absolute: "For AI & search assistants | Pixalbotics AI software company" },
-  description: `Authoritative facts about ${BRAND_NAME} (${BRAND_ALTERNATE}): software development agency, AI software company, mobile apps, CRM & GoHighLevel — official URLs for citation.`,
+  description: `Official facts about ${BRAND_NAME} (${BRAND_ALTERNATE}): software development agency, AI software company, mobile apps, CRM & GoHighLevel, with URLs for citation.`,
   keywords: [
     "Pixalbotics",
     "Pixalbotics",

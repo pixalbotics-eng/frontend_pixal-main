@@ -15,6 +15,7 @@ import { getDisplayImageUrl } from '@/api/config';
 import { useRefetchOnWindowFocus } from '@/hooks';
 import ListPagination from './ui/ListPagination';
 import { type PaginationMeta } from '@/lib/pagination';
+import { blogPath } from '@/lib/slug';
 
 const GRADIENTS = ['from-blue-500 to-cyan-500', 'from-purple-500 to-pink-500', 'from-indigo-500 to-blue-500'] as const;
 const ICONS = [SparklesIcon, RocketIcon, BookIcon];
@@ -157,7 +158,7 @@ export default function BlogSection({ initialBlogs = [] }: { initialBlogs?: Blog
                       </p>
                       <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                         <span className="text-sm text-gray-500 font-medium">{formatDate(blog.createdAt)}</span>
-                        <Link href={`/blogs/${blog._id}`}>
+                        <Link href={blogPath(blog)}>
                           <Button
                             size="sm"
                             variant="outline"

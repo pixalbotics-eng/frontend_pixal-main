@@ -45,6 +45,21 @@ export default function CrmGoHighLevelPage() {
           content:
             "We build custom software for digital signage and connected hardware devices that need to sync with your CRM in real time — think in-store displays, kiosks, and IoT devices that pull live data and trigger workflows back into GoHighLevel or your CRM.",
         },
+        {
+          heading: "Who It Is For",
+          content:
+            "This service is a fit for agencies, coaches, clinics, home-service companies and sales teams that are losing leads between the first enquiry and the booked appointment. We also support marketing agencies that resell GoHighLevel and need a dependable team to build snapshots, funnels and automations for their own clients in the US, UK, Australia and the UAE.",
+        },
+        {
+          heading: "How We Set It Up",
+          content:
+            "We start by mapping your current lead flow: where enquiries come from, who follows up, and where deals stall. From that we design pipelines, tags, forms, calendars and follow-up sequences, then build and test them with real scenarios before switching your team over. You get recorded walkthroughs and written documentation so your staff can run the system day to day.",
+        },
+        {
+          heading: "Ongoing CRM Management",
+          content:
+            "After launch we can stay on as your CRM team, monitoring automations, fixing broken integrations, adding new campaigns, and reporting on pipeline performance each month. This keeps the system accurate as your offers, staff and lead sources change, instead of slowly drifting into a tool nobody trusts.",
+        },
       ]}
     />
   );

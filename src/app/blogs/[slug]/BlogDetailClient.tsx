@@ -9,6 +9,24 @@ import EmptyState from '@/components/ui/EmptyState';
 import PdfFlipbook from '@/components/ui/PdfFlipbook';
 import Link from 'next/link';
 import { SITE_URL } from '@/lib/seo';
+import { blogPath } from '@/lib/slug';
+
+/**
+ * SEO clean-up of editor/automation HTML: the page title is already the only
+ * <h1>, so headings inside the article are demoted to <h2>, and images that
+ * came in without alt text get a descriptive one.
+ */
+function prepareContent(html: string, title: string): string {
+  const safeTitle = title.replace(/"/g, '&quot;');
+  return html
+    .replace(/<h1(\s[^>]*)?>/gi, (_m, attrs = '') => `<h2${attrs}>`)
+    .replace(/<\/h1>/gi, '</h2>')
+    .replace(/<img\b([^>]*)>/gi, (m, attrs: string) => {
+      if (/\balt\s*=\s*"[^"]+"/i.test(attrs)) return m;
+      const cleaned = attrs.replace(/\balt\s*=\s*(""|'')/i, '');
+      return `<img alt="${safeTitle}"${cleaned}>`;
+    });
+}
 
 function formatDate(s: string) {
   try {
@@ -88,7 +106,7 @@ export default function BlogDetailClient({ slug, initialBlog }: Props) {
           <div className="prose prose-lg max-w-none rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-7">
             <div
               className="text-gray-700 leading-relaxed space-y-6 text-base sm:text-lg prose-headings:font-bold prose-p:my-2 prose-ul:my-2 prose-ol:my-2"
-              dangerouslySetInnerHTML={{ __html: blog.content || '<p>No content.</p>' }}
+              dangerouslySetInnerHTML={{ __html: blog.content ? prepareContent(blog.content, blog.name) : '<p>No content.</p>' }}
             />
           </div>
           {getPdfUrl(blog) && (
@@ -100,10 +118,10 @@ export default function BlogDetailClient({ slug, initialBlog }: Props) {
           <div className="mt-12 border-t border-gray-200 pt-8">
             <h3 className="text-xl font-bold text-gray-900 mb-4">Share this article</h3>
             <div className="flex flex-wrap gap-3">
-              <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(blog.name)}&url=${encodeURIComponent(`${SITE_URL}/blogs/${slug}`)}`} target="_blank" rel="noopener noreferrer" className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700">
+              <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(blog.name)}&url=${encodeURIComponent(`${SITE_URL}${blogPath(blog)}`)}`} target="_blank" rel="noopener noreferrer" className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition hover:bg-blue-700">
                 Twitter
               </a>
-              <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${SITE_URL}/blogs/${slug}`)}`} target="_blank" rel="noopener noreferrer" className="rounded-lg bg-blue-700 px-5 py-2.5 font-medium text-white transition hover:bg-blue-800">
+              <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${SITE_URL}${blogPath(blog)}`)}`} target="_blank" rel="noopener noreferrer" className="rounded-lg bg-blue-700 px-5 py-2.5 font-medium text-white transition hover:bg-blue-800">
                 LinkedIn
               </a>
               <button type="button" onClick={() => { if (typeof navigator !== 'undefined' && navigator.clipboard) navigator.clipboard.writeText(typeof window !== 'undefined' ? window.location.href : ''); }} className="rounded-lg bg-gray-800 px-5 py-2.5 font-medium text-white transition hover:bg-gray-900">

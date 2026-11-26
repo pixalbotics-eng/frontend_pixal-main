@@ -49,6 +49,16 @@ export default function DigitalMarketingPage() {
           content:
             "We connect marketing output directly to CRM and GoHighLevel pipelines, so leads generated from campaigns flow into automated follow-up and your sales team sees results in real time.",
         },
+        {
+          heading: "Who It Is For",
+          content:
+            "We work with businesses that need their marketing to look as good as their product and to bring in measurable leads: software companies, service businesses, and growing brands in the United States, United Kingdom, Australia and the UAE. Because design, development and marketing sit in one team, campaigns, landing pages and tracking are built together rather than handed between agencies.",
+        },
+        {
+          heading: "How We Work",
+          content:
+            "Each engagement starts with a review of your brand, website, search visibility and current channels. We then agree on a focused plan for the next quarter, covering content, design assets, landing pages and campaigns, with clear metrics such as qualified leads and booked calls. Progress is reported monthly so you can see what is working and where the budget should go next.",
+        },
       ]}
     />
   );
