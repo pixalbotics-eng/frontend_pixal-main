@@ -293,7 +293,7 @@ export default function PartnersSection() {
               key={index}
               onClick={() => goToSet(index)}
               className="relative focus:outline-none group"
-              aria-label={`Go to partner set ${index + 1}`}
+              aria-label={`Go to technology set ${index + 1}`}
             >
               <motion.div
                 className={`w-3 h-3 rounded-full transition-all ${
