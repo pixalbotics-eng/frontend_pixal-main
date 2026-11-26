@@ -49,6 +49,16 @@ export default function MobileAppDevelopmentPage() {
           content:
             "Mobile products evolve fast. We offer dedicated support and iteration cycles to ship new features, keep pace with OS updates, and continuously improve performance based on real usage data.",
         },
+        {
+          heading: "Who It Is For",
+          content:
+            "Our mobile work suits founders turning an idea into a first app, businesses adding a customer or staff app to an existing system, and product teams that need extra engineering capacity to ship faster. We regularly work with clients in the United States, United Kingdom, Australia and the UAE, and set up working hours and check-ins around your time zone.",
+        },
+        {
+          heading: "Our App Development Process",
+          content:
+            "We begin by mapping the core user journeys and the smallest feature set worth launching. Designs are shared as clickable prototypes so you can test the flow before development starts. The app is then built in short sprints with test builds sent to your phone through TestFlight and internal testing tracks, so you see real progress every week instead of waiting until the end.",
+        },
       ]}
     />
   );

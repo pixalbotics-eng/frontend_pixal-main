@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SEO_BLOG_POSTS, SERVICE_PAGES, SITE_URL } from "@/lib/seo";
 import { API_BASE_URL } from "@/api/config";
+import { blogPath, projectPath } from "@/lib/slug";
 
 const baseUrl = SITE_URL;
 const apiUrl = API_BASE_URL.replace(/\/$/, "");
@@ -8,7 +9,7 @@ const apiUrl = API_BASE_URL.replace(/\/$/, "");
 // Rebuild the sitemap at most once an hour so new daily blog posts get listed.
 export const revalidate = 3600;
 
-type Entry = { _id: string; slug?: string; updatedAt?: string; createdAt?: string };
+type Entry = { _id: string; name?: string; slug?: string; updatedAt?: string; createdAt?: string };
 
 async function getPage(path: string, key: string, page: number): Promise<Entry[]> {
   try {
@@ -77,14 +78,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const blogUrls: MetadataRoute.Sitemap = blogs.map((b) => ({
-    url: `${baseUrl}/blogs/${encodeURIComponent(b.slug || b._id)}`,
+    url: `${baseUrl}${blogPath(b)}`,
     lastModified: lastMod(b),
     changeFrequency: "weekly" as const,
     priority: 0.8,
   }));
 
   const projectUrls: MetadataRoute.Sitemap = projects.map((p) => ({
-    url: `${baseUrl}/projects/${encodeURIComponent(p._id)}`,
+    url: `${baseUrl}${projectPath(p)}`,
     lastModified: lastMod(p),
     changeFrequency: "monthly" as const,
     priority: 0.7,

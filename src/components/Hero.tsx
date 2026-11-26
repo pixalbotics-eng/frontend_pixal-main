@@ -113,7 +113,7 @@ export default function Hero() {
               {/* Badge */}
               <motion.div variants={fadeUp} className="mb-5 inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 backdrop-blur-md">
                 <div className="relative h-7 w-7 shrink-0 overflow-hidden rounded-lg">
-                  <Image src={h.logoMark} alt="" fill className="object-contain" sizes="28px" />
+                  <Image src={h.logoMark} alt="Pixalbotics logo" fill className="object-contain" sizes="28px" />
                 </div>
                 <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-300">
                   {heroCopy.badge}

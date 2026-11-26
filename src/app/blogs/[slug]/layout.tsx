@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { BRAND_NAME, SITE_URL } from "@/lib/seo";
 import { getDisplayImageUrl } from "@/api/config";
 import { getBlogServer, stripHtml } from "@/lib/server-api";
+import { blogPath, idFromSegment, seoTitle } from "@/lib/slug";
 
 const siteUrl = SITE_URL.replace(/\/$/, "");
 const siteName = BRAND_NAME;
@@ -13,15 +14,15 @@ interface LayoutProps {
 
 export async function generateMetadata({ params }: LayoutProps): Promise<Metadata> {
   const { slug } = await params;
-  const blog = await getBlogServer(slug);
+  const blog = await getBlogServer(idFromSegment(slug));
   if (!blog) {
     return { title: { absolute: `Blog Not Found | ${siteName}` }, robots: { index: false, follow: true } };
   }
   const title = blog.name || "Blog";
   const description = stripHtml(blog.content, 158) || `Read more on the ${siteName} blog.`;
-  const url = `${siteUrl}/blogs/${encodeURIComponent(slug)}`;
+  const url = `${siteUrl}${blogPath(blog)}`;
   const imageUrl = getDisplayImageUrl(blog) || undefined;
-  const fullTitle = title.length > 52 ? title : `${title} | ${siteName}`;
+  const fullTitle = seoTitle(title, siteName);
 
   return {
     title: { absolute: fullTitle },
@@ -49,8 +50,8 @@ export async function generateMetadata({ params }: LayoutProps): Promise<Metadat
 
 export default async function BlogSlugLayout({ children, params }: LayoutProps) {
   const { slug } = await params;
-  const blog = await getBlogServer(slug);
-  const url = `${siteUrl}/blogs/${encodeURIComponent(slug)}`;
+  const blog = await getBlogServer(idFromSegment(slug));
+  const url = blog ? `${siteUrl}${blogPath(blog)}` : `${siteUrl}/blogs`;
   const imageUrl = blog ? getDisplayImageUrl(blog) || undefined : undefined;
 
   const jsonLd = blog

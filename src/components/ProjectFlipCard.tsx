@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 import { ArrowRightIcon } from './ui/Icons';
+import { projectPath } from '@/lib/slug';
 
 /** Desktop / trackpad: CSS hover flip. Touch phones: tap to flip (hover is unreliable). */
 function usePrefersHoverFlip(): boolean {
@@ -165,7 +166,7 @@ export default function ProjectFlipCard({
                 {descriptionPreview}
               </p>
               <Link
-                href={`/projects/${project._id}`}
+                href={projectPath(project)}
                 onClick={(e) => e.stopPropagation()}
                 className="mt-5 flex w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 py-3 text-sm font-semibold text-white shadow-md shadow-blue-500/25 transition hover:from-blue-700 hover:to-purple-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
               >
