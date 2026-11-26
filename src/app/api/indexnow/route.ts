@@ -18,13 +18,14 @@ export async function GET(request: Request) {
   const secret = process.env.CRON_SECRET;
   const auth = request.headers.get("authorization");
   const { searchParams } = new URL(request.url);
-  const all = searchParams.get("all") === "1";
-  // If CRON_SECRET is configured, only Vercel cron (or someone with the secret) may call this.
-  if (secret && auth !== `Bearer ${secret}` && searchParams.get("secret") !== secret) {
+  const authorized = Boolean(secret) && (auth === `Bearer ${secret}` || searchParams.get("secret") === secret);
+  if (secret && !authorized) {
     return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
   }
-
-  const days = Number(searchParams.get("days") || 2);
+  // Without CRON_SECRET, callers can only trigger the small daily "recently changed" submission;
+  // the full-sitemap resubmit and a custom window need the secret.
+  const all = authorized && searchParams.get("all") === "1";
+  const days = authorized ? Math.min(Number(searchParams.get("days") || 2), 30) : 2;
   const since = Date.now() - days * 24 * 60 * 60 * 1000;
   const entries = await sitemap();
   const urls = entries
