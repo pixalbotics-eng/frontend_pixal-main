@@ -3,7 +3,7 @@ import SeoPage from "@/components/SeoPage";
 import { BRAND_NAME, CORE_KEYWORDS, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: { absolute: "Mobile App Development | Pixalbotics" },
+  title: { absolute: "React Native App Development Company | Pixalbotics" },
   description:
     "Pixalbotics builds native-quality iOS and Android apps with React Native, from product strategy through App Store and Play Store launch.",
   keywords: [
@@ -20,7 +20,7 @@ export default function MobileAppDevelopmentPage() {
   return (
     <SeoPage
       path="/services/mobile-app-development"
-      title="Mobile App Development"
+      title="React Native & Mobile App Development"
       intro={`${BRAND_NAME} designs and ships cross-platform mobile apps that feel native, perform reliably, and scale alongside your product roadmap.`}
       imageAlt="mobile app development on iOS and Android"
       sections={[
